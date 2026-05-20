@@ -4,88 +4,108 @@
 [![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](#)
 [![Manifest](https://img.shields.io/badge/manifest-v3-orange.svg)](#)
 
-**Elyxora Tab** adalah ekstensi Google Chrome kustomisasi halaman Tab Baru (*New Tab Page*) dengan tampilan dashboard modern, estetis, dan kaya fitur. Dirancang dengan gaya *glassmorphism* dan *neumorphism* premium untuk mempermudah navigasi harian Anda sambil memberikan visualisasi workspace yang memanjakan mata.
+<p align="center">
+  <img src="preview.png" alt="Elyxora Tab Preview" width="100%" style="border-radius: 8px;" />
+</p>
+
+Halo teman-teman! 👋 Selamat datang di **Elyxora Tab** (atau *Elyxora Tap*). 
+
+Pernah merasa bosan dengan tampilan halaman tab baru Google Chrome yang gitu-gitu aja? Nah, ekstensi ini dibuat khusus untuk mengubah tab baru kamu menjadi sebuah dashboard personal yang **super estetik, minimalis, dan fungsional**. Dengan perpaduan gaya *glassmorphism* (efek kaca transparan) dan *neumorphism* modern, dijamin mata kamu bakal dimanjakan setiap kali membuka tab baru!
 
 ---
 
-## ✨ Fitur Utama
+## ✨ Fitur-Fitur Keren (Apa aja sih fiturnya?)
 
-### 1. 🗂️ Bookmark Visual Berbasis Grup (Tabbed Shortcuts)
-*   Mengelompokkan pintasan link favorit Anda ke dalam tab kategori yang rapi.
-*   Kemudahan untuk menambah, mengedit, menghapus, serta menyusun ulang posisi pintasan secara langsung.
-*   Mendukung logo kustom via URL gambar maupun file galeri lokal.
+Berikut beberapa fitur seru yang bisa kamu nikmati dan kustomisasi sesuka hati:
 
-### 2. 🔍 Multi-Search Engine & Suggestions
-*   Kotak pencarian pintar yang terintegrasi dengan berbagai mesin pencari populer: **Google, Bing, Yahoo, dan DuckDuckGo**.
-*   Saran pencarian (*Search Suggestions*) otomatis saat Anda mengetik untuk mempercepat proses pencarian.
+### 1. 🗂️ Kelompokkan Link Favoritmu (Tabbed Shortcuts)
+*   Biar gak berantakan, kamu bisa membagi pintasan situs web (*bookmark*) favorit ke dalam berbagai kategori grup (misalnya: "Kerjaan", "Sosmed", "Hiburan", "Kuliah").
+*   Tinggal klik, kamu bisa tambah, edit, atau hapus pintasan secara langsung.
+*   Bisa pasang ikon kustom menggunakan URL gambar dari internet maupun mengunggah file gambar langsung dari komputermu.
 
-### 3. 🕒 Widget Jam Kreatif & Dinamis
-*   Personalisasi penuh ukuran jam (50% - 200%).
-*   Berbagai macam pilihan gaya jam yang dapat disesuaikan dengan tema workspace Anda:
-    *   *Swiss & Bold* (Klasik)
-    *   *Glassmorphism* (Efek Kaca)
-    *   *Cyberpunk* (Neon Berwarna)
-    *   *Retro Digital* (Jam 7-Segment)
-    *   *Gradient Rainbow* (Warna Pelangi)
-    *   *Flip Clock* (Gaya Mekanis)
-    *   *Border Tracer* (Jam dengan Efek Animasi Garis)
+### 2. 🔍 Cari Apa Saja, Bebas Pilih Engine! (Multi-Search Engine)
+*   Bisa ganti-ganti mesin pencari (Google, Bing, Yahoo, dan DuckDuckGo) dengan sekali klik pada ikon di sebelah kiri kolom pencarian.
+*   Dilengkapi fitur **Search Suggestions** (saran kata kunci) otomatis saat kamu mulai mengetik biar pencarian makin cepat dan *sat-set*!
 
-### 4. ⛅ Widget Prakiraan Cuaca Lokal
-*   Menampilkan suhu dan cuaca di area lokal secara real-time.
-*   Dilengkapi dengan prakiraan cuaca jangka pendek (forecast).
-*   Mendukung pencarian kota spesifik atau pelacakan otomatis, serta konversi unit Celsius (°C) / Fahrenheit (°F).
+### 3. 🕒 Jam Dinamis dengan Berbagai Gaya Keren
+Bosan dengan tampilan jam digital yang standar? Sesuaikan gaya jamnya dengan kepribadian kamu:
+*   *Swiss & Bold* (Bergaya minimalis eropa)
+*   *Glassmorphism* (Efek kaca blur transparan yang elegan)
+*   *Cyberpunk* (Glow neon yang futuristik)
+*   *Retro Digital* (Jam klasik 7-segment)
+*   *Gradient Rainbow* (Warna gradasi pelangi yang hidup)
+*   *Flip Clock* (Gaya jam mekanis klasik)
+*   *Border Tracer* (Animasi garis berjalan mengelilingi jam)
+*   *Ukuran Jam*: Bisa diperbesar atau diperkecil sesuka hati (dari 50% hingga 200%).
 
-### 5. 🎨 Wallpaper Engine & Efek Latar Belakang
-*   Pilih latar belakang dari Galeri Bawaan, URL gambar eksternal, atau Unggah Wallpaper Anda sendiri.
-*   Pengaturan efek visual real-time untuk **Blur** dan **Kecerahan (Brightness/Opacity)** latar belakang agar teks dan ikon tetap terbaca jelas.
+### 4. ⛅ Widget Cuaca Real-Time
+*   Pantau suhu dan kondisi cuaca di lokasi kamu saat ini secara langsung di pojok kanan atas.
+*   Bisa menampilkan prakiraan cuaca jangka pendek (*weather forecast*).
+*   Mendukung pencarian kota tertentu dan konversi unit suhu antara Celsius (°C) dan Fahrenheit (°F).
+
+### 5. 🎨 Wallpaper Engine & Pengatur Efek Latar Belakang
+*   Bisa pakai wallpaper default yang disediakan, menempelkan link gambar eksternal, atau **unggah foto kamu sendiri**.
+*   Ada slider untuk mengatur tingkat **Blur** dan **Kecerahan (Brightness/Opacity)** gambar latar belakang secara *real-time* agar tulisan di tab baru kamu tetap terbaca dengan jelas.
+
+### 6. 👋 Sapaan Personal yang Ramah
+*   Kamu bisa memasukkan nama panggilanmu di panel pengaturan.
+*   Setiap kali kamu membuka tab baru, dashboard akan menyapamu secara hangat (contoh: *"Selamat Pagi, Kak Rizkan"* atau *"Selamat Malam, Kak"*).
 
 ---
 
-## 🛠️ Cara Instalasi (Load Unpacked)
+## 🛠️ Cara Pasang di Browser Kamu (Gampang Banget!)
 
-Karena ekstensi ini belum dipublikasikan di Chrome Web Store, Anda dapat menginstalnya secara manual menggunakan mode pengembang:
+Karena ekstensi ini masih dalam tahap pengembangan mandiri (belum dipublikasikan ke Chrome Web Store), kamu bisa memasangnya secara manual dengan cara berikut:
 
-1.  **Unduh / Clone** repositori ini ke komputer Anda.
-2.  Buka browser **Google Chrome** dan navigasikan ke alamat:
+1.  **Download / Clone** repositori ini ke dalam komputermu.
+2.  Buka browser **Google Chrome**, lalu masuk ke halaman ekstensi dengan mengetik alamat berikut pada URL bar:
     ```txt
     chrome://extensions/
     ```
-3.  Aktifkan **Mode pengembang (Developer mode)** di pojok kanan atas layar.
+3.  Aktifkan opsi **Mode pengembang (Developer mode)** di pojok kanan atas layar.
 4.  Klik tombol **Muat ekstensi tidak dikemas (Load unpacked)** di pojok kiri atas.
-5.  Pilih folder **Elyxora Tap** (folder yang berisi file `manifest.json`).
-6.  Selesai! Sekarang buka tab baru di Chrome untuk melihat **Elyxora Tab** beraksi. 🎉
+5.  Pilih folder proyek **Elyxora Tap** (pilih folder induk yang langsung berisi file `manifest.json`).
+6.  Selesai! Sekarang coba buka tab baru di Chrome kamu. Selamat menikmati dashboard barumu! 🎉
 
 ---
 
-## 📁 Struktur Berkas
+## 📁 Struktur Berkas Proyek
 
-Berikut adalah gambaran struktur kode dari ekstensi ini:
+Bagi kamu yang penasaran dengan isi di balik layar, berikut struktur berkasnya:
 
 ```bash
 Elyxora Tap/
-├── manifest.json       # Konfigurasi utama ekstensi (Manifest V3)
-├── newtab.html         # Struktur layout utama dashboard New Tab
-├── style.css           # Desain visual, tema, dan animasi glassmorphism
-├── newtab.js           # Logika core, jam dinamis, sapaan, dan integrasi cuaca
-├── settings.js         # Pengelolaan panel pengaturan umum
-├── groups.js           # Logika penataan grup dan pintasan bookmark
-├── modal.js            # Manajemen transisi pop-up modal input
-└── icons/              # Aset ikon logo ekstensi (16px, 48px, 128px)
+├── manifest.json       # Otak ekstensi (konfigurasi Manifest V3 untuk Chrome)
+├── newtab.html         # Struktur layout utama dashboard tab baru
+├── style.css           # Bumbu rahasia kecantikan visual & efek glassmorphism
+├── newtab.js           # Pengatur jam, cuaca, pencarian, dan sapaan personal
+├── settings.js         # Pengelola panel kustomisasi/setelan dashboard
+├── groups.js           # Logika pembuatan grup tab & kelola link bookmark
+├── modal.js            # Pengatur animasi pop-up (dialog box) saat tambah link
+├── preview.png         # Gambar screenshot tampilan dashboard kamu
+└── icons/              # Berbagai ukuran ikon resmi Elyxora Tab (16px, 48px, 128px)
 ```
 
 ---
 
-## ⚙️ Cara Penggunaan & Kustomisasi
+## 💬 FAQ (Tanya Jawab Santai)
 
-1.  **Membuka Pengaturan**: Klik ikon **Roda Gigi ⚙️** di pojok kanan bawah untuk masuk ke menu setelan.
-2.  **Menambahkan Bookmark**: Klik tombol **Tambah Pintasan ➕** di pojok kanan bawah, masukkan URL, judul, dan atur grupnya.
-3.  **Mengubah Wallpaper**: Di menu Pengaturan, pilih tab *Wallpaper* untuk mengunggah gambar baru dan gunakan slider *Blur* untuk memberikan efek estetik.
-4.  **Mengubah Tampilan Jam**: Pilih tab *Tampilan* di menu Pengaturan untuk mengganti model jam dan ukuran elemen.
+*   **Q: Apakah data bookmark dan wallpaper saya bakal hilang kalau browser ditutup?**
+    *   *A: Aman banget! Semua data pengaturan, link bookmark, nama sapaan, dan wallpaper disimpan langsung di memori lokal browser kamu (`chrome.storage`), jadi gak bakal hilang.*
+*   **Q: Ekstensi ini bikin browser jadi berat gak, Kak?**
+    *   *A: Gak sama sekali! Ekstensi ini dibuat murni menggunakan HTML, CSS, dan Vanilla JavaScript (tanpa framework/library besar pihak ketiga), sehingga proses loading-nya dijamin super ringan dan instan.*
+*   **Q: Bagaimana cara mengakses menu pengaturan?**
+    *   *A: Cukup klik ikon **Roda Gigi ⚙️** di pojok kanan bawah layar tab baru kamu.*
 
 ---
 
-## 📝 Lisensi
+## 🤝 Yuk Ikut Kontribusi!
 
-Proyek ini dibuat untuk keperluan pembelajaran dan penggunaan pribadi. Anda bebas melakukan fork, memodifikasi, dan mendistribusikannya kembali.
+Proyek ini bersifat open-source! Jika kamu punya ide fitur baru yang keren, menemukan bug, atau ingin mempercantik tampilan CSS-nya:
+1.  Lakukan **Fork** pada repositori ini.
+2.  Buat cabang (*branch*) baru untuk fitur kamu.
+3.  Kirimkan **Pull Request (PR)** agar bisa kita gabungkan. Masukan dari kamu sangat berharga!
 
-*Dibuat untuk produktivitas yang lebih indah😉.*
+---
+
+*Dibuat untuk produktivitas yang lebih indah 😉.*
