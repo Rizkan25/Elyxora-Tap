@@ -1,0 +1,2206 @@
+:root {
+  --bg-color: #0f172a;
+  --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1a1035 50%, #0f1f2a 100%);
+  --text-color: #f1f5f9;
+  --text-dim: #cbd5e1;
+  --modal-bg: #1e293b;
+  --modal-border: rgba(255, 255, 255, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --input-bg: rgba(15, 23, 42, 0.4);
+  --input-border: rgba(255, 255, 255, 0.1);
+  --accent-color: #8b5cf6;
+  --accent-color-rgb: 139, 92, 246;
+  --overlay-base: 15, 23, 42;
+  /* --- Adaptive Layout Engine defaults (dikontrol JS di mobile) --- */
+  --real-vh: 100dvh;
+  --ada-time-padding: 12px;
+  --ada-weather-margin: 8px;
+  --ada-search-margin: 8px;
+  --ada-tabs-padding: 8px;
+  --ada-grid-padding: 10px;
+}
+
+[data-theme="light"] {
+  --bg-color: #f8fafc;
+  --bg-gradient: linear-gradient(135deg, #e8f0fe 0%, #f3e8ff 50%, #e8f4fd 100%);
+  --text-color: #0f172a;
+  --text-dim: #475569;
+  --modal-bg: #ffffff;
+  --modal-border: rgba(0, 0, 0, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  --input-bg: rgba(255, 255, 255, 0.5);
+  --input-border: rgba(0, 0, 0, 0.1);
+  --overlay-base: 255, 255, 255;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-color);
+  background-image: var(--bg-gradient);
+  background-size: cover;
+  background-position: center;
+  background-attachment: scroll;
+  color: var(--text-color);
+  padding: 16px;
+  min-height: 100vh;
+  position: relative;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Background Image Layer — untuk blur ringan di mobile */
+#bgImageLayer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -2;
+  transform: scale(1.05); /* menutupi tepi buram akibat filter:blur */
+  transition: filter 0.3s ease;
+  /* di desktop, elemen ini kosong & tidak berpengaruh */
+}
+
+.bg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(var(--overlay-base), 0.6);
+  /* backdrop-filter dikontrol penuh oleh JS (applyBgEffects) — tidak diset di CSS */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  z-index: -1;
+  transition: background-color 0.3s;
+}
+
+/* Time Widget - Centered Minimalist */
+.time-widget {
+  position: relative;
+  text-align: center;
+  margin: 80px auto 20px;
+  width: 100%;
+  animation: fadeInDown 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 10;
+}
+
+.greeting {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--text-color);
+  opacity: 0.8;
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.time {
+  font-size: 6rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -3px;
+  background: linear-gradient(180deg, var(--text-color) 0%, var(--text-dim) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* Dihapus: filter: drop-shadow berat diganti dengan text-shadow yang jauh lebih ringan jika tidak di mode gradient */
+  position: relative;
+  transform: translateZ(0);
+  /* Hardware acceleration */
+}
+
+.date {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-color);
+  opacity: 0.7;
+  margin-top: 10px;
+}
+
+/* Weather Widget - Floating Top Right */
+.weather-widget {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  padding: 12px 20px;
+  border-radius: 20px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  animation: fadeInDown 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+  z-index: 10;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+              background-color 0.4s, 
+              border-color 0.4s;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.weather-widget:hover {
+  transform: translateY(-8px) scale(1.02) translateZ(0);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--accent-color);
+}
+
+.weather-icon {
+  font-size: 2.2rem;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.weather-temp {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text-color);
+  letter-spacing: -1px;
+}
+
+.weather-desc {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-color);
+  opacity: 0.7;
+  text-transform: capitalize;
+}
+
+/* --- RESPONSIVE DESIGN & FORCED CENTER --- */
+@media (max-width: 1100px) {
+  body {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+    height: 100dvh;
+    max-height: 100dvh;
+  }
+
+  .time-widget {
+    position: relative !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    transform: none !important;
+    text-align: center !important;
+    width: 100% !important;
+    padding: 16px 20px 8px !important;
+    margin: 0 !important;
+    flex-shrink: 0;
+    order: 1;
+  }
+
+  .time {
+    font-size: clamp(3rem, 15vw, 5rem);
+    letter-spacing: -2px;
+  }
+
+  .greeting {
+    font-size: clamp(0.9rem, 4vw, 1.2rem);
+    margin-bottom: 5px !important;
+  }
+
+  .date {
+    margin-top: 5px !important;
+    font-size: 0.9rem !important;
+  }
+
+  .weather-widget {
+    position: relative !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    transform: none !important;
+    flex-shrink: 0;
+    order: 2;
+    margin: 6px auto !important;
+    width: max-content !important;
+    max-width: 90% !important;
+    padding: 10px 20px !important;
+    border-radius: 20px !important;
+    background: var(--glass-bg) !important;
+    border: 1px solid var(--glass-border) !important;
+    zoom: 1 !important;
+  }
+
+  .weather-widget:hover {
+    transform: none !important;
+  }
+
+  .app-container {
+    order: 3;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    min-height: 0; /* penting untuk flex child bisa shrink */
+    overflow: hidden;
+  }
+
+  .search-section {
+    margin-top: 6px !important;
+    margin-bottom: 6px !important;
+    padding: 0 15px !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    flex-shrink: 0;
+  }
+
+  #searchForm {
+    width: 90% !important;
+    max-width: 500px !important;
+    padding: 6px 8px !important;
+    border-radius: 30px !important;
+  }
+
+  #searchInput {
+    font-size: 0.95rem !important;
+    padding: 8px 10px !important;
+  }
+
+  #searchForm button {
+    display: none !important;
+  }
+
+  .group-tabs {
+    justify-content: center !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    padding: 6px 12px !important;
+    flex-shrink: 0;
+  }
+
+  /* Grid: flex:1 agar mengambil sisa ruang, overflow-y auto agar scroll sendiri */
+  .elyxora-grid {
+    gap: 12px !important;
+    padding: 8px 15px 16px !important;
+    width: 100% !important;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-content: flex-start;
+    /* Sembunyikan scrollbar visual tapi tetap bisa scroll */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .elyxora-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Matikan backdrop-filter di overlay — kecerahan dikontrol JS (applyBgEffects) */
+  .bg-overlay {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    /* background-color dikontrol oleh JS — tidak di-override di sini */
+  }
+  
+  .elyxora-item, .weather-widget, #searchForm, .search-suggestions {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+    border: 1px solid var(--glass-border) !important;
+  }
+
+  /* Elyxora item: hapus semua efek berat hover di layar medium */
+  .elyxora-item {
+    transform: none !important;
+    will-change: auto !important;
+  }
+}
+
+
+/* =============================================
+   MOBILE EXTREME PERFORMANCE MODE
+   Target: Entry-level GPU (e.g. Samsung A04 - PowerVR GE8320)
+   Hapus SEMUA efek berat: blur, gradient, animation, shadow
+   ============================================= */
+@media (max-width: 768px) {
+
+  /* Matikan semua entrance animations — GPU tidak perlu render paint berulang */
+  .time-widget,
+  .weather-widget,
+  .elyxora-grid,
+  .search-section,
+  .elyxora-item {
+    animation: none !important;
+    animation-delay: 0s !important;
+  }
+
+  /* Ganti gradient teks berat menjadi warna solid — gradient pada teks sangat membebani GPU */
+  .time {
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+    -webkit-text-fill-color: var(--text-color) !important;
+    color: var(--text-color) !important;
+    transform: none !important;
+    letter-spacing: -2px;
+  }
+
+  /* Matikan drop-shadow filter pada ikon cuaca */
+  .weather-icon {
+    filter: none !important;
+  }
+
+  /* Kurangi transisi pada widget cuaca */
+  .weather-widget {
+    transition: none !important;
+    will-change: auto !important;
+    transform: none !important;
+  }
+  .weather-widget:hover {
+    transform: none !important;
+  }
+
+  /* Matikan backdrop-filter pada .bg-overlay — tapi JANGAN override background-color
+     supaya nilai kecerahan dari JS (applyBgEffects) tetap berlaku di mobile */
+  .bg-overlay {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    /* background-color dikontrol murni oleh JS (applyBgEffects) */
+  }
+
+  /* Semua elemen glass: ganti blur dengan background solid transparan */
+  .elyxora-item,
+  .weather-widget,
+  #searchForm,
+  .search-suggestions,
+  .group-tab {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+    will-change: auto !important;
+    transform: none !important;
+  }
+
+  /* Kartu pintasan: background sedikit lebih pekat agar tetap terbaca tanpa blur */
+  .elyxora-item {
+    background: rgba(var(--overlay-base), 0.55) !important;
+    border: 1px solid var(--glass-border) !important;
+    transition: background-color 0.15s !important;
+  }
+  .elyxora-item:hover,
+  .elyxora-item:active {
+    background: rgba(var(--overlay-base), 0.7) !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  .elyxora-item:hover .elyxora-icon {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Search form */
+  #searchForm {
+    background: rgba(var(--overlay-base), 0.65) !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    transition: border-color 0.15s !important;
+    transform: none !important;
+  }
+  #searchForm:focus-within {
+    transform: none !important;
+    border-color: var(--accent-color) !important;
+  }
+
+  /* Group tabs */
+  .group-tab {
+    background: rgba(var(--overlay-base), 0.5) !important;
+    transition: background-color 0.15s, color 0.15s !important;
+    transform: none !important;
+  }
+
+  /* Body tetap overflow:hidden (dari @media 1100px) — jangan di-override di sini */
+  body {
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Search & group tabs: pastikan tidak ada margin berlebih */
+  .search-section {
+    animation: none !important;
+  }
+
+  /* Matikan semua transisi pada modal pengaturan di mobile agar switching tab instan */
+  .settings-tab {
+    transition: none !important;
+  }
+  .settings-tab svg {
+    transition: none !important;
+  }
+  .tab-pane {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Matikan filter & box-shadow berat pada ikon modal */
+  .suggested-icon:hover {
+    box-shadow: none !important;
+    filter: none !important;
+  }
+  #activeEngineIcon:hover {
+    box-shadow: none !important;
+  }
+  .gm-rename-btn:hover,
+  .gm-delete-btn:hover {
+    filter: none !important;
+  }
+
+  /* Percepat rendering gambar ikon */
+  .elyxora-icon img {
+    image-rendering: auto;
+  }
+}
+
+
+
+.modal-content {
+  width: 95% !important;
+  margin: 0 auto !important;
+  max-height: 85vh !important;
+}
+
+@media (max-width: 480px) {
+  .time {
+    font-size: 3.5rem;
+  }
+
+  .elyxora-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .floating-buttons {
+    bottom: 20px;
+    right: 20px;
+  }
+}
+
+/* Fix for existing Floating Action Buttons container if not classed */
+div[style*="position: fixed; bottom: 30px; right: 30px;"] {
+  bottom: 20px !important;
+  right: 20px !important;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--glass-bg);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.app-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Mobile-friendly grid: minimal 2 kolom */
+.elyxora-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  justify-content: center;
+  gap: 24px;
+  margin-top: 40px;
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.elyxora-item {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  padding: 10px;
+  border-radius: 20px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+              background-color 0.4s, 
+              border-color 0.4s, 
+              box-shadow 0.4s;
+  will-change: transform;
+  transform: translateZ(0);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: var(--glass-shadow);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.elyxora-item.dragging-placeholder {
+  opacity: 0.8;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: 0 0 40px 5px var(--accent-color), inset 0 0 20px var(--accent-color) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transform: scale(0.95);
+}
+
+.elyxora-item.dragging-placeholder * {
+  visibility: hidden;
+}
+
+.elyxora-item:hover {
+  transform: translateY(-8px) scale(1.02) translateZ(0);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--accent-color);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.elyxora-icon {
+  overflow: hidden;
+}
+
+.elyxora-item:hover .elyxora-icon {
+  transform: rotate(8deg) scale(1.15);
+  box-shadow: 0 12px 24px rgba(var(--accent-color-rgb), 0.3);
+}
+
+.elyxora-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.elyxora-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  opacity: 0.9;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.group-tabs {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 5px 0;
+  padding: 15px 15px 25px 15px;
+  /* Memberikan ruang ekstra untuk efek glow */
+}
+
+.group-tab {
+  background: var(--glass-bg);
+  padding: 8px 16px;
+  border-radius: 40px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid var(--glass-border);
+  color: var(--text-color);
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+  will-change: transform;
+  transform: translateZ(0);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.group-count-badge {
+  background: rgba(128, 128, 128, 0.2);
+  color: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 12px;
+  min-width: 20px;
+  text-align: center;
+  display: inline-block;
+}
+
+.group-tab.active .group-count-badge {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.group-tab.active {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: white;
+}
+
+/* Smart Tab Teratas */
+.group-tab.smart-tab {
+  border-color: rgba(255, 200, 0, 0.4);
+  color: var(--text-color);
+}
+
+.group-tab.smart-tab.active {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  border-color: #f59e0b;
+  color: white;
+}
+
+/* Tombol Kelola Group */
+.group-tab.group-manage-btn {
+  padding: 8px 12px;
+  opacity: 0.6;
+  background: transparent;
+  border-style: dashed;
+  transition: all 0.2s;
+}
+
+.group-tab.group-manage-btn:hover {
+  opacity: 1;
+  background: var(--glass-bg);
+  border-style: solid;
+}
+
+.search-section {
+  margin-top: 60px;
+  margin-bottom: 60px;
+  display: flex;
+  justify-content: center;
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+  position: relative;
+  z-index: 100;
+}
+
+#searchForm {
+  display: flex;
+  width: 100%;
+  max-width: 680px;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border-radius: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.4s, 
+              box-shadow 0.4s, 
+              background-color 0.4s;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+#searchForm:focus-within {
+  transform: scale(1.02) translateY(-2px) translateZ(0);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+  background: rgba(15, 23, 42, 0.6);
+}
+
+#searchInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 14px 24px;
+  color: var(--text-color);
+  font-size: 1.2rem;
+  outline: none;
+  font-weight: 400;
+}
+
+#searchInput::placeholder {
+  color: var(--text-color);
+  opacity: 0.4;
+}
+
+#searchForm button {
+  background: var(--accent-color);
+  border: none;
+  color: white;
+  padding: 0 28px;
+  border-radius: 32px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+#searchForm button:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+}
+
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: rgba(var(--overlay-base), 0.85);
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  border: 1px solid var(--glass-border);
+  border-radius: 28px;
+  margin-top: 10px;
+  padding: 10px 0;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+}
+
+.suggestion-item {
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--text-color);
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.suggestion-item:hover,
+.suggestion-item.selected {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.suggestion-item svg {
+  width: 16px;
+  height: 16px;
+  opacity: 0.4;
+}
+
+/* Modal - FVD Retro Style Adaptation */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: var(--modal-bg);
+  border-radius: 12px;
+  width: 90%;
+  max-width: 380px;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: var(--text-color);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  border: 1px solid var(--modal-border);
+}
+
+.modal-header {
+  background: var(--modal-bg);
+  border-bottom: 1px solid var(--modal-border);
+  padding: 12px 16px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.modal-body {
+  padding: 15px;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="url"],
+.modal-content select {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0 16px 0;
+  border-radius: 8px;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text-color);
+  font-size: 14px;
+}
+
+option {
+  background: var(--modal-bg);
+  color: var(--text-color);
+}
+
+.input-label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-dim);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.input-label span {
+  color: red;
+}
+
+.radio-group {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+.radio-group input[type="radio"] {
+  margin-right: 4px;
+  vertical-align: middle;
+  accent-color: #3b82f6;
+}
+
+.file-btn {
+  background: linear-gradient(to bottom, #7cbd42, #5a9b23);
+  border: 1px solid #4a8219;
+  padding: 6px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 12px;
+  color: white;
+  font-weight: bold;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  margin-top: 4px;
+}
+
+.file-btn:hover {
+  background: linear-gradient(to bottom, #5a9b23, #7cbd42);
+}
+
+.preview-container {
+  text-align: center;
+  margin: 20px 0 10px 0;
+}
+
+.preview-box {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  height: 120px;
+  width: 220px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Curved shadow trick */
+.preview-box::before {
+  content: "";
+  position: absolute;
+  bottom: 8px;
+  left: 10%;
+  right: 10%;
+  height: 20px;
+  box-shadow: 0 15px 12px rgba(0, 0, 0, 0.4);
+  border-radius: 100px / 20px;
+  z-index: 0;
+}
+
+.preview-box img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 3px;
+  position: relative;
+  z-index: 1;
+}
+
+#previewPlaceholder {
+  position: relative;
+  z-index: 1;
+  color: #999;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.modal-footer {
+  background: var(--modal-bg);
+  border-top: 1px solid var(--modal-border);
+  padding: 12px 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.save-btn,
+.cancel-btn {
+  background: var(--accent-color);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.cancel-btn {
+  background: transparent;
+  border: 1px solid var(--input-border);
+  color: var(--text-color);
+}
+
+.save-btn:hover,
+.cancel-btn:hover {
+  opacity: 0.8;
+}
+
+/* Saran Ikon FVD Style */
+#suggestedIconsContainer {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.suggested-icon {
+  height: 48px !important;
+  width: auto !important;
+  max-width: 100px !important;
+  border: 1px solid #ddd !important;
+  border-radius: 0 !important;
+  object-fit: contain !important;
+  cursor: pointer;
+  transition: 0.2s;
+  flex-shrink: 0;
+  padding: 2px;
+  background-color: transparent !important;
+}
+
+.suggested-icon:hover {
+  border-color: #888 !important;
+}
+
+.checkerboard-bg {
+  background-image: linear-gradient(45deg, #e2e8f0 25%, transparent 25%),
+    linear-gradient(135deg, #e2e8f0 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #e2e8f0 75%),
+    linear-gradient(135deg, transparent 75%, #e2e8f0 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 8px 0, 8px -8px, 0px 8px;
+  background-color: #f8fafc;
+}
+
+/* Settings Button */
+.settings-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  color: var(--text-color);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 50;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Modern Wallpaper Selector Styles */
+.bg-mode-card:hover {
+  border-color: var(--accent-color) !important;
+  background: var(--glass-bg) !important;
+  transform: translateY(-2px);
+}
+
+input[type="radio"]:checked+.bg-mode-card {
+  border-color: var(--accent-color) !important;
+  background: rgba(var(--accent-color-rgb, 59, 130, 246), 0.1) !important;
+  box-shadow: 0 0 15px rgba(var(--accent-color-rgb, 59, 130, 246), 0.2);
+}
+
+.custom-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: var(--input-border);
+  border-radius: 5px;
+  outline: none;
+  margin: 10px 0;
+}
+
+.custom-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid var(--modal-bg);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  transition: 0.2s;
+}
+
+.custom-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 15px var(--accent-color);
+}
+
+[data-theme="light"] .bg-mode-card {
+  background: #ffffff;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modern Theme Selector */
+.theme-card:hover {
+  border-color: var(--accent-color) !important;
+  background: var(--glass-bg) !important;
+  transform: translateY(-2px);
+}
+
+input[type='radio']:checked+.theme-card {
+  border-color: var(--accent-color) !important;
+  background: rgba(59, 130, 246, 0.1) !important;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+}
+
+.toggle-container {
+  cursor: pointer;
+  display: block;
+}
+
+.toggle-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  transition: 0.3s;
+}
+
+.toggle-card:hover {
+  border-color: var(--accent-color);
+}
+
+.toggle-switch {
+  width: 36px;
+  height: 20px;
+  background: #475569;
+  border-radius: 10px;
+  position: relative;
+  transition: 0.3s;
+}
+
+.toggle-switch::before {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: white;
+  border-radius: 50%;
+  top: 3px;
+  left: 3px;
+  transition: 0.3s;
+}
+
+input:checked+.toggle-card .toggle-switch {
+  background: var(--accent-color);
+}
+
+input:checked+.toggle-card .toggle-switch::before {
+  left: 19px;
+}
+
+.toggle-switch.large {
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+}
+
+.toggle-switch.large::before {
+  width: 18px;
+  height: 18px;
+  top: 3px;
+  left: 3px;
+}
+
+input:checked+.toggle-card .toggle-switch.large::before {
+  left: 23px;
+}
+
+.color-btn:hover {
+  transform: scale(1.15);
+}
+
+/* Search Engine Selector Styling */
+.engine-option:hover {
+  background: rgba(var(--accent-color-rgb, 59, 130, 246), 0.15);
+  color: var(--accent-color);
+}
+
+.engine-option.active {
+  background: var(--accent-color);
+  color: white;
+}
+
+#activeEngineIcon:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+#searchFormContainer {
+  animation: scaleIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Glass Card Utility */
+.glass-card {
+  background: var(--modal-bg) !important;
+  backdrop-filter: blur(25px) !important;
+  -webkit-backdrop-filter: blur(25px) !important;
+  border: 1px solid var(--modal-border) !important;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5) !important;
+  z-index: 1000 !important;
+}
+
+/* Context Menu & Drag Drop Styling */
+.custom-menu {
+  min-width: 180px;
+  padding: 6px;
+  border-radius: 12px;
+}
+
+.menu-item {
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.menu-item:hover {
+  background: rgba(var(--accent-color-rgb, 59, 130, 246), 0.15);
+}
+
+.elyxora-item.dragging {
+  opacity: 0.4;
+  transform: scale(0.9);
+}
+
+/* ============================================
+   GLOW EFFECTS — hover & active interactions
+   ============================================ */
+
+/* Weather Widget Glow */
+.weather-widget:hover {
+  transform: translateY(-8px) scale(1.02);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--accent-color);
+  box-shadow:
+    var(--glass-shadow),
+    0 0 20px rgba(59, 130, 246, 0.25),
+    0 0 40px rgba(59, 130, 246, 0.12);
+}
+
+/* Elyxora Items Glow */
+.elyxora-item:hover {
+  transform: translateY(-8px) scale(1.02);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--accent-color);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 18px rgba(59, 130, 246, 0.3),
+    0 0 36px rgba(59, 130, 246, 0.12);
+}
+
+.elyxora-item:active {
+  transform: translateY(-4px) scale(0.97);
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.3),
+    0 0 14px rgba(59, 130, 246, 0.4);
+}
+
+/* Group Tabs Glow */
+.group-tab:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.25);
+  transform: translateY(-2px);
+}
+
+.group-tab:active {
+  transform: translateY(0px);
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.35);
+}
+
+.group-tab.active {
+  box-shadow: 0 0 14px rgba(59, 130, 246, 0.35);
+}
+
+.group-tab.smart-tab:hover {
+  border-color: #f59e0b;
+  color: #f59e0b;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.3);
+}
+
+.group-tab.smart-tab.active {
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.4);
+}
+
+/* Group Manage Button Glow */
+.group-tab.group-manage-btn:hover {
+  opacity: 1;
+  background: var(--glass-bg);
+  border-style: solid;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Search Form Glow */
+#searchForm:focus-within {
+  transform: scale(1.03) translateY(-4px);
+  border-color: var(--accent-color);
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(59, 130, 246, 0.2),
+    0 0 40px rgba(59, 130, 246, 0.08);
+  background: rgba(var(--overlay-base), 0.1);
+}
+
+#searchForm button:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+  box-shadow: 0 0 16px rgba(59, 130, 246, 0.5);
+}
+
+/* Settings & Wallpaper Floating Buttons Glow */
+.settings-btn:hover {
+  background: var(--glass-bg);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  transform: translateY(-3px) scale(1.08);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.3),
+    0 0 16px rgba(59, 130, 246, 0.35),
+    0 0 32px rgba(59, 130, 246, 0.15);
+}
+
+.settings-btn:active {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow:
+    0 6px 14px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(59, 130, 246, 0.4);
+}
+
+/* Save / Cancel Buttons Glow */
+.save-btn:hover {
+  opacity: 1 !important;
+  filter: brightness(1.1);
+  box-shadow: 0 0 18px rgba(59, 130, 246, 0.45);
+  transform: translateY(-1px);
+}
+
+.save-btn:active {
+  transform: translateY(0px);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+}
+
+.cancel-btn:hover {
+  opacity: 1 !important;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Context Menu Items Glow */
+.menu-item:hover {
+  background: rgba(59, 130, 246, 0.12);
+  color: var(--accent-color);
+  box-shadow: inset 0 0 12px rgba(59, 130, 246, 0.08);
+}
+
+.menu-item:active {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+/* Slider Thumb Glow (sudah ada tapi diperkuat) */
+.custom-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow:
+    0 0 0 4px rgba(59, 130, 246, 0.15),
+    0 0 16px rgba(59, 130, 246, 0.4);
+}
+
+/* Color Button Glow */
+.color-btn:hover {
+  transform: scale(1.18);
+  box-shadow: 0 0 14px rgba(59, 130, 246, 0.45);
+}
+
+/* Toggle Card Glow */
+.toggle-card:hover {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.15);
+}
+
+/* Theme & BG Mode Cards Glow */
+.theme-card:hover,
+.bg-mode-card:hover {
+  border-color: var(--accent-color) !important;
+  background: var(--glass-bg) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
+}
+
+input[type='radio']:checked+.theme-card,
+input[type="radio"]:checked+.bg-mode-card {
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 16px rgba(59, 130, 246, 0.25);
+}
+
+/* Suggested Icons Glow */
+.suggested-icon:hover {
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.35) !important;
+  transform: scale(1.08);
+}
+
+/* Active Engine Icon Glow */
+#activeEngineIcon:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Group Manager Rename/Delete Buttons */
+.gm-rename-btn:hover {
+  opacity: 1 !important;
+  color: var(--accent-color) !important;
+  filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.5));
+}
+
+.gm-delete-btn:hover {
+  opacity: 1 !important;
+  filter: drop-shadow(0 0 5px rgba(255, 77, 77, 0.6));
+}
+
+/* Drag-over group tab glow (menggantikan yang sudah ada) */
+.group-tab.drag-over {
+  background: var(--accent-color) !important;
+  color: white !important;
+  transform: scale(1.1);
+  box-shadow:
+    0 0 15px var(--accent-color),
+    0 0 30px rgba(59, 130, 246, 0.3);
+}
+
+/* ============================================
+   GROUP TRANSITION EFFECTS
+   ============================================ */
+
+/* Settings Modal Layout - Nebula Glass Aesthetic */
+#settingsModal .modal-content {
+  max-width: 860px !important;
+  width: 95% !important;
+  height: 650px !important;
+  max-height: 90vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  border-radius: 24px !important;
+  overflow: hidden !important;
+  
+  /* Clean Minimalist Dark Theme */
+  background: #0f172a !important; /* Solid dark background */
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="light"] #settingsModal .modal-content {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1) !important;
+}
+
+.settings-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.settings-sidebar {
+  width: 220px;
+  background: rgba(255, 255, 255, 0.02);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+[data-theme="light"] .settings-sidebar {
+  background: rgba(0, 0, 0, 0.02);
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.settings-content {
+  flex: 1;
+  padding: 32px 40px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.settings-tab {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+  width: 100%;
+  text-align: left;
+}
+
+.settings-tab svg {
+  opacity: 0.6;
+  transition: 0.2s;
+}
+
+.settings-tab:hover {
+  background: rgba(var(--overlay-base), 0.05);
+  color: var(--text-color);
+}
+
+.settings-tab.active {
+  background: rgba(var(--accent-color), 0.15);
+  color: var(--accent-color);
+}
+
+.settings-tab.active svg {
+  opacity: 1;
+  color: var(--accent-color);
+}
+
+.tab-pane {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom Scrollbar for Settings Content */
+.settings-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.settings-content::-webkit-scrollbar-thumb {
+  background: var(--input-border);
+  border-radius: 10px;
+}
+
+/* 1. Fade Up (Bawaan) */
+.transition-fadeUp {
+  animation: groupFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes groupFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 2. Cascade Fade In */
+.transition-cascadeFadeIn {
+  animation: cascadeFade 0.6s ease forwards;
+}
+
+@keyframes cascadeFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* 3. Coming from Left */
+.transition-comingFromLeft {
+  animation: comingLeft 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes comingLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide Right (Tetap dipertahankan untuk kompatibilitas jika ada) */
+.transition-slideRight {
+  animation: comingLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Slide Left (Tetap dipertahankan untuk kompatibilitas jika ada) */
+.transition-slideLeft {
+  animation: groupSlideLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes groupSlideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 4. Zoom In */
+.transition-zoomIn {
+  animation: groupZoomIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes groupZoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 5. Rotate */
+.transition-rotate {
+  animation: groupRotate 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes groupRotate {
+  from {
+    opacity: 0;
+    transform: rotate(-15deg) scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+/* 6. Stretch */
+.transition-stretch {
+  animation: groupStretch 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes groupStretch {
+  from {
+    opacity: 0;
+    transform: scaleX(0.5) scaleY(1.5);
+  }
+
+  to {
+    opacity: 1;
+    transform: scaleX(1) scaleY(1);
+  }
+}
+
+/* 7. Flip 3D */
+.transition-flip3D,
+.transition-flipX {
+  animation: groupFlip3D 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  backface-visibility: hidden;
+}
+
+@keyframes groupFlip3D {
+  from {
+    opacity: 0;
+    transform: perspective(500px) rotateX(90deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: perspective(500px) rotateX(0deg);
+  }
+}
+
+/* --- ICON SPECIFIC ANIMATIONS --- */
+/* Animasi opacity dasar untuk card-nya */
+.transition-iconZoom,
+.transition-iconFlip,
+.transition-iconRotate,
+.transition-iconSlide,
+.transition-iconRandomFlip {
+  animation: cascadeFade 0.4s ease forwards;
+}
+
+/* 8. Icon Zoom */
+.transition-iconZoom .elyxora-icon {
+  opacity: 0;
+  animation: iconZoomAnim 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: calc(var(--anim-delay) + 0.1s);
+}
+
+@keyframes iconZoomAnim {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 9. Icon Flip */
+.transition-iconFlip .elyxora-icon {
+  opacity: 0;
+  animation: iconFlipAnim 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--anim-delay) + 0.1s);
+}
+
+@keyframes iconFlipAnim {
+  from {
+    opacity: 0;
+    transform: perspective(400px) rotateY(180deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: perspective(400px) rotateY(0deg);
+  }
+}
+
+/* 10. Icon Rotate */
+.transition-iconRotate .elyxora-icon {
+  opacity: 0;
+  animation: iconRotateAnim 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: calc(var(--anim-delay) + 0.1s);
+}
+
+@keyframes iconRotateAnim {
+  from {
+    opacity: 0;
+    transform: rotate(-180deg) scale(0.5);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+/* 11. Icon Slide */
+.transition-iconSlide .elyxora-icon {
+  opacity: 0;
+  animation: iconSlideAnim 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: calc(var(--anim-delay) + 0.1s);
+}
+
+@keyframes iconSlideAnim {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 12. Icon Random Flip */
+.transition-iconRandomFlip .elyxora-icon {
+  opacity: 0;
+  animation: iconRandomFlipAnim 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: calc(var(--anim-delay) + 0.1s);
+}
+
+@keyframes iconRandomFlipAnim {
+  from {
+    opacity: 0;
+    transform: perspective(400px) rotate3d(1, 1, 0, 180deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: perspective(400px) rotate3d(0, 0, 0, 0deg);
+  }
+}
+
+/* None */
+.transition-none {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Theme Selector UI Custom */
+.theme-selector-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.theme-option-label {
+  cursor: pointer;
+  position: relative;
+  display: block;
+}
+
+.theme-option-label input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 8px;
+  background: var(--input-bg);
+  border: 2px solid var(--input-border);
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.theme-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+}
+
+.theme-card span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Active State */
+.theme-option-label input:checked+.theme-card {
+  border-color: var(--accent-color);
+  background: rgba(128, 128, 128, 0.08);
+  color: var(--accent-color);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.theme-option-label input:checked+.theme-card .theme-icon {
+  transform: scale(1.1);
+  opacity: 1;
+  color: var(--accent-color);
+}
+
+.theme-card:hover:not(.theme-option-label input:checked + .theme-card) {
+  border-color: var(--text-dim);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.theme-option-label input:checked+.theme-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN (MOBILE FIX)
+   ============================================ */
+
+/* Background Mode Cards */
+.bg-mode-card:hover {
+  background: var(--glass-bg) !important;
+  border-color: var(--accent-color) !important;
+}
+
+input[name="bgMode"]:checked+.bg-mode-card {
+  border-color: var(--accent-color) !important;
+  background: rgba(59, 130, 246, 0.1) !important;
+  box-shadow: 0 0 0 1px var(--accent-color);
+}
+
+input[name="bgMode"]:checked+.bg-mode-card svg {
+  color: var(--accent-color) !important;
+}
+
+.custom-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: var(--input-border);
+  border-radius: 5px;
+  outline: none;
+  margin: 10px 0;
+}
+
+.custom-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  transition: 0.2s;
+}
+
+.custom-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  #settingsModal .modal-content {
+    height: 85vh !important;
+    width: 92% !important;
+    max-width: none !important;
+    border-radius: 20px !important;
+  }
+
+  .settings-layout {
+    flex-direction: column;
+  }
+
+  .settings-sidebar {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 10px 4px;
+    border-right: none;
+    border-bottom: 1px solid var(--modal-border);
+    background: rgba(var(--overlay-base), 0.05);
+  }
+
+  .settings-tab {
+    width: auto;
+    flex: 1;
+    padding: 8px 4px;
+    font-size: 0.65rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    border-radius: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    background: transparent;
+  }
+  
+  .settings-tab.active {
+    background: transparent;
+  }
+
+  .settings-tab svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  .settings-content {
+    padding: 20px 16px;
+  }
+
+  /* Theme Cards on Mobile */
+  .theme-selector-container {
+    gap: 6px;
+  }
+
+  .theme-card {
+    padding: 10px 4px;
+    gap: 6px;
+  }
+
+  .theme-card span {
+    font-size: 0.65rem;
+  }
+
+  .theme-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Grid layouts */
+  div[style*="grid-template-columns: 1fr 1fr"] {
+    gap: 8px !important;
+  }
+
+  .toggle-card {
+    padding: 12px !important;
+  }
+
+  .toggle-card span {
+    font-size: 0.75rem !important;
+  }
+
+  /* Color Buttons */
+  .color-btn,
+  .custom-color-label {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  /* Modal Footer */
+  #settingsModal .modal-content>div:last-child {
+    padding: 12px 16px !important;
+    gap: 8px !important;
+  }
+
+  #settingsModal button {
+    padding: 10px 16px !important;
+    font-size: 0.75rem !important;
+    border-radius: 10px !important;
+  }
+}
+
+/* =========================================
+   NEBULA GLASS COMPONENTS (Toggles & Inputs)
+   ========================================= */
+.toggle-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 0;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.toggle-card:last-child {
+  border-bottom: none;
+}
+
+.toggle-card:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border-bottom-color: transparent;
+}
+
+[data-theme="light"] .toggle-card {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+[data-theme="light"] .toggle-card:hover {
+  background: rgba(0, 0, 0, 0.02);
+  border-bottom-color: transparent;
+}
+
+.toggle-switch {
+  width: 44px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+input:checked + .toggle-card .toggle-switch {
+  background: var(--accent-color);
+  box-shadow: 0 0 12px rgba(var(--accent-color-rgb, 139, 92, 246), 0.4);
+}
+
+input:checked + .toggle-card .toggle-switch::after {
+  transform: translateX(20px);
+}
+
+@media (max-width: 480px) {
+  #settingsModal .modal-content {
+    width: 96% !important;
+    height: 90vh !important;
+  }
+
+  .settings-content {
+    padding: 16px 12px;
+  }
+
+  .settings-tab {
+    padding: 6px 2px;
+    font-size: 0.6rem;
+  }
+}

@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Elyxora Tab</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Layer background gambar (untuk blur ringan di mobile via filter, bukan backdrop-filter) -->
+  <div id="bgImageLayer"></div>
+  <!-- Latar Belakang Overlay -->
+  <div class="bg-overlay"></div>
+
+  <!-- Widget Waktu & Tanggal -->
+  <div class="time-widget">
+    <div id="greeting" class="greeting">Selamat Pagi</div>
+    <div id="time" class="time">--:--</div>
+    <div id="date" class="date">Memuat Tanggal...</div>
+  </div>
+
+  <!-- Widget Cuaca -->
+  <div class="weather-widget" id="weatherWidget" title="Prakiraan Cuaca Lokal">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div class="weather-icon" id="wIcon">⛅</div>
+      <div class="weather-info">
+        <div class="weather-temp" id="wTemp">--°C</div>
+        <div class="weather-desc" id="wDesc">Memuat Cuaca...</div>
+      </div>
+    </div>
+    <div id="weatherForecastBox"
+      style="display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.2); width: 100%;">
+      <div id="forecastData"
+        style="display: flex; justify-content: space-between; text-align: center; font-size: 0.85rem; width: 100%;">
+      </div>
+    </div>
+  </div>
+
+  <div class="app-container">
+    <!-- Search Bar -->
+    <div class="search-section">
+      <div id="searchFormContainer"
+        style="display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 680px;">
+        <form id="searchForm" action="https://www.google.com/search" method="GET" target="_blank">
+          <!-- Search Engine Selector -->
+          <div class="engine-selector"
+            style="position: relative; display: flex; align-items: center; padding-left: 0px;">
+            <div id="activeEngineIcon"
+              style="cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 0 8px; height: 36px; border-radius: 20px; transition: 0.3s; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+              <!-- Ikon aktif default: Google -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+              </svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.7;">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+            <div id="engineDropdown" class="glass-card"
+              style="display: none; position: absolute; top: 120%; left: 0; min-width: 175px; z-index: 100; border-radius: 16px; padding: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: var(--modal-bg); border: 1px solid var(--modal-border);">
+              <!-- Google -->
+              <div class="engine-option" data-engine="google" data-action="https://www.google.com/search" data-param="q"
+                style="padding: 10px 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.2s;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48">
+                  <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                  <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                  <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                  <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                </svg>
+                <span>Google</span>
+              </div>
+              <!-- Bing -->
+              <div class="engine-option" data-engine="bing" data-action="https://www.bing.com/search" data-param="q"
+                style="padding: 10px 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.2s;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48">
+                  <path fill="#0078D4" d="M12 4v30.3l8 4.5V24.6l16 9.2-16 8.9V48l16-9v-.1L12 4z"/>
+                  <path fill="#00ADEF" d="M12 4l8 18.6v12.2l-8-4.5V4z"/>
+                </svg>
+                <span>Bing</span>
+              </div>
+              <!-- Yahoo -->
+              <div class="engine-option" data-engine="yahoo" data-action="https://search.yahoo.com/search"
+                data-param="p"
+                style="padding: 10px 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.2s;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48">
+                  <path fill="#5c00b3" d="M0 7h13l8 14 8-14h13L24 32v9h-8v-9L0 7z"/>
+                </svg>
+                <span>Yahoo</span>
+              </div>
+              <!-- DuckDuckGo -->
+              <div class="engine-option" data-engine="duckduckgo" data-action="https://duckduckgo.com/" data-param="q"
+                style="padding: 10px 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.2s;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48">
+                  <circle cx="24" cy="24" r="22" fill="#DE5833"/>
+                  <circle cx="24" cy="24" r="16" fill="#fff"/>
+                  <circle cx="20" cy="20" r="3" fill="#333"/>
+                  <circle cx="21" cy="19" r="1" fill="#fff"/>
+                  <path fill="#DE5833" d="M24 34c-5.5 0-10-4.5-10-10h20c0 5.5-4.5 10-10 10z"/>
+                  <path fill="#fff" d="M17 27c1.5 2 4 3 7 3s5.5-1 7-3H17z"/>
+                </svg>
+                <span>DuckDuckGo</span>
+              </div>
+            </div>
+          </div>
+
+          <input type="text" name="q" placeholder="Cari di Google..." id="searchInput" autocomplete="off">
+          <button type="submit" id="searchSubmitBtn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </button>
+        </form>
+
+        <!-- Suggestions Dropdown -->
+        <div id="searchSuggestions" class="search-suggestions" style="display: none;"></div>
+      </div>
+    </div>
+
+    <!-- Group Tabs -->
+    <div class="group-tabs" id="groupTabs"></div>
+
+    <!-- Elyxora Grid -->
+    <div class="elyxora-grid" id="elyxoraGrid"></div>
+
+
+    <!-- Modal for Add/Edit -->
+    <div id="elyxoraModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="elyxoraModalTitle">Tambah di Elyxora Tab</h3>
+        </div>
+
+        <div class="modal-body">
+          <label class="input-label">URL<span>*</span></label>
+          <input type="url" id="elyxoraUrl" placeholder="https://...">
+
+          <div id="suggestedIconsContainer" style="display: none;">
+            <label class="input-label">Pilihan Ikon Tersedia</label>
+            <div id="suggestedIconsList"
+              style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-top: 4px;">
+              <!-- Ikon akan otomatis muncul di sini -->
+            </div>
+          </div>
+
+          <label class="input-label">Title</label>
+          <input type="text" id="elyxoraTitle" placeholder="Judul Web">
+
+          <label class="input-label">Group</label>
+          <select id="elyxoraGroup">
+            <!-- Diisi secara dinamis oleh JavaScript -->
+          </select>
+
+          <label class="input-label" style="margin-top: 12px;">Mode Preview</label>
+          <div class="radio-group">
+            <label><input type="radio" name="iconMode" value="auto" checked> Auto Preview</label>
+            <label><input type="radio" name="iconMode" value="url"> Custom Preview</label>
+            <label><input type="radio" name="iconMode" value="file"> Local File</label>
+          </div>
+
+          <div id="iconInputWrapper" style="display: none;">
+            <label class="input-label">Preview URL</label>
+            <input type="text" id="elyxoraIcon" placeholder="Masukkan URL Gambar...">
+          </div>
+
+          <div id="fileInputWrapper" style="display: none; margin-bottom: 12px;">
+            <label for="elyxoraIconFile" class="file-btn">Browse users gallery / File</label>
+            <input type="file" id="elyxoraIconFile" accept="image/*" style="display: none;">
+          </div>
+
+          <div class="preview-container">
+            <p style="font-size: 11px; color: #555; font-style: italic; margin-bottom: 8px;">Help us to improve
+              predefined images. Custom logos will be saved locally!</p>
+            <div class="preview-box">
+              <img id="iconPreview" src="" alt="Preview">
+              <div id="previewPlaceholder">Akan muncul di sini</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button id="saveElyxoraBtn" class="save-btn">Add Elyxora</button>
+          <button id="cancelElyxoraBtn" class="cancel-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Floating Action Buttons (Bottom Right) -->
+  <div
+    style="position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 12px; z-index: 100;">
+    <button id="fabAddBtn" class="settings-btn" title="Tambah Pintasan"
+      style="position: static; display: flex; align-items: center; justify-content: center; padding: 0;">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="16" />
+        <line x1="8" y1="12" x2="16" y2="12" />
+      </svg>
+    </button>
+    <button id="settingsBtn" class="settings-btn" title="Pengaturan Umum"
+      style="position: static; display: flex; align-items: center; justify-content: center; padding: 0;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3" />
+        <path
+          d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Modal Pengaturan Umum -->
+  <div id="settingsModal" class="modal">
+    <div class="modal-content">
+
+      <!-- Header -->
+      <div
+        style="padding: 15px 25px; border-bottom: 1px solid var(--modal-border); flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; background: rgba(var(--overlay-base), 0.03);">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div
+            style="width: 32px; height: 32px; background: var(--accent-color); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; overflow: hidden;">
+            <img src="icons/icon128.png" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <h3 style="margin: 0; color: var(--text-color); font-size: 1.1rem; font-weight: 700;">Pengaturan Umum</h3>
+        </div>
+        <button id="closeSettingsXBtn"
+          style="background: transparent; border: none; color: var(--text-dim); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;">✕</button>
+      </div>
+
+      <div class="settings-layout">
+        <!-- Sidebar -->
+        <div class="settings-sidebar">
+          <button class="settings-tab active" data-tab="tab-style">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
+            Tampilan
+          </button>
+          <button class="settings-tab" data-tab="tab-wallpaper">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+              <circle cx="8.5" cy="8.5" r="1.5" />
+              <polyline points="21 15 16 10 5 21" />
+            </svg>
+            Wallpaper
+          </button>
+          <button class="settings-tab" data-tab="tab-general">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+            </svg>
+            Umum
+          </button>
+          <button class="settings-tab" data-tab="tab-groups">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z" />
+              <path d="M2 17l10 5 10-5" />
+              <path d="M2 12l10 5 10-5" />
+            </svg>
+            Grup
+          </button>
+        </div>
+
+        <!-- Content Area -->
+        <div class="settings-content">
+
+          <!-- TAB: STYLE -->
+          <div class="tab-pane active" id="tab-style">
+            <label
+              style="color: var(--text-dim); margin-bottom: 16px; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Tampilan
+              & Tema</label>
+
+            <div style="margin-bottom: 24px;">
+              <label
+                style="color: var(--text-dim); margin-bottom: 12px; display: block; font-size: 0.85rem; font-weight: 600;">Mode
+                Tema</label>
+              <div class="theme-selector-container">
+                <label class="theme-option-label">
+                  <input type="radio" name="themeModeRadio" value="light">
+                  <div class="theme-card">
+                    <div class="theme-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                      </svg></div>
+                    <span>Terang</span>
+                  </div>
+                </label>
+                <label class="theme-option-label">
+                  <input type="radio" name="themeModeRadio" value="dark" checked>
+                  <div class="theme-card">
+                    <div class="theme-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                      </svg></div>
+                    <span>Gelap</span>
+                  </div>
+                </label>
+                <label class="theme-option-label">
+                  <input type="radio" name="themeModeRadio" value="system">
+                  <div class="theme-card">
+                    <div class="theme-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                        <line x1="8" y1="21" x2="16" y2="21" />
+                        <line x1="12" y1="17" x2="12" y2="21" />
+                      </svg></div>
+                    <span>Sistem</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+              <label
+                style="color: var(--text-dim); margin-bottom: 12px; display: block; font-size: 0.85rem; font-weight: 600;">Warna
+                Aksen</label>
+              <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+                <button type="button" class="color-btn" data-color="#3b82f6"
+                  style="width: 34px; height: 34px; border-radius: 50%; background: #3b82f6; border: 3px solid white; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);"></button>
+                <button type="button" class="color-btn" data-color="#10b981"
+                  style="width: 34px; height: 34px; border-radius: 50%; background: #10b981; border: 3px solid transparent; cursor: pointer; transition: 0.2s;"></button>
+                <button type="button" class="color-btn" data-color="#f43f5e"
+                  style="width: 34px; height: 34px; border-radius: 50%; background: #f43f5e; border: 3px solid transparent; cursor: pointer; transition: 0.2s;"></button>
+                <button type="button" class="color-btn" data-color="#8b5cf6"
+                  style="width: 34px; height: 34px; border-radius: 50%; background: #8b5cf6; border: 3px solid transparent; cursor: pointer; transition: 0.2s;"></button>
+                <button type="button" class="color-btn" data-color="#f59e0b"
+                  style="width: 34px; height: 34px; border-radius: 50%; background: #f59e0b; border: 3px solid transparent; cursor: pointer; transition: 0.2s;"></button>
+                <button type="button" class="color-btn" data-color="#06b6d4"
+                  style="width: 34px; height: 34px; border-radius: 50%; background: #06b6d4; border: 3px solid transparent; cursor: pointer; transition: 0.2s;"></button>
+                <label class="custom-color-label"
+                  style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6, #d946ef); border: 2px solid transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; transition: 0.2s; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);">
+                  <input type="color" id="customAccentPicker"
+                    style="position: absolute; width: 150%; height: 150%; cursor: pointer; opacity: 0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                </label>
+              </div>
+            </div>
+
+            <label
+              style="color: var(--text-dim); margin: 32px 0 16px 0; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Gaya
+              & Ukuran</label>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+              <div>
+                <label class="input-label">Gaya Jam</label>
+                <select id="clockStyle"
+                  style="width: 100%; padding: 10px; border-radius: 8px; background: var(--input-bg); color: var(--text-color); border: 1px solid var(--input-border); outline: none;">
+                  <option value="minimal">Minimal</option>
+                  <option value="bold">Bold (Bawaan)</option>
+                  <option value="glass">Glassmorphism (Efek Kaca)</option>
+                  <option value="neumorphism">Neumorphism (Soft UI)</option>
+                  <option value="cyberpunk">Neon Cyberpunk</option>
+                  <option value="swiss">Minimalis Swiss</option>
+                  <option value="retro">Retro 7-Segment (Digital)</option>
+                  <option value="rainbow">Gradient Text (Pelangi)</option>
+                  <option value="flip">Flip Clock (Mekanis)</option>
+                  <option value="tracer">Border Tracer (Animasi Garis)</option>
+                  <option value="oled">Dark Mode Sleek (OLED)</option>
+                </select>
+              </div>
+              <div>
+                <label class="input-label" style="display: flex; justify-content: space-between;">
+                  Ukuran Jam <span id="clockSizeVal" style="color: var(--accent-color); font-weight: 700;">100%</span>
+                </label>
+                <input type="range" id="clockSize" min="50" max="200" value="100"
+                  style="width: 100%; accent-color: var(--accent-color);">
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+              <div>
+                <label class="input-label" style="display: flex; justify-content: space-between;">
+                  Ukuran Cuaca <span id="weatherSizeVal"
+                    style="color: var(--accent-color); font-weight: 700;">100%</span>
+                </label>
+                <input type="range" id="weatherSize" min="50" max="150" value="100"
+                  style="width: 100%; accent-color: var(--accent-color);">
+              </div>
+              <div>
+                <label class="input-label" style="display: flex; justify-content: space-between;">
+                  Ukuran Ikon Pintasan <span id="iconSizeVal"
+                    style="color: var(--accent-color); font-weight: 700;">100%</span>
+                </label>
+                <input type="range" id="iconSize" min="60" max="150" value="100"
+                  style="width: 100%; accent-color: var(--accent-color);">
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+              <div>
+                <label class="input-label" style="display: flex; justify-content: space-between;">
+                  Radius Ikon (Bentuk) <span id="iconRadiusVal"
+                    style="color: var(--accent-color); font-weight: 700;">20px</span>
+                </label>
+                <input type="range" id="iconRadius" min="0" max="50" value="20"
+                  style="width: 100%; accent-color: var(--accent-color);">
+              </div>
+              <div>
+                <label class="input-label">Posisi Nama Pintasan</label>
+                <select id="titlePosition"
+                  style="width: 100%; padding: 10px; border-radius: 8px; background: var(--input-bg); color: var(--text-color); border: 1px solid var(--input-border); outline: none;">
+                  <option value="inside">Di Dalam Kotak (Bawaan)</option>
+                  <option value="outside">Di Bawah Kotak</option>
+                  <option value="hidden">Sembunyikan Nama</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+              <label class="toggle-container">
+                <input type="checkbox" id="useIconBg" checked style="display: none;">
+                <div class="toggle-card">
+                  <span style="font-size: 0.8rem; font-weight: 600;">Background Ikon</span>
+                  <div class="toggle-switch"></div>
+                </div>
+              </label>
+              <label class="toggle-container">
+                <input type="checkbox" id="useCardBg" checked style="display: none;">
+                <div class="toggle-card">
+                  <span style="font-size: 0.8rem; font-weight: 600;">Background Kartu</span>
+                  <div class="toggle-switch"></div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- TAB: WALLPAPER -->
+          <div class="tab-pane" id="tab-wallpaper">
+            <label
+              style="color: var(--text-dim); margin-bottom: 16px; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Latar
+              Belakang</label>
+
+            <!-- Pemilihan Sumber (Card-based) -->
+            <label
+              style="color: var(--text-dim); margin-bottom: 12px; display: block; font-size: 0.85rem; font-weight: 600;">Sumber
+              Gambar</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 24px;">
+              <label style="cursor: pointer;">
+                <input type="radio" name="bgMode" value="default" checked style="display: none;">
+                <div class="bg-mode-card"
+                  style="padding: 12px 8px; border-radius: 12px; border: 2px solid var(--input-border); background: var(--input-bg); text-align: center; transition: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                  <div style="color: var(--text-dim); transition: 0.3s;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
+                      <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
+                      <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
+                      <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
+                      <path
+                        d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.92 0 1.5-.72 1.5-1.5 0-.41-.15-.79-.41-1.09-.26-.29-.41-.68-.41-1.09 0-.83.67-1.5 1.5-1.5H16c3.31 0 6-2.69 6-6 0-4.97-4.48-9-10-9z" />
+                    </svg>
+                  </div>
+                  <div style="font-size: 0.75rem; font-weight: 600;">Bawaan</div>
+                </div>
+              </label>
+              <label style="cursor: pointer;">
+                <input type="radio" name="bgMode" value="url" style="display: none;">
+                <div class="bg-mode-card"
+                  style="padding: 12px 8px; border-radius: 12px; border: 2px solid var(--input-border); background: var(--input-bg); text-align: center; transition: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                  <div style="color: var(--text-dim); transition: 0.3s;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                    </svg>
+                  </div>
+                  <div style="font-size: 0.75rem; font-weight: 600;">Link URL</div>
+                </div>
+              </label>
+              <label style="cursor: pointer;">
+                <input type="radio" name="bgMode" value="file" style="display: none;">
+                <div class="bg-mode-card"
+                  style="padding: 12px 8px; border-radius: 12px; border: 2px solid var(--input-border); background: var(--input-bg); text-align: center; transition: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                  <div style="color: var(--text-dim); transition: 0.3s;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                      <circle cx="8.5" cy="8.5" r="1.5" />
+                      <polyline points="21 15 16 10 5 21" />
+                    </svg>
+                  </div>
+                  <div style="font-size: 0.75rem; font-weight: 600;">Galeri</div>
+                </div>
+              </label>
+            </div>
+
+            <!-- URL Input -->
+            <div id="bgUrlWrapper" style="display: none; margin-bottom: 24px; animation: fadeIn 0.3s ease;">
+              <div style="position: relative;">
+                <input type="url" id="bgUrlInput" placeholder="Tempel URL gambar di sini..."
+                  style="width: 100%; padding: 12px 12px 12px 40px; border-radius: 12px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text-color); font-size: 0.9rem; outline: none; transition: 0.2s;">
+                <div
+                  style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-dim);">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- File Upload -->
+            <div id="bgFileWrapper" style="display: none; margin-bottom: 24px; animation: fadeIn 0.3s ease;">
+              <label for="bgFileInput"
+                style="width: 100%; border-radius: 16px; border: 2px dashed var(--input-border); background: rgba(var(--overlay-base), 0.03); padding: 30px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; gap: 10px;">
+                <div
+                  style="width: 48px; height: 48px; background: var(--glass-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-color);">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                </div>
+                <div style="text-align: center;">
+                  <div style="font-weight: 600; font-size: 0.9rem; color: var(--text-color);">Pilih dari Perangkat</div>
+                  <div id="bgFileName" style="font-size: 0.75rem; color: var(--text-dim); margin-top: 4px;">Mendukung
+                    JPG, PNG, GIF, WebP</div>
+                </div>
+              </label>
+              <input type="file" id="bgFileInput" accept="image/*" style="display: none;">
+            </div>
+
+            <!-- Preview Section -->
+            <div id="bgPreviewContainer"
+              style="display: none; margin-bottom: 24px; position: relative; width: 100%; height: 160px; border-radius: 16px; border: 1px solid var(--modal-border); overflow: hidden; background: var(--input-bg); box-shadow: inset 0 0 20px rgba(0,0,0,0.2);">
+              <img id="bgPreviewImg" src="" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              <div id="bgPreviewOverlay"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; transition: 0.3s;">
+              </div>
+              <div
+                style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.5); color: white; padding: 4px 8px; border-radius: 6px; font-size: 0.65rem; font-weight: bold; backdrop-filter: blur(4px);">
+                PREVIEW</div>
+            </div>
+
+            <!-- Effects Sliders -->
+            <div
+              style="background: rgba(var(--overlay-base), 0.03); border-radius: 16px; padding: 16px; border: 1px solid var(--modal-border);">
+              <div style="margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-dim);">
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="2" y1="12" x2="22" y2="12" />
+                      <path
+                        d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                    </svg>
+                    <span style="font-size: 0.85rem; font-weight: 600;">Efek Blur</span>
+                  </div>
+                  <span id="blurValueDisplay"
+                    style="font-size: 0.8rem; font-weight: 700; color: var(--accent-color); background: var(--glass-bg); padding: 2px 8px; border-radius: 6px;">5px</span>
+                </div>
+                <input type="range" id="bgBlurInput" min="0" max="30" value="5" class="custom-slider">
+              </div>
+
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-dim);">
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M12 2v20" />
+                      <path d="M12 12H2" />
+                    </svg>
+                    <span style="font-size: 0.85rem; font-weight: 600;">Kecerahan (Gelap)</span>
+                  </div>
+                  <span id="darkValueDisplay"
+                    style="font-size: 0.8rem; font-weight: 700; color: var(--accent-color); background: var(--glass-bg); padding: 2px 8px; border-radius: 6px;">60%</span>
+                </div>
+                <input type="range" id="bgDarkInput" min="0" max="90" value="60" class="custom-slider">
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB: GENERAL -->
+          <div class="tab-pane" id="tab-general">
+            <label
+              style="color: var(--text-dim); margin-bottom: 16px; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Sistem
+              & Navigasi</label>
+
+            <div
+              style="background: rgba(var(--overlay-base), 0.03); border-radius: 16px; padding: 4px; margin-bottom: 32px;">
+              <label class="toggle-container" style="margin-bottom: 0; border: none; background: transparent;">
+                <input type="checkbox" id="openInNewTab" style="display: none;">
+                <div class="toggle-card" style="padding: 12px 16px; background: transparent;">
+                  <div style="display: flex; flex-direction: column;">
+                    <span style="font-size: 0.85rem; font-weight: 600;">Buka di Tab Baru</span>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);">Berlaku untuk pintasan dan
+                      pencarian</span>
+                  </div>
+                  <div class="toggle-switch"></div>
+                </div>
+              </label>
+              <div style="height: 1px; background: var(--modal-border); margin: 0 16px;"></div>
+              <label class="toggle-container" style="margin-bottom: 0; border: none; background: transparent;">
+                <input type="checkbox" id="confirmDelete" checked style="display: none;">
+                <div class="toggle-card" style="padding: 12px 16px; background: transparent;">
+                  <div style="display: flex; flex-direction: column;">
+                    <span style="font-size: 0.85rem; font-weight: 600;">Konfirmasi Penghapusan</span>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);">Tanyakan sebelum menghapus pintasan</span>
+                  </div>
+                  <div class="toggle-switch"></div>
+                </div>
+              </label>
+            </div>
+
+            <label
+              style="color: var(--text-dim); margin-bottom: 16px; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Jam
+              & Sapaan</label>
+
+            <div style="margin-bottom: 24px;">
+              <label class="input-label">Sapaan / Nama Anda</label>
+              <input type="text" id="userNameInput" placeholder="Ketik nama Anda..."
+                style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text-color); font-size: 0.9rem; outline: none; transition: 0.2s;">
+            </div>
+
+            <div
+              style="background: rgba(var(--overlay-base), 0.03); border-radius: 16px; padding: 16px; margin-bottom: 32px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <span style="font-size: 0.85rem; font-weight: 600;">Format Waktu</span>
+                <select id="clockFormat"
+                  style="padding: 8px 12px; border-radius: 8px; background: var(--input-bg); color: var(--text-color); border: 1px solid var(--input-border); font-size: 0.85rem; outline: none; cursor: pointer;">
+                  <option value="24">24 Jam (23:59)</option>
+                  <option value="12">12 Jam (11:59 PM)</option>
+                </select>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <label class="toggle-container">
+                  <input type="checkbox" id="showSeconds" style="display: none;">
+                  <div class="toggle-card" style="padding: 10px; background: var(--input-bg);">
+                    <span style="font-size: 0.8rem; font-weight: 600;">Tampilkan Detik</span>
+                    <div class="toggle-switch"></div>
+                  </div>
+                </label>
+                <label class="toggle-container">
+                  <input type="checkbox" id="showDate" checked style="display: none;">
+                  <div class="toggle-card" style="padding: 10px; background: var(--input-bg);">
+                    <span style="font-size: 0.8rem; font-weight: 600;">Tampilkan Tanggal</span>
+                    <div class="toggle-switch"></div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <label
+              style="color: var(--text-dim); margin-bottom: 16px; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Widget
+              Cuaca</label>
+
+            <label class="toggle-container" style="margin-bottom: 12px;">
+              <input type="checkbox" id="enableWeather" checked style="display: none;">
+              <div class="toggle-card" style="padding: 16px; border-radius: 16px;">
+                <div style="display: flex; flex-direction: column;">
+                  <span style="font-size: 0.9rem; font-weight: 700;">Aktifkan Widget</span>
+                  <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 400;">Tampilkan cuaca di pojok
+                    layar</span>
+                </div>
+                <div class="toggle-switch large"></div>
+              </div>
+            </label>
+
+            <div id="weatherSettingsBlock"
+              style="background: rgba(var(--overlay-base), 0.03); padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 16px;">
+              <div>
+                <label class="input-label" style="margin-bottom: 8px;">Lokasi Spesifik</label>
+                <input type="text" id="weatherLocation" placeholder="Nama Kota (Kosongkan untuk otomatis)..."
+                  style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text-color); font-size: 0.85rem; outline: none;">
+              </div>
+              <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; align-items: center;">
+                <div
+                  style="display: flex; justify-content: space-between; align-items: center; background: var(--input-bg); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--input-border);">
+                  <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-dim);">Unit</span>
+                  <select id="weatherUnit"
+                    style="padding: 2px 4px; background: transparent; color: var(--text-color); border: none; font-size: 0.8rem; font-weight: 600; outline: none; cursor: pointer;">
+                    <option value="celsius">°C</option>
+                    <option value="fahrenheit">°F</option>
+                  </select>
+                </div>
+                <label class="toggle-container" style="margin: 0;">
+                  <input type="checkbox" id="weatherForecast" style="display: none;">
+                  <div class="toggle-card" style="padding: 8px 12px; background: var(--input-bg);">
+                    <span style="font-size: 0.75rem; font-weight: 600;">Prakiraan</span>
+                    <div class="toggle-switch small"></div>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB: GROUPS -->
+          <div class="tab-pane" id="tab-groups">
+            <label
+              style="color: var(--text-dim); margin-bottom: 16px; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Pengaturan
+              Grup & Pintasan</label>
+
+            <div style="margin-bottom: 24px;">
+              <label class="input-label">Grup Bawaan Saat Dibuka</label>
+              <select id="defaultGroupBehavior"
+                style="width: 100%; padding: 12px; border-radius: 12px; background: var(--input-bg); color: var(--text-color); border: 1px solid var(--input-border); outline: none;">
+                <option value="lastUsed">Grup Terakhir Dibuka (Ingat)</option>
+                <option value="default">Semua Grup (Default)</option>
+              </select>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+              <label class="input-label">Efek Transisi Group</label>
+              <select id="groupTransitionEffect"
+                style="width: 100%; padding: 12px; border-radius: 12px; background: var(--input-bg); color: var(--text-color); border: 1px solid var(--input-border); outline: none;">
+                <option value="fadeUp">Fade Up (Bawaan)</option>
+                <option value="cascadeFadeIn">Cascade Fade In</option>
+                <option value="comingFromLeft">Coming from Left</option>
+                <option value="zoomIn">Zoom In</option>
+                <option value="rotate">Rotate</option>
+                <option value="stretch">Stretch</option>
+                <option value="flip3D">Flip 3D</option>
+                <option value="iconZoom">Icon Zoom</option>
+                <option value="iconFlip">Icon Flip</option>
+                <option value="iconRotate">Icon Rotate</option>
+                <option value="iconSlide">Icon Slide</option>
+                <option value="iconRandomFlip">Icon Random Flip</option>
+                <option value="none">Tanpa Efek</option>
+              </select>
+            </div>
+
+            <label class="toggle-container">
+              <input type="checkbox" id="showGroupItemCount" style="display: none;">
+              <div class="toggle-card" style="padding: 16px; border-radius: 16px;">
+                <div style="display: flex; flex-direction: column;">
+                  <span style="font-size: 0.9rem; font-weight: 700;">Tampilkan Jumlah Pintasan</span>
+                  <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 400;">Angka badge pada tab
+                    grup</span>
+                </div>
+                <div class="toggle-switch large"></div>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div
+        style="padding: 20px 24px; border-top: 1px solid var(--modal-border); display: flex; justify-content: flex-end; gap: 12px; flex-shrink: 0; background: rgba(var(--overlay-base), 0.03);">
+        <button id="closeSettingsBtn"
+          style="padding: 10px 20px; border-radius: 10px; background: var(--glass-bg); border: 1px solid var(--input-border); color: var(--text-color); cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: 0.2s;">Batal</button>
+        <button id="saveSettingsBtn"
+          style="padding: 10px 24px; border-radius: 10px; background: var(--accent-color); border: none; color: white; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(var(--accent-color), 0.3);">Simpan
+          Pengaturan</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modular Scripts (urutan penting!) -->
+  <script src="newtab.js"></script> <!-- Core: state, tema, jam, cuaca -->
+  <script src="groups.js"></script> <!-- Groups: elyxoras, context menus, group manager -->
+  <script src="modal.js"></script> <!-- Modal: tambah/edit pintasan -->
+  <script src="settings.js"></script> <!-- Settings: pengaturan, wallpaper, render engine, search -->
+</body>
+
+</html>
