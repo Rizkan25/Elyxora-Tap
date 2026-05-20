@@ -88,24 +88,5 @@ Elyxora Tap/
 
 ---
 
-## 💬 FAQ (Tanya Jawab Santai)
+*Dibuat untuk produktivitas yang lebih baik dan indah 😉.*
 
-*   **Q: Apakah data bookmark dan wallpaper saya bakal hilang kalau browser ditutup?**
-    *   *A: Aman banget! Semua data pengaturan, link bookmark, nama sapaan, dan wallpaper disimpan langsung di memori lokal browser kamu (`chrome.storage`), jadi gak bakal hilang.*
-*   **Q: Ekstensi ini bikin browser jadi berat gak, Kak?**
-    *   *A: Gak sama sekali! Ekstensi ini dibuat murni menggunakan HTML, CSS, dan Vanilla JavaScript (tanpa framework/library besar pihak ketiga), sehingga proses loading-nya dijamin super ringan dan instan.*
-*   **Q: Bagaimana cara mengakses menu pengaturan?**
-    *   *A: Cukup klik ikon **Roda Gigi ⚙️** di pojok kanan bawah layar tab baru kamu.*
-
----
-
-## 🤝 Yuk Ikut Kontribusi!
-
-Proyek ini bersifat open-source! Jika kamu punya ide fitur baru yang keren, menemukan bug, atau ingin mempercantik tampilan CSS-nya:
-1.  Lakukan **Fork** pada repositori ini.
-2.  Buat cabang (*branch*) baru untuk fitur kamu.
-3.  Kirimkan **Pull Request (PR)** agar bisa kita gabungkan. Masukan dari kamu sangat berharga!
-
----
-
-*Dibuat untuk produktivitas yang lebih indah 😉.*
