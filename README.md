@@ -5,7 +5,7 @@
 [![Manifest](https://img.shields.io/badge/manifest-v3-orange.svg)](#)
 
 <p align="center">
-  <img src="preview.png" alt="Elyxora Tab Preview" width="100%" style="border-radius: 8px;" />
+  <img src="https://github.com/user-attachments/assets/8050de27-ef37-45d2-9539-4f7151a44df4" alt="Elyxora Tab Preview" width="100%" style="border-radius: 8px;" />
 </p>
 
 Halo teman-teman! 👋 Selamat datang di **Elyxora Tab** (atau *Elyxora Tap*). 
