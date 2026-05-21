@@ -5,7 +5,7 @@
 [![Manifest](https://img.shields.io/badge/manifest-v3-orange.svg)](#)
 
 <p align="center">
-  <img src="https://i.ibb.co.com/JMQVtvT/4307906f-5cfb-4011-a799-583212516121.png" alt="Elyxora Tab Preview" width="100%" style="border-radius: 8px;" />
+  <img src="https://i.ibb.co.com/4wR14qdm/d4ef0148-8879-4809-a6ef-d86b7331f634.png" alt="Elyxora Tab Preview" width="100%" style="border-radius: 8px;" />
 </p>
 
 Halo teman-teman! 👋 Selamat datang di **Elyxora Tab**. 
