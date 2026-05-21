@@ -8,9 +8,9 @@
   <img src="https://i.ibb.co.com/JMQVtvT/4307906f-5cfb-4011-a799-583212516121.png" alt="Elyxora Tab Preview" width="100%" style="border-radius: 8px;" />
 </p>
 
-Halo teman-teman! 👋 Selamat datang di **Elyxora Tab** (atau *Elyxora Tap*). 
+Halo teman-teman! 👋 Selamat datang di **Elyxora Tab**. 
 
-Pernah merasa bosan dengan tampilan halaman tab baru Google Chrome yang gitu-gitu aja? Nah, ekstensi ini dibuat khusus untuk mengubah tab baru kamu menjadi sebuah dashboard personal yang **super estetik, minimalis, dan fungsional**. Dengan perpaduan gaya *glassmorphism* (efek kaca transparan) dan *neumorphism* modern, dijamin mata kamu bakal dimanjakan setiap kali membuka tab baru!
+Ekstensi ini dibuat khusus untuk mengubah tab baru kamu menjadi sebuah dashboard personal yang **super estetik, minimalis, dan fungsional**. Dengan perpaduan gaya *glassmorphism* (efek kaca transparan) dan *neumorphism* modern, dijamin mata kamu bakal dimanjakan setiap kali membuka tab baru!
 
 ---
 
