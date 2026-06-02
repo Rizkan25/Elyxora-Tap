@@ -56,7 +56,7 @@ Bosan dengan tampilan jam digital yang standar? Sesuaikan gaya jamnya dengan kep
 ### 6. 👋 Sapaan Personal yang Ramah
 
 - Kamu bisa memasukkan nama panggilanmu di panel pengaturan.
-- Setiap kali kamu membuka tab baru, dashboard akan menyapamu secara hangat (contoh: _"Selamat Pagi, Kak Rizkan"_ atau _"Selamat Malam, Kak"_).
+- Setiap kali kamu membuka tab baru, dashboard akan menyapamu secara hangat (contoh: _"Selamat Pagi, Kak"_, _"Selamat Siang, Kak"_ atau _"Selamat Malam, Kak"_).
 
 ---
 
