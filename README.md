@@ -53,6 +53,14 @@ Bosan dengan tampilan jam digital yang standar? Sesuaikan gaya jamnya dengan kep
 
 ---
 
+## 🚀 Performa & Teknologi Under the Hood
+Kami juga baru saja merombak ulang (*refactor*) sisi performa agar ekstensi ini berjalan sangat ringan (bahkan di perangkat kentang sekalipun):
+*   **Parallax GPU Acceleration:** Animasi pergerakan *background* saat mouse digerakkan (efek parallax) kini berjalan disinkronkan penuh dengan *refresh rate* layar menggunakan `requestAnimationFrame`. Hal ini menghemat CPU dan RAM secara drastis serta memberikan efek **60+ FPS** yang ekstra mulus anti-patah!
+*   **Zero-Jank CSS Rendering:** Peralihan tema jam dan form pencarian kini memanfaatkan *CSS Class Injection* secara native ketimbang mengubah atribut `style` lewat JavaScript. Meringankan kerja *engine browser* (minim *Repaint & Reflow*) dan mempercepat *load-time*.
+*   **Clean & Responsive Mobile CSS:** Pengaturan gaya secara dinamis akan langsung menyesuaikan dengan sangat proporsional ketika jendela browser dikecilkan.
+
+---
+
 ## 🛠️ Cara Pasang di Browser Kamu (Gampang Banget!)
 
 Karena ekstensi ini masih dalam tahap pengembangan mandiri (belum dipublikasikan ke Chrome Web Store), kamu bisa memasangnya secara manual dengan cara berikut:
@@ -77,16 +85,17 @@ Bagi kamu yang penasaran dengan isi di balik layar, berikut struktur berkasnya:
 Elyxora Tap/
 ├── manifest.json       # Otak ekstensi (konfigurasi Manifest V3 untuk Chrome)
 ├── newtab.html         # Struktur layout utama dashboard tab baru
-├── style.css           # Bumbu rahasia kecantikan visual & efek glassmorphism
-├── newtab.js           # Pengatur jam, cuaca, pencarian, dan sapaan personal
-├── settings.js         # Pengelola panel kustomisasi/setelan dashboard
-├── groups.js           # Logika pembuatan grup tab & kelola link bookmark
-├── modal.js            # Pengatur animasi pop-up (dialog box) saat tambah link
-├── preview.png         # Gambar screenshot tampilan dashboard kamu
+├── style.css           # Bumbu rahasia kecantikan visual & kelas CSS
+├── clean_css.js        # Script Node.js buatan untuk membersihkan & meminifikasi CSS
+├── js/                 # Folder logika inti Javascript
+│   ├── theme.js        # Mengendalikan tema dinamis, parallax, & UI Engine
+│   ├── settings.js     # Pengelola panel kustomisasi/setelan dashboard
+│   ├── groups.js       # Logika pembuatan grup tab & kelola link bookmark
+│   └── modal.js        # Pengatur animasi pop-up (dialog box)
+├── _locales/           # Berisi file translasi multi-bahasa (i18n)
 └── icons/              # Berbagai ukuran ikon resmi Elyxora Tab (16px, 48px, 128px)
 ```
 
 ---
 
 *Dibuat untuk produktivitas yang lebih baik dan indah 😉.*
-

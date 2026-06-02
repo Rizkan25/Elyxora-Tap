@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Elyxora Tab</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2">
 </head>
 
 <body>
@@ -61,8 +61,8 @@
                 <polyline points="6 9 12 15 18 9" />
               </svg>
             </div>
-            <div id="engineDropdown" class="glass-card"
-              style="display: none; position: absolute; top: 120%; left: 0; min-width: 175px; z-index: 100; border-radius: 16px; padding: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: var(--modal-bg); border: 1px solid var(--modal-border);">
+            <div id="engineDropdown" 
+              style="display: none;">
               <!-- Google -->
               <div class="engine-option" data-engine="google" data-action="https://www.google.com/search" data-param="q"
                 style="padding: 10px 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.2s;">
@@ -108,7 +108,7 @@
             </div>
           </div>
 
-          <input type="text" name="q" placeholder="Cari di Google..." id="searchInput" autocomplete="off">
+          <input type="text" name="q" placeholder="Cari di Google..." id="searchInput" autocomplete="off" data-i18n="searchPlaceholder">
           <button type="submit" id="searchSubmitBtn">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
               stroke-linecap="round" stroke-linejoin="round">
@@ -138,55 +138,55 @@
         </div>
 
         <div class="modal-body">
-          <label class="input-label">URL<span>*</span></label>
+          <label class="input-label" data-i18n="shortcutUrlLabel">URL<span>*</span></label>
           <input type="url" id="elyxoraUrl" placeholder="https://...">
 
           <div id="suggestedIconsContainer" style="display: none;">
-            <label class="input-label">Pilihan Ikon Tersedia</label>
+            <label class="input-label" data-i18n="shortcutAvailableIcons">Pilihan Ikon Tersedia</label>
             <div id="suggestedIconsList"
               style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-top: 4px;">
               <!-- Ikon akan otomatis muncul di sini -->
             </div>
           </div>
 
-          <label class="input-label">Title</label>
+          <label class="input-label" data-i18n="shortcutTitleLabel">Title</label>
           <input type="text" id="elyxoraTitle" placeholder="Judul Web">
 
-          <label class="input-label">Group</label>
+          <label class="input-label" data-i18n="shortcutGroupLabel">Group</label>
           <select id="elyxoraGroup">
             <!-- Diisi secara dinamis oleh JavaScript -->
           </select>
 
-          <label class="input-label" style="margin-top: 12px;">Mode Preview</label>
+          <label class="input-label" style="margin-top: 12px;" data-i18n="shortcutPreviewMode">Mode Preview</label>
           <div class="radio-group">
-            <label><input type="radio" name="iconMode" value="auto" checked> Auto Preview</label>
-            <label><input type="radio" name="iconMode" value="url"> Custom Preview</label>
-            <label><input type="radio" name="iconMode" value="file"> Local File</label>
+            <label><input type="radio" name="iconMode" value="auto" checked> <span data-i18n="iconModeAuto">Auto Preview</span></label>
+            <label><input type="radio" name="iconMode" value="url"> <span data-i18n="iconModeUrl">Custom Preview</span></label>
+            <label><input type="radio" name="iconMode" value="file"> <span data-i18n="iconModeFile">Local File</span></label>
           </div>
 
           <div id="iconInputWrapper" style="display: none;">
-            <label class="input-label">Preview URL</label>
+            <label class="input-label" data-i18n="shortcutPreviewUrlLabel">Preview URL</label>
             <input type="text" id="elyxoraIcon" placeholder="Masukkan URL Gambar...">
           </div>
 
           <div id="fileInputWrapper" style="display: none; margin-bottom: 12px;">
-            <label for="elyxoraIconFile" class="file-btn">Browse users gallery / File</label>
+            <label for="elyxoraIconFile" class="file-btn" data-i18n="uploadIconFileBtn">Browse users gallery / File</label>
             <input type="file" id="elyxoraIconFile" accept="image/*" style="display: none;">
           </div>
 
           <div class="preview-container">
-            <p style="font-size: 11px; color: #555; font-style: italic; margin-bottom: 8px;">Help us to improve
+            <p style="font-size: 11px; color: #555; font-style: italic; margin-bottom: 8px;" data-i18n="iconPreviewHelp">Help us to improve
               predefined images. Custom logos will be saved locally!</p>
             <div class="preview-box">
               <img id="iconPreview" src="" alt="Preview">
-              <div id="previewPlaceholder">Akan muncul di sini</div>
+              <div id="previewPlaceholder" data-i18n="iconPreviewPlaceholder">Akan muncul di sini</div>
             </div>
           </div>
         </div>
 
         <div class="modal-footer">
-          <button id="saveElyxoraBtn" class="save-btn">Add Elyxora</button>
-          <button id="cancelElyxoraBtn" class="cancel-btn">Cancel</button>
+          <button id="saveElyxoraBtn" class="save-btn" data-i18n="addShortcutAddBtn">Add Elyxora</button>
+          <button id="cancelElyxoraBtn" class="cancel-btn" data-i18n="cancelShortcutBtn">Cancel</button>
         </div>
       </div>
     </div>
@@ -194,7 +194,7 @@
   <!-- Floating Action Buttons (Bottom Right) -->
   <div
     style="position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 12px; z-index: 100;">
-    <button id="fabAddBtn" class="settings-btn" title="Tambah Pintasan"
+    <button id="fabAddBtn" class="settings-btn" title="Tambah Pintasan" data-i18n="addShortcutFabTitle" data-i18n-attr="title"
       style="position: static; display: flex; align-items: center; justify-content: center; padding: 0;">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
         stroke-linecap="round" stroke-linejoin="round">
@@ -203,7 +203,7 @@
         <line x1="8" y1="12" x2="16" y2="12" />
       </svg>
     </button>
-    <button id="settingsBtn" class="settings-btn" title="Pengaturan Umum"
+    <button id="settingsBtn" class="settings-btn" title="Pengaturan Umum" data-i18n="settingsFabTitle" data-i18n-attr="title"
       style="position: static; display: flex; align-items: center; justify-content: center; padding: 0;">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
         stroke-linecap="round" stroke-linejoin="round">
@@ -216,17 +216,17 @@
 
   <!-- Modal Pengaturan Umum -->
   <div id="settingsModal" class="modal">
-    <div class="modal-content">
+    <div id="settingsModalContent" class="modal-content" style="position: relative;">
 
       <!-- Header -->
-      <div
-        style="padding: 15px 25px; border-bottom: 1px solid var(--modal-border); flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; background: rgba(var(--overlay-base), 0.03);">
+      <div id="settingsModalHeader"
+        style="padding: 15px 25px; border-bottom: 1px solid var(--modal-border); flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; background: rgba(var(--overlay-base), 0.03); cursor: grab;">
         <div style="display: flex; align-items: center; gap: 10px;">
           <div
             style="width: 32px; height: 32px; background: var(--accent-color); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; overflow: hidden;">
             <img src="icons/icon128.png" style="width: 100%; height: 100%; object-fit: cover;">
           </div>
-          <h3 style="margin: 0; color: var(--text-color); font-size: 1.1rem; font-weight: 700;">Pengaturan Umum</h3>
+          <h3 style="margin: 0; color: var(--text-color); font-size: 1.1rem; font-weight: 700;" data-i18n="settingsModalTitle">Pengaturan Umum</h3>
         </div>
         <button id="closeSettingsXBtn"
           style="background: transparent; border: none; color: var(--text-dim); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;">✕</button>
@@ -242,7 +242,7 @@
               <line x1="8" y1="21" x2="16" y2="21" />
               <line x1="12" y1="17" x2="12" y2="21" />
             </svg>
-            Tampilan
+            <span data-i18n="settingsTabAppearance">Tampilan</span>
           </button>
           <button class="settings-tab" data-tab="tab-wallpaper">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -251,14 +251,14 @@
               <circle cx="8.5" cy="8.5" r="1.5" />
               <polyline points="21 15 16 10 5 21" />
             </svg>
-            Wallpaper
+            <span data-i18n="settingsTabWallpaper">Wallpaper</span>
           </button>
           <button class="settings-tab" data-tab="tab-general">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
             </svg>
-            Umum
+            <span data-i18n="settingsTabGeneral">Umum</span>
           </button>
           <button class="settings-tab" data-tab="tab-groups">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -267,7 +267,7 @@
               <path d="M2 17l10 5 10-5" />
               <path d="M2 12l10 5 10-5" />
             </svg>
-            Grup
+            <span data-i18n="settingsTabGroups">Grup</span>
           </button>
         </div>
 
@@ -277,13 +277,11 @@
           <!-- TAB: STYLE -->
           <div class="tab-pane active" id="tab-style">
             <label
-              style="color: var(--text-dim); margin-bottom: 16px; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Tampilan
-              & Tema</label>
+              style="color: var(--text-dim); margin-bottom: 16px; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;" data-i18n="settingsTabAppearance">Tampilan & Tema</label>
 
             <div style="margin-bottom: 24px;">
               <label
-                style="color: var(--text-dim); margin-bottom: 12px; display: block; font-size: 0.85rem; font-weight: 600;">Mode
-                Tema</label>
+                style="color: var(--text-dim); margin-bottom: 12px; display: block; font-size: 0.85rem; font-weight: 600;" data-i18n="themeTitle">Mode Tema</label>
               <div class="theme-selector-container">
                 <label class="theme-option-label">
                   <input type="radio" name="themeModeRadio" value="light">
@@ -300,7 +298,7 @@
                         <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
                       </svg></div>
-                    <span>Terang</span>
+                    <span data-i18n="themeLight">Terang</span>
                   </div>
                 </label>
                 <label class="theme-option-label">
@@ -310,7 +308,7 @@
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                       </svg></div>
-                    <span>Gelap</span>
+                    <span data-i18n="themeDark">Gelap</span>
                   </div>
                 </label>
                 <label class="theme-option-label">
@@ -322,7 +320,7 @@
                         <line x1="8" y1="21" x2="16" y2="21" />
                         <line x1="12" y1="17" x2="12" y2="21" />
                       </svg></div>
-                    <span>Sistem</span>
+                    <span data-i18n="themeAuto">Sistem</span>
                   </div>
                 </label>
               </div>
@@ -330,8 +328,7 @@
 
             <div style="margin-bottom: 24px;">
               <label
-                style="color: var(--text-dim); margin-bottom: 12px; display: block; font-size: 0.85rem; font-weight: 600;">Warna
-                Aksen</label>
+                style="color: var(--text-dim); margin-bottom: 12px; display: block; font-size: 0.85rem; font-weight: 600;" data-i18n="accentColorTitle">Warna Aksen</label>
               <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
                 <button type="button" class="color-btn" data-color="#3b82f6"
                   style="width: 34px; height: 34px; border-radius: 50%; background: #3b82f6; border: 3px solid white; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);"></button>
@@ -378,6 +375,7 @@
                   <option value="flip">Flip Clock (Mekanis)</option>
                   <option value="tracer">Border Tracer (Animasi Garis)</option>
                   <option value="oled">Dark Mode Sleek (OLED)</option>
+                  <option value="custom">✦ Custom (Kustomisasi Penuh)</option>
                 </select>
               </div>
               <div>
@@ -386,6 +384,311 @@
                 </label>
                 <input type="range" id="clockSize" min="50" max="200" value="100"
                   style="width: 100%; accent-color: var(--accent-color);">
+              </div>
+            </div>
+
+            <!-- Custom Clock Panel -->
+            <div id="customClockPanel" style="display:none; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10); border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+              
+              <!-- Preview Jam -->
+              <div style="text-align:center; padding: 20px 0 24px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 20px;">
+                <div id="customClockPreview" style="font-size: 3rem; font-weight: 800; display: inline-block; line-height:1; transition: all 0.3s ease;">12:34</div>
+              </div>
+
+              <!-- Baris 1: Warna Teks & Warna Background -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div>
+                  <label class="input-label">Warna Teks</label>
+                  <div style="display:flex; align-items:center; gap: 8px;">
+                    <input type="color" id="ccTextColor" value="#ffffff"
+                      style="width:40px; height:36px; border:none; border-radius:8px; cursor:pointer; background:none; padding:0;">
+                    <span id="ccTextColorHex" style="font-size:0.8rem; opacity:0.7;">#ffffff</span>
+                  </div>
+                </div>
+                <div>
+                  <label class="input-label">Warna BG</label>
+                  <div style="display:flex; align-items:center; gap: 8px;">
+                    <input type="color" id="ccBgColor" value="#000000"
+                      style="width:40px; height:36px; border:none; border-radius:8px; cursor:pointer; background:none; padding:0;">
+                    <span id="ccBgColorHex" style="font-size:0.8rem; opacity:0.7;">#000000</span>
+                  </div>
+                </div>
+                <div>
+                  <label class="input-label">BG Transparan</label>
+                  <label style="display:flex; align-items:center; gap:8px; margin-top:8px; cursor:pointer;">
+                    <input type="checkbox" id="ccBgTransparent" checked style="width:16px;height:16px; accent-color:var(--accent-color);">
+                    <span style="font-size:0.85rem;">Aktifkan</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Baris 2: Font Family & Font Weight -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div>
+                  <label class="input-label">Font</label>
+                  <select id="ccFontFamily"
+                    style="width:100%; padding:8px; border-radius:8px; background:var(--input-bg); color:var(--text-color); border:1px solid var(--input-border); outline:none; font-size:0.9rem;">
+                    <option value="system-ui, -apple-system, sans-serif">System (Default)</option>
+                    <option value="'Courier New', monospace">Courier New</option>
+                    <option value="'Helvetica Neue', Helvetica, Arial, sans-serif">Helvetica Neue</option>
+                    <option value="Georgia, 'Times New Roman', serif">Georgia (Serif)</option>
+                    <option value="Impact, Haettenschweiler, sans-serif">Impact</option>
+                    <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+                    <option value="'Arial Black', sans-serif">Arial Black</option>
+                    <option value="'Comic Sans MS', cursive">Comic Sans</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="input-label">Ketebalan Font</label>
+                  <select id="ccFontWeight"
+                    style="width:100%; padding:8px; border-radius:8px; background:var(--input-bg); color:var(--text-color); border:1px solid var(--input-border); outline:none; font-size:0.9rem;">
+                    <option value="100">100 – Thin</option>
+                    <option value="200">200 – Extra Light</option>
+                    <option value="300">300 – Light</option>
+                    <option value="400">400 – Regular</option>
+                    <option value="500">500 – Medium</option>
+                    <option value="600">600 – Semi Bold</option>
+                    <option value="700">700 – Bold</option>
+                    <option value="800" selected>800 – Extra Bold</option>
+                    <option value="900">900 – Black</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Baris 3: Letter Spacing & Opacity -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div>
+                  <label class="input-label" style="display:flex; justify-content:space-between;">Jarak Huruf <span id="ccLetterSpacingVal" style="color:var(--accent-color); font-weight:700;">-3px</span></label>
+                  <input type="range" id="ccLetterSpacing" min="-10" max="30" value="-3"
+                    style="width:100%; accent-color:var(--accent-color);">
+                </div>
+                <div>
+                  <label class="input-label" style="display:flex; justify-content:space-between;">Opacity <span id="ccOpacityVal" style="color:var(--accent-color); font-weight:700;">100%</span></label>
+                  <input type="range" id="ccOpacity" min="10" max="100" value="100"
+                    style="width:100%; accent-color:var(--accent-color);">
+                </div>
+              </div>
+
+              <!-- Baris 4: Padding & Border Radius -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div>
+                  <label class="input-label" style="display:flex; justify-content:space-between;">Padding <span id="ccPaddingVal" style="color:var(--accent-color); font-weight:700;">0px</span></label>
+                  <input type="range" id="ccPadding" min="0" max="60" value="0"
+                    style="width:100%; accent-color:var(--accent-color);">
+                </div>
+                <div>
+                  <label class="input-label" style="display:flex; justify-content:space-between;">Sudut Kotak <span id="ccBorderRadiusVal" style="color:var(--accent-color); font-weight:700;">0px</span></label>
+                  <input type="range" id="ccBorderRadius" min="0" max="60" value="0"
+                    style="width:100%; accent-color:var(--accent-color);">
+                </div>
+              </div>
+
+              <!-- Baris 5: Border -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div>
+                  <label class="input-label">Warna Border</label>
+                  <input type="color" id="ccBorderColor" value="#8b5cf6"
+                    style="width:100%; height:36px; border:none; border-radius:8px; cursor:pointer; background:none; padding:0;">
+                </div>
+                <div>
+                  <label class="input-label" style="display:flex; justify-content:space-between;">Tebal Border <span id="ccBorderWidthVal" style="color:var(--accent-color); font-weight:700;">0px</span></label>
+                  <input type="range" id="ccBorderWidth" min="0" max="8" value="0"
+                    style="width:100%; accent-color:var(--accent-color);">
+                </div>
+                <div>
+                  <label class="input-label">Gaya Border</label>
+                  <select id="ccBorderStyle"
+                    style="width:100%; padding:8px; border-radius:8px; background:var(--input-bg); color:var(--text-color); border:1px solid var(--input-border); outline:none;">
+                    <option value="solid">Solid</option>
+                    <option value="dashed">Dashed</option>
+                    <option value="dotted">Dotted</option>
+                    <option value="double">Double</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Baris 6: Text Shadow -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div>
+                  <label class="input-label">Warna Shadow</label>
+                  <input type="color" id="ccShadowColor" value="#000000"
+                    style="width:100%; height:36px; border:none; border-radius:8px; cursor:pointer; background:none; padding:0;">
+                </div>
+                <div>
+                  <label class="input-label" style="display:flex; justify-content:space-between;">Blur Shadow <span id="ccShadowBlurVal" style="color:var(--accent-color); font-weight:700;">0px</span></label>
+                  <input type="range" id="ccShadowBlur" min="0" max="60" value="0"
+                    style="width:100%; accent-color:var(--accent-color);">
+                </div>
+                <div>
+                  <label class="input-label" style="display:flex; justify-content:space-between;">Jarak Shadow <span id="ccShadowDistVal" style="color:var(--accent-color); font-weight:700;">0px</span></label>
+                  <input type="range" id="ccShadowDist" min="0" max="20" value="0"
+                    style="width:100%; accent-color:var(--accent-color);">
+                </div>
+              </div>
+
+              <!-- Baris 7: Animasi -->
+              <div style="margin-bottom: 8px;">
+                <label class="input-label">Animasi</label>
+                <select id="ccAnimation"
+                  style="width:100%; padding:8px; border-radius:8px; background:var(--input-bg); color:var(--text-color); border:1px solid var(--input-border); outline:none;">
+                  <option value="none">Tidak Ada</option>
+                  <option value="neonPulse 2.5s ease-in-out infinite">Neon Pulse</option>
+                  <option value="rainbowScroll 4s linear infinite">Rainbow Scroll</option>
+                  <option value="tracerBorderAnim 2s ease-in-out infinite">Border Tracer</option>
+                  <option value="glassShimmer 4s ease-in-out infinite">Glass Shimmer</option>
+                  <option value="crtFlicker 5s linear infinite">CRT Flicker</option>
+                  <option value="oledFlicker 8s linear infinite">OLED Flicker</option>
+                  <option value="swissPulse 3s ease-in-out infinite">Shadow Pulse</option>
+                </select>
+              </div>
+
+              <!-- Reset Button -->
+              <div style="text-align:right; margin-top: 16px;">
+                <button id="ccResetBtn" type="button"
+                  style="display:inline-flex; align-items:center; gap:6px; padding:6px 16px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:transparent; color:var(--text-dim); font-size:0.8rem; cursor:pointer; transition:0.2s;"
+                  onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='transparent'">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                  Reset ke Default
+                </button>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr; gap: 24px; margin-bottom: 24px;">
+              <div>
+                <label class="input-label">Gaya Search Bar</label>
+                <select id="searchStyle"
+                  style="width: 100%; padding: 10px; border-radius: 8px; background: var(--input-bg); color: var(--text-color); border: 1px solid var(--input-border); outline: none;">
+                  <option value="default">Default</option>
+                  <option value="minimal">Minimal</option>
+                  <option value="glass">Glassmorphism (Efek Kaca)</option>
+                  <option value="neumorphism">Neumorphism (Soft UI)</option>
+                  <option value="cyberpunk">Neon Cyberpunk</option>
+                  <option value="oled">Dark Mode Sleek (OLED)</option>
+                  <option value="custom">✦ Custom (Kustomisasi Penuh)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Custom Search Panel -->
+            <div id="customSearchPanel" style="display:none; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10); border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+              <!-- Preview Search -->
+              <div style="text-align:center; padding: 20px 0 24px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 20px;">
+                <div id="customSearchPreview" style="padding: 12px 24px; border-radius: 24px; display: inline-flex; align-items: center; gap: 10px; font-size: 1rem; width: 100%; max-width: 400px; justify-content: flex-start; transition: all 0.3s ease; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.7;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                  <span style="opacity: 0.7;">Cari di Google...</span>
+                </div>
+              </div>
+
+              <!-- Baris 1: Warna Background & Transparansi -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div>
+                  <label class="input-label">Warna Teks</label>
+                  <div style="display:flex; align-items:center; gap: 8px;">
+                    <input type="color" id="csTextColor" value="#ffffff"
+                      style="width:40px; height:36px; border:none; border-radius:8px; cursor:pointer; background:none; padding:0;">
+                  </div>
+                </div>
+                <div>
+                  <label class="input-label">Warna BG</label>
+                  <div style="display:flex; align-items:center; gap: 8px;">
+                    <input type="color" id="csBgColor" value="#000000"
+                      style="width:40px; height:36px; border:none; border-radius:8px; cursor:pointer; background:none; padding:0;">
+                  </div>
+                </div>
+                <div>
+                  <label class="input-label">BG Transparan</label>
+                  <label style="display:flex; align-items:center; gap:8px; margin-top:8px; cursor:pointer;">
+                    <input type="checkbox" id="csBgTransparent" checked style="width:16px;height:16px; accent-color:var(--accent-color);">
+                    <span style="font-size:0.85rem;">Aktifkan</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Baris 2: Opacity & Blur -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div>
+                  <label class="input-label" style="display:flex; justify-content:space-between;">Opacity BG <span id="csOpacityVal" style="color:var(--accent-color); font-weight:700;">15%</span></label>
+                  <input type="range" id="csOpacity" min="0" max="100" value="15" style="width:100%; accent-color:var(--accent-color);">
+                </div>
+                <div>
+                  <label class="input-label" style="display:flex; justify-content:space-between;">Blur BG <span id="csBlurVal" style="color:var(--accent-color); font-weight:700;">10px</span></label>
+                  <input type="range" id="csBlur" min="0" max="40" value="10" style="width:100%; accent-color:var(--accent-color);">
+                </div>
+              </div>
+
+              <!-- Baris 3: Radius & Padding -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div>
+                  <label class="input-label" style="display:flex; justify-content:space-between;">Radius <span id="csRadiusVal" style="color:var(--accent-color); font-weight:700;">24px</span></label>
+                  <input type="range" id="csRadius" min="0" max="40" value="24" style="width:100%; accent-color:var(--accent-color);">
+                </div>
+                <div>
+                  <label class="input-label" style="display:flex; justify-content:space-between;">Padding <span id="csPaddingVal" style="color:var(--accent-color); font-weight:700;">12px</span></label>
+                  <input type="range" id="csPadding" min="0" max="30" value="12" style="width:100%; accent-color:var(--accent-color);">
+                </div>
+              </div>
+
+              <!-- Baris 4: Border -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div>
+                  <label class="input-label">Warna Border</label>
+                  <input type="color" id="csBorderColor" value="#ffffff" style="width:100%; height:36px; border:none; border-radius:8px; cursor:pointer; background:none; padding:0;">
+                </div>
+                <div>
+                  <label class="input-label" style="display:flex; justify-content:space-between;">Opacity <span id="csBorderOpacityVal" style="color:var(--accent-color); font-weight:700;">10%</span></label>
+                  <input type="range" id="csBorderOpacity" min="0" max="100" value="10" style="width:100%; accent-color:var(--accent-color);">
+                </div>
+                <div>
+                  <label class="input-label" style="display:flex; justify-content:space-between;">Tebal <span id="csBorderWidthVal" style="color:var(--accent-color); font-weight:700;">1px</span></label>
+                  <input type="range" id="csBorderWidth" min="0" max="8" value="1" style="width:100%; accent-color:var(--accent-color);">
+                </div>
+                <div>
+                  <label class="input-label">Gaya Border</label>
+                  <select id="csBorderStyle" style="width:100%; padding:8px; border-radius:8px; background:var(--input-bg); color:var(--text-color); border:1px solid var(--input-border); outline:none;">
+                    <option value="solid">Solid</option>
+                    <option value="dashed">Dashed</option>
+                    <option value="dotted">Dotted</option>
+                    <option value="double">Double</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Baris 5: Box Shadow -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div>
+                  <label class="input-label">Warna Shadow</label>
+                  <input type="color" id="csShadowColor" value="#000000" style="width:100%; height:36px; border:none; border-radius:8px; cursor:pointer; background:none; padding:0;">
+                </div>
+                <div>
+                  <label class="input-label" style="display:flex; justify-content:space-between;">Opacity <span id="csShadowOpacityVal" style="color:var(--accent-color); font-weight:700;">15%</span></label>
+                  <input type="range" id="csShadowOpacity" min="0" max="100" value="15" style="width:100%; accent-color:var(--accent-color);">
+                </div>
+                <div>
+                  <label class="input-label" style="display:flex; justify-content:space-between;">Blur <span id="csShadowBlurVal" style="color:var(--accent-color); font-weight:700;">12px</span></label>
+                  <input type="range" id="csShadowBlur" min="0" max="40" value="12" style="width:100%; accent-color:var(--accent-color);">
+                </div>
+                <div>
+                  <label class="input-label" style="display:flex; justify-content:space-between;">Jarak <span id="csShadowDistVal" style="color:var(--accent-color); font-weight:700;">4px</span></label>
+                  <input type="range" id="csShadowDist" min="0" max="20" value="4" style="width:100%; accent-color:var(--accent-color);">
+                </div>
+              </div>
+
+              <!-- Baris 6: Ikon Color -->
+              <div style="display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 16px;">
+                <div>
+                  <label class="input-label">Warna Ikon (Search & Engine)</label>
+                  <input type="color" id="csIconColor" value="#ffffff" style="width:40px; height:36px; border:none; border-radius:8px; cursor:pointer; background:none; padding:0;">
+                </div>
+              </div>
+
+              <!-- Reset Button -->
+              <div style="text-align:right; margin-top: 16px;">
+                <button id="csResetBtn" type="button"
+                  style="display:inline-flex; align-items:center; gap:6px; padding:6px 16px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:transparent; color:var(--text-dim); font-size:0.8rem; cursor:pointer; transition:0.2s;"
+                  onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='transparent'">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                  Reset ke Default
+                </button>
               </div>
             </div>
 
@@ -426,6 +729,14 @@
                   <option value="hidden">Sembunyikan Nama</option>
                 </select>
               </div>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+              <label class="input-label" style="display: flex; justify-content: space-between;">
+                Transparansi Pengaturan <span id="settingsOpacityVal" style="color: var(--accent-color); font-weight: 700;">100%</span>
+              </label>
+              <input type="range" id="settingsOpacity" min="10" max="100" value="100"
+                style="width: 100%; accent-color: var(--accent-color);">
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
@@ -504,6 +815,30 @@
                   <div style="font-size: 0.75rem; font-weight: 600;">Galeri</div>
                 </div>
               </label>
+            </div>
+
+            <!-- Tipe Wallpaper & Parallax -->
+            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px; flex-wrap: wrap;">
+              <div style="flex: 1; min-width: 150px;">
+                <label class="input-label" style="margin-bottom: 8px;">Tipe Wallpaper</label>
+                <select id="bgTypeSelect"
+                  style="width: 100%; padding: 10px; border-radius: 8px; background: var(--input-bg); color: var(--text-color); border: 1px solid var(--input-border); outline: none; font-size: 0.85rem;">
+                  <option value="none">No Image</option>
+                  <option value="fill" selected>Fill</option>
+                  <option value="fit">Fit</option>
+                  <option value="stretch">Stretch</option>
+                  <option value="tile">Tile</option>
+                  <option value="center">Center</option>
+                  <option value="parallax">Parallax</option>
+                </select>
+              </div>
+              <div id="parallaxStrengthWrapper" style="flex: 2; min-width: 200px; display: none;">
+                <label class="input-label" style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                  Parallax effect strength: <span id="parallaxStrengthVal" style="color: var(--accent-color); font-weight: 700;">70%</span>
+                </label>
+                <input type="range" id="parallaxStrengthInput" min="0" max="100" value="70"
+                  style="width: 100%; accent-color: var(--accent-color);">
+              </div>
             </div>
 
             <!-- URL Input -->
@@ -602,6 +937,17 @@
               style="color: var(--text-dim); margin-bottom: 16px; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Sistem
               & Navigasi</label>
 
+            <!-- Pengaturan Bahasa -->
+            <div style="margin-bottom: 24px;">
+              <label class="input-label" data-i18n="languageLabel">Bahasa (Language)</label>
+              <select id="appLanguage"
+                style="width: 100%; padding: 10px; border-radius: 8px; background: var(--input-bg); color: var(--text-color); border: 1px solid var(--input-border); outline: none; font-size: 0.85rem;">
+                <option value="auto" data-i18n="langAuto">Otomatis (Browser)</option>
+                <option value="id" data-i18n="langId">Bahasa Indonesia</option>
+                <option value="en" data-i18n="langEn">English</option>
+              </select>
+            </div>
+
             <div
               style="background: rgba(var(--overlay-base), 0.03); border-radius: 16px; padding: 4px; margin-bottom: 32px;">
               <label class="toggle-container" style="margin-bottom: 0; border: none; background: transparent;">
@@ -684,6 +1030,13 @@
 
             <div id="weatherSettingsBlock"
               style="background: rgba(var(--overlay-base), 0.03); padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 16px;">
+              <div>
+                <label class="input-label" style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                  Transparansi Widget <span id="weatherOpacityVal" style="color: var(--accent-color); font-weight: 700;">100%</span>
+                </label>
+                <input type="range" id="weatherOpacity" min="0" max="100" value="100"
+                  style="width: 100%; accent-color: var(--accent-color);">
+              </div>
               <div>
                 <label class="input-label" style="margin-bottom: 8px;">Lokasi Spesifik</label>
                 <input type="text" id="weatherLocation" placeholder="Nama Kota (Kosongkan untuk otomatis)..."
@@ -773,11 +1126,8 @@
   </div>
 
 
-  <!-- Modular Scripts (urutan penting!) -->
-  <script src="newtab.js"></script> <!-- Core: state, tema, jam, cuaca -->
-  <script src="groups.js"></script> <!-- Groups: elyxoras, context menus, group manager -->
-  <script src="modal.js"></script> <!-- Modal: tambah/edit pintasan -->
-  <script src="settings.js"></script> <!-- Settings: pengaturan, wallpaper, render engine, search -->
+  <!-- Modular Scripts -->
+  <script type="module" src="js/main.js"></script>
 </body>
 
 </html>
