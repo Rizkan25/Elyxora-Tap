@@ -107,4 +107,4 @@ Elyxora Tap/
 
 ---
 
-_Dibuat untuk produktivitas yang lebih baik dan indah 😉._
+_Dibuat untuk produktivitas yang lebih baik dan cepat😉._
