@@ -3,8 +3,6 @@
 [![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-blue.svg?logo=google-chrome&logoColor=white)](#)
 [![Version](https://img.shields.io/badge/version-1.1.0-green.svg)](#)
 [![Manifest](https://img.shields.io/badge/manifest-v3-orange.svg)](#)
-![Views](https://komarev.com/ghpvc/?username=Rizkan25&repo=Elyxora-Tap&label=Views&color=orange)
-
 
 <p align="center">
   <img src="https://i.ibb.co.com/cKPpZptj/911ec925-a66c-420a-aee2-9392e2ec3069.png" alt="Elyxora Tab Preview" width="100%" style="border-radius: 8px;" />
