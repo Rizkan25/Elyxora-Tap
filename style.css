@@ -513,7 +513,8 @@ body {
   }
 
   .elyxora-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, 120px);
+    justify-content: center;
   }
 
   .floating-buttons {
@@ -693,7 +694,7 @@ div[style*="position: fixed; bottom: 30px; right: 30px;"] {
 /* Mobile-friendly grid: minimal 2 kolom */
 .elyxora-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  grid-template-columns: repeat(auto-fit, 130px);
   justify-content: center;
   gap: 24px;
   margin-top: 40px;
