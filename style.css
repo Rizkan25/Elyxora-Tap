@@ -357,145 +357,31 @@ body {
 
 
 /* =============================================
-   MOBILE EXTREME PERFORMANCE MODE
-   Target: Entry-level GPU (e.g. Samsung A04 - PowerVR GE8320)
-   Hapus SEMUA efek berat: blur, gradient, animation, shadow
+   MOBILE HARDWARE ACCELERATION MODE
+   Memastikan semua fitur (blur, animasi, hover, efek visual) tetap berjalan
+   dan diakselerasi langsung oleh GPU perangkat
    ============================================= */
 @media (max-width: 768px) {
-
-  /* Matikan semua entrance animations — GPU tidak perlu render paint berulang */
-  .time-widget,
-  .weather-widget,
-  .elyxora-grid,
-  .search-section,
-  .elyxora-item {
-    animation: none;
-    animation-delay: 0s;
-  }
-
-  /* Ganti gradient teks berat menjadi warna solid — gradient pada teks sangat membebani GPU */
-  .time {
-    background: none;
-    -webkit-background-clip: unset;
-    background-clip: unset;
-    -webkit-text-fill-color: #ffffff;
-    color: #ffffff;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-    transform: none;
-    letter-spacing: -2px;
-  }
-
-  /* Matikan drop-shadow filter pada ikon cuaca */
-  .weather-icon {
-    filter: none;
-  }
-
-  /* Kurangi transisi pada widget cuaca */
-  .weather-widget {
-    transition: none;
-    will-change: auto;
-    transform: none;
-  }
-  .weather-widget:hover {
-    transform: none;
-  }
-
-  /* Matikan backdrop-filter pada .bg-overlay — tapi JANGAN override background-color
-     supaya nilai kecerahan dari JS (applyBgEffects) tetap berlaku di mobile */
-  .bg-overlay {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    /* background-color dikontrol murni oleh JS (applyBgEffects) */
-  }
-
-  /* Semua elemen glass: ganti blur dengan background solid transparan */
+  /* Paksa hardware (GPU) rendering untuk setiap elemen glassmorphism/efek berat */
+  .bg-overlay,
   .elyxora-item,
   .weather-widget,
   #searchForm,
   .search-suggestions,
-  .group-tab {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    box-shadow: none;
-    will-change: auto;
-    transform: none;
+  .group-tab,
+  .modal-content {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    will-change: transform, backdrop-filter, opacity;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    perspective: 1000px;
   }
 
-  /* Kartu pintasan: background sedikit lebih pekat agar tetap terbaca tanpa blur */
-  .elyxora-item {
-    background: rgba(var(--overlay-base), 0.55);
-    border: 1px solid var(--glass-border);
-    transition: background-color 0.15s;
-  }
-  .elyxora-item:hover,
-  .elyxora-item:active {
-    background: rgba(var(--overlay-base), 0.7);
-    transform: none;
-    box-shadow: none;
-  }
-  .elyxora-item:hover .elyxora-icon {
-    transform: none;
-    box-shadow: none;
-  }
-
-  /* Search form */
-  #searchForm {
-    background: rgba(var(--overlay-base), 0.65);
-    border: 1px solid rgba(255,255,255,0.1);
-    transition: border-color 0.15s;
-    transform: none;
-  }
-  #searchForm:focus-within {
-    transform: none;
-    border-color: var(--accent-color);
-  }
-
-  /* Group tabs */
-  .group-tab {
-    background: rgba(var(--overlay-base), 0.5);
-    transition: background-color 0.15s, color 0.15s;
-    transform: none;
-  }
-
-  /* Body tetap overflow:hidden (dari @media 1100px) — jangan di-override di sini */
+  /* Body tetap overflow:hidden (dari @media 1100px) */
   body {
     overscroll-behavior: none;
     -webkit-overflow-scrolling: touch;
-  }
-
-  /* Search & group tabs: pastikan tidak ada margin berlebih */
-  .search-section {
-    animation: none;
-  }
-
-  /* Matikan semua transisi pada modal pengaturan di mobile agar switching tab instan */
-  .settings-tab {
-    transition: none;
-  }
-  .settings-tab svg {
-    transition: none;
-  }
-  .tab-pane {
-    animation: none;
-    transition: none;
-  }
-
-  /* Matikan filter & box-shadow berat pada ikon modal */
-  .suggested-icon:hover {
-    box-shadow: none;
-    filter: none;
-  }
-  #activeEngineIcon:hover {
-    box-shadow: none;
-  }
-  .gm-rename-btn:hover,
-  .gm-delete-btn:hover {
-    filter: none;
-  }
-
-  /* Percepat rendering gambar ikon */
-  .elyxora-icon img {
-    image-rendering: auto;
   }
 }
 

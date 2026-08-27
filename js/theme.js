@@ -241,8 +241,8 @@ export function applyIconStyles() {
       background: ${useCardBg ? 'var(--glass-bg)' : 'transparent'} !important;
       border: ${useCardBg ? '1px solid var(--glass-border)' : 'none'} !important;
       box-shadow: ${useCardBg ? 'var(--glass-shadow)' : 'none'} !important;
-      backdrop-filter: ${(useCardBg && !isPhoneScreen) ? 'blur(20px) saturate(180%)' : 'none'} !important;
-      -webkit-backdrop-filter: ${(useCardBg && !isPhoneScreen) ? 'blur(20px) saturate(180%)' : 'none'} !important;
+      backdrop-filter: ${(useCardBg) ? 'blur(20px) saturate(180%)' : 'none'} !important;
+      -webkit-backdrop-filter: ${(useCardBg) ? 'blur(20px) saturate(180%)' : 'none'} !important;
       display: flex !important;
       flex-direction: column !important;
       align-items: center !important;
