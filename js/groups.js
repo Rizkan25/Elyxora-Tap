@@ -3,7 +3,7 @@
 // Mengelola grup, pintasan, drag-drop, context menu
 // =============================================
 import { AppState, savePartialState } from './state.js';
-import { fetchIconAsBase64, OFFLINE_ICON_SVG } from './utils.js';
+import { fetchIconAsBase64, OFFLINE_ICON_SVG, escapeHTML } from './utils.js';
 import { getMessage } from './i18n.js';
 
 // -----------------------------------------------

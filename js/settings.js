@@ -921,3 +921,55 @@ if (saveSettingsBtn) {
     if (setModal) setModal.style.display = 'none';
   };
 }
+
+// -----------------------------------------------
+// DATA MANAGEMENT (EXPORT / IMPORT)
+// -----------------------------------------------
+const exportDataBtn = document.getElementById('exportDataBtn');
+if (exportDataBtn) {
+  exportDataBtn.addEventListener('click', () => {
+    const dataStr = JSON.stringify(AppState, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `elyxora_backup_${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+}
+
+const importDataBtn = document.getElementById('importDataBtn');
+const importDataFile = document.getElementById('importDataFile');
+if (importDataBtn && importDataFile) {
+  importDataBtn.addEventListener('click', () => {
+    importDataFile.click();
+  });
+
+  importDataFile.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        const importedData = JSON.parse(event.target.result);
+        if (importedData && typeof importedData === 'object') {
+          if (confirm('Apakah Anda yakin ingin mengganti semua data dengan data dari file backup? Ini tidak dapat diurungkan.')) {
+            await chrome.storage.local.set(importedData);
+            alert('Data berhasil diimpor! Halaman akan dimuat ulang.');
+            window.location.reload();
+          }
+        } else {
+          alert('Format file tidak valid.');
+        }
+      } catch (err) {
+        alert('Gagal membaca file JSON: ' + err.message);
+      }
+      importDataFile.value = ''; // Reset
+    };
+    reader.readAsText(file);
+  });
+}
