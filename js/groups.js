@@ -531,6 +531,13 @@ export function showGroupManagerModal() {
         const newName = prompt(`Ganti nama "${gName}" menjadi:`, gName);
         if (newName && newName.trim() && newName.trim() !== gName) {
           const trimmed = newName.trim();
+          
+          // Check for duplicate group name
+          if (AppState.groups.some(g => g.toLowerCase() === trimmed.toLowerCase())) {
+            alert('Nama group sudah ada!');
+            return;
+          }
+
           AppState.elyxoras.forEach(d => { if (d.group === gName) d.group = trimmed; });
           const idx = AppState.groups.indexOf(gName);
           if (idx !== -1) AppState.groups[idx] = trimmed;

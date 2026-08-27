@@ -19,6 +19,9 @@
   "searchPlaceholder": { "message": "Cari di Google..." },
   "addShortcutFabTitle": { "message": "Tambah Pintasan" },
   "settingsFabTitle": { "message": "Pengaturan Umum" },
+  "dataManagementLabel": { "message": "Manajemen Data" },
+  "exportDataBtn": { "message": "Ekspor Data (JSON)" },
+  "importDataBtn": { "message": "Impor Data (JSON)" },
 
   "settingsModalTitle": { "message": "Pengaturan Umum" },
   "settingsTabAppearance": { "message": "Tampilan" },

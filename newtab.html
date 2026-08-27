@@ -1061,6 +1061,14 @@
                 </label>
               </div>
             </div>
+
+            <!-- Export / Import Data -->
+            <label style="color: var(--text-dim); margin-bottom: 16px; margin-top: 16px; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;" data-i18n="dataManagementLabel">Data Management</label>
+            <div style="background: rgba(var(--overlay-base), 0.03); border-radius: 16px; padding: 16px; margin-bottom: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <button id="exportDataBtn" type="button" style="padding: 10px; border-radius: 8px; background: var(--glass-bg); border: 1px solid var(--input-border); color: var(--text-color); cursor: pointer; transition: 0.2s; font-size: 0.85rem; font-weight: 600;" onmouseover="this.style.background='var(--input-bg)'" onmouseout="this.style.background='var(--glass-bg)'" data-i18n="exportDataBtn">Export Data</button>
+              <button id="importDataBtn" type="button" style="padding: 10px; border-radius: 8px; background: var(--glass-bg); border: 1px solid var(--input-border); color: var(--text-color); cursor: pointer; transition: 0.2s; font-size: 0.85rem; font-weight: 600;" onmouseover="this.style.background='var(--input-bg)'" onmouseout="this.style.background='var(--glass-bg)'" data-i18n="importDataBtn">Import Data</button>
+              <input type="file" id="importDataFile" accept=".json" style="display: none;">
+            </div>
           </div>
 
           <!-- TAB: GROUPS -->

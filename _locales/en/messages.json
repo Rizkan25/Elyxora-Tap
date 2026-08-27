@@ -19,6 +19,9 @@
   "searchPlaceholder": { "message": "Search on Google..." },
   "addShortcutFabTitle": { "message": "Add Shortcut" },
   "settingsFabTitle": { "message": "General Settings" },
+  "dataManagementLabel": { "message": "Data Management" },
+  "exportDataBtn": { "message": "Export Data (JSON)" },
+  "importDataBtn": { "message": "Import Data (JSON)" },
 
   "settingsModalTitle": { "message": "General Settings" },
   "settingsTabAppearance": { "message": "Appearance" },

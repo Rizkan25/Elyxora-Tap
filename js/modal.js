@@ -163,45 +163,68 @@ if (saveElyxoraBtn) {
       return;
     }
 
-    const iconMode = document.querySelector('input[name="iconMode"]:checked')?.value || 'auto';
-    let finalIcon = '';
-    let iconData = '';
-
-    if (radioAuto?.checked) {
-      try {
-        const domain = new URL(url).hostname;
-        const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
-        const b64 = await fetchIconAsBase64(faviconUrl);
-        finalIcon = b64 || faviconUrl;
-        iconData = faviconUrl;
-      } catch (e) { finalIcon = ''; }
-    } else if (radioUrl?.checked) {
-      const rawUrl = elyxoraIconInput?.value.trim() || '';
-      iconData = rawUrl;
-      if (rawUrl) {
-        const b64 = await fetchIconAsBase64(rawUrl);
-        finalIcon = b64 || rawUrl;
-      }
-    } else if (radioFile?.checked) {
-      finalIcon = uploadedBase64;
-      iconData = uploadedBase64;
+    let validUrl = url;
+    if (!validUrl.startsWith('http://') && !validUrl.startsWith('https://')) {
+      validUrl = 'https://' + validUrl;
+    }
+    
+    try {
+      new URL(validUrl);
+    } catch(e) {
+      alert('URL tidak valid!');
+      return;
     }
 
-    if (editingId !== null) {
-      const index = AppState.elyxoras.findIndex(d => d.id === editingId);
-      if (index !== -1) {
-        AppState.elyxoras[index] = { ...AppState.elyxoras[index], title, url, group, icon: finalIcon, iconMode, iconData };
-      }
-    } else {
-      AppState.elyxoras.push({ id: Date.now(), title, url, icon: finalIcon, group, iconMode, iconData });
-    }
+    const originalText = saveElyxoraBtn.innerHTML;
+    saveElyxoraBtn.innerHTML = 'Menyimpan...';
+    saveElyxoraBtn.disabled = true;
 
-    await savePartialState({ elyxoras: AppState.elyxoras });
-    renderGroups();
-    renderElyxoras();
-    if (modal) modal.style.display = 'none';
-    resetModal();
-    editingId = null;
+    try {
+      const iconMode = document.querySelector('input[name="iconMode"]:checked')?.value || 'auto';
+      let finalIcon = '';
+      let iconData = '';
+
+      if (radioAuto?.checked) {
+        try {
+          const domain = new URL(validUrl).hostname;
+          const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+          const b64 = await fetchIconAsBase64(faviconUrl);
+          finalIcon = b64 || faviconUrl;
+          iconData = faviconUrl;
+        } catch (e) { finalIcon = ''; }
+      } else if (radioUrl?.checked) {
+        const rawUrl = elyxoraIconInput?.value.trim() || '';
+        iconData = rawUrl;
+        if (rawUrl) {
+          const b64 = await fetchIconAsBase64(rawUrl);
+          finalIcon = b64 || rawUrl;
+        }
+      } else if (radioFile?.checked) {
+        finalIcon = uploadedBase64;
+        iconData = uploadedBase64;
+      }
+
+      if (editingId !== null) {
+        const index = AppState.elyxoras.findIndex(d => d.id === editingId);
+        if (index !== -1) {
+          AppState.elyxoras[index] = { ...AppState.elyxoras[index], title, url: validUrl, group, icon: finalIcon, iconMode, iconData };
+        }
+      } else {
+        AppState.elyxoras.push({ id: Date.now(), title, url: validUrl, icon: finalIcon, group, iconMode, iconData });
+      }
+
+      await savePartialState({ elyxoras: AppState.elyxoras });
+      renderGroups();
+      renderElyxoras();
+      if (modal) modal.style.display = 'none';
+      resetModal();
+      editingId = null;
+    } catch(err) {
+      alert('Terjadi kesalahan saat menyimpan: ' + err.message);
+    } finally {
+      saveElyxoraBtn.innerHTML = originalText;
+      saveElyxoraBtn.disabled = false;
+    }
   };
 }
 
