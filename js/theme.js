@@ -3,6 +3,10 @@
 // Mengatur tampilan CSS dinamis, gaya jam, ikon, dan background
 // =============================================
 import { AppState } from './state.js';
+import { getVideoBlob } from './idb.js';
+
+// Track current video object URL so we can revoke it
+let currentVideoObjectUrl = null;
 
 export function applyThemeMode(mode) {
   AppState.themeMode = mode;
@@ -23,6 +27,7 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () 
 export function applyBgEffects() {
   const overlay = document.querySelector('.bg-overlay');
   const bgLayer = document.getElementById('bgImageLayer');
+  const bgVideo = document.getElementById('bgVideoLayer');
   const overlayBase = getComputedStyle(document.body).getPropertyValue('--overlay-base').trim() || '15, 23, 42';
   
   const blur = AppState.bgBlurLevel;
@@ -30,77 +35,45 @@ export function applyBgEffects() {
   const bgType = AppState.bgType;
   const overlayColor = `rgba(${overlayBase}, ${dark / 100})`;
   const currentWallpaperUrl = AppState.currentWallpaperUrl;
+  const isVideo = AppState.bgModeType === 'video';
 
   const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
-  if (isMobile) {
-    if (overlay) {
-      overlay.style.backdropFilter = 'none';
-      overlay.style.webkitBackdropFilter = 'none';
-      overlay.style.backgroundColor = overlayColor;
-    }
+  // --- VIDEO WALLPAPER ---
+  if (isVideo) {
+    // Sembunyikan layer gambar
     if (bgLayer) {
-      if (currentWallpaperUrl && bgType !== 'none') {
-        bgLayer.style.backgroundImage = `url('${currentWallpaperUrl}')`;
-        bgLayer.style.filter = blur > 0 ? `blur(${blur}px)` : 'none';
-        
-        if (bgType === 'fill' || bgType === 'parallax') bgLayer.style.backgroundSize = 'cover';
-        else if (bgType === 'fit') bgLayer.style.backgroundSize = 'contain';
-        else if (bgType === 'stretch') bgLayer.style.backgroundSize = '100% 100%';
-        
-        bgLayer.style.backgroundPosition = 'center';
-        bgLayer.style.backgroundRepeat = 'no-repeat';
-        bgLayer.style.transform = 'scale(1.05)';
-        document.body.style.backgroundImage = 'none';
-      } else {
-        bgLayer.style.backgroundImage = 'none';
-        document.body.style.backgroundImage = 'none';
-      }
+      bgLayer.style.backgroundImage = 'none';
+      bgLayer.style.filter = 'none';
     }
-  } else {
-    // Desktop
-    if (bgLayer) {
-      if (bgType === 'parallax' && currentWallpaperUrl) {
-        bgLayer.style.backgroundImage = `url('${currentWallpaperUrl}')`;
-        bgLayer.style.filter = 'none';
-        bgLayer.style.backgroundSize = 'cover';
-        bgLayer.style.backgroundPosition = 'center';
-        bgLayer.style.backgroundRepeat = 'no-repeat';
-        
-        // Atur skala awal berdasarkan kekuatan Parallax agar ukuran tidak berubah saat mouse digerakkan pertama kali
-        const strength = (AppState.bgParallaxStrength !== undefined ? AppState.bgParallaxStrength : 50) / 100;
-        const dynamicScale = 1.0 + (strength * 0.20); 
-        bgLayer.style.transform = `scale(${dynamicScale}) translate3d(0, 0, 0)`;
-        
-        document.body.style.backgroundImage = 'none';
-      } else {
-        bgLayer.style.backgroundImage = 'none';
-        bgLayer.style.filter = 'none';
-        bgLayer.style.transform = 'scale(1.05)';
+    document.body.style.backgroundImage = 'none';
 
-        if (currentWallpaperUrl && bgType !== 'none') {
-          document.body.style.backgroundImage = `url('${currentWallpaperUrl}')`;
-          if (bgType === 'fill') document.body.style.backgroundSize = 'cover';
-          else if (bgType === 'fit') document.body.style.backgroundSize = 'contain';
-          else if (bgType === 'stretch') document.body.style.backgroundSize = '100% 100%';
-          else if (bgType === 'tile') {
-            document.body.style.backgroundSize = 'auto';
-            document.body.style.backgroundPosition = 'top left';
-            document.body.style.backgroundRepeat = 'repeat';
-          } else if (bgType === 'center') {
-            document.body.style.backgroundSize = 'auto';
-            document.body.style.backgroundPosition = 'center';
+    if (bgVideo) {
+      // Jika belum ada src (pertama kali load atau baru berubah), ambil dari IndexedDB
+      if (!bgVideo.src || bgVideo.src === '' || bgVideo.src === window.location.href) {
+        getVideoBlob().then(blob => {
+          if (blob) {
+            // Revoke URL lama jika ada
+            if (currentVideoObjectUrl) URL.revokeObjectURL(currentVideoObjectUrl);
+            currentVideoObjectUrl = URL.createObjectURL(blob);
+            bgVideo.src = currentVideoObjectUrl;
+            bgVideo.style.display = 'block';
+            bgVideo.play().catch(() => {});
           }
-          if (bgType !== 'tile') document.body.style.backgroundPosition = 'center';
-          if (bgType !== 'tile') document.body.style.backgroundRepeat = 'no-repeat';
-          document.body.style.backgroundAttachment = 'scroll';
-        } else {
-          document.body.style.backgroundImage = 'none';
-        }
+        });
+      } else {
+        bgVideo.style.display = 'block';
       }
+
+      // Terapkan filter blur langsung ke element video
+      bgVideo.style.filter = blur > 0 ? `blur(${blur}px)` : 'none';
+      // Sedikit scale agar blur tidak memperlihatkan tepi kosong
+      bgVideo.style.transform = blur > 0 ? 'translate3d(0,0,0) scale(1.05)' : 'translate3d(0,0,0)';
     }
+
+    // Overlay tetap diterapkan
     if (overlay) {
-      if (blur > 0) {
+      if (blur > 0 && !isMobile) {
         overlay.style.backdropFilter = `blur(${blur}px)`;
         overlay.style.webkitBackdropFilter = `blur(${blur}px)`;
       } else {
@@ -108,6 +81,90 @@ export function applyBgEffects() {
         overlay.style.webkitBackdropFilter = 'none';
       }
       overlay.style.backgroundColor = overlayColor;
+    }
+  } else {
+    // --- IMAGE WALLPAPER (kode asli) ---
+    // Sembunyikan video
+    if (bgVideo) {
+      bgVideo.pause();
+      bgVideo.style.display = 'none';
+    }
+
+    if (isMobile) {
+      if (overlay) {
+        overlay.style.backdropFilter = 'none';
+        overlay.style.webkitBackdropFilter = 'none';
+        overlay.style.backgroundColor = overlayColor;
+      }
+      if (bgLayer) {
+        if (currentWallpaperUrl && bgType !== 'none') {
+          bgLayer.style.backgroundImage = `url('${currentWallpaperUrl}')`;
+          bgLayer.style.filter = blur > 0 ? `blur(${blur}px)` : 'none';
+          
+          if (bgType === 'fill' || bgType === 'parallax') bgLayer.style.backgroundSize = 'cover';
+          else if (bgType === 'fit') bgLayer.style.backgroundSize = 'contain';
+          else if (bgType === 'stretch') bgLayer.style.backgroundSize = '100% 100%';
+          
+          bgLayer.style.backgroundPosition = 'center';
+          bgLayer.style.backgroundRepeat = 'no-repeat';
+          bgLayer.style.transform = 'scale(1.05)';
+          document.body.style.backgroundImage = 'none';
+        } else {
+          bgLayer.style.backgroundImage = 'none';
+          document.body.style.backgroundImage = 'none';
+        }
+      }
+    } else {
+      // Desktop
+      if (bgLayer) {
+        if (bgType === 'parallax' && currentWallpaperUrl) {
+          bgLayer.style.backgroundImage = `url('${currentWallpaperUrl}')`;
+          bgLayer.style.filter = 'none';
+          bgLayer.style.backgroundSize = 'cover';
+          bgLayer.style.backgroundPosition = 'center';
+          bgLayer.style.backgroundRepeat = 'no-repeat';
+          
+          const strength = (AppState.bgParallaxStrength !== undefined ? AppState.bgParallaxStrength : 50) / 100;
+          const dynamicScale = 1.0 + (strength * 0.20); 
+          bgLayer.style.transform = `scale(${dynamicScale}) translate3d(0, 0, 0)`;
+          
+          document.body.style.backgroundImage = 'none';
+        } else {
+          bgLayer.style.backgroundImage = 'none';
+          bgLayer.style.filter = 'none';
+          bgLayer.style.transform = 'scale(1.05)';
+
+          if (currentWallpaperUrl && bgType !== 'none') {
+            document.body.style.backgroundImage = `url('${currentWallpaperUrl}')`;
+            if (bgType === 'fill') document.body.style.backgroundSize = 'cover';
+            else if (bgType === 'fit') document.body.style.backgroundSize = 'contain';
+            else if (bgType === 'stretch') document.body.style.backgroundSize = '100% 100%';
+            else if (bgType === 'tile') {
+              document.body.style.backgroundSize = 'auto';
+              document.body.style.backgroundPosition = 'top left';
+              document.body.style.backgroundRepeat = 'repeat';
+            } else if (bgType === 'center') {
+              document.body.style.backgroundSize = 'auto';
+              document.body.style.backgroundPosition = 'center';
+            }
+            if (bgType !== 'tile') document.body.style.backgroundPosition = 'center';
+            if (bgType !== 'tile') document.body.style.backgroundRepeat = 'no-repeat';
+            document.body.style.backgroundAttachment = 'scroll';
+          } else {
+            document.body.style.backgroundImage = 'none';
+          }
+        }
+      }
+      if (overlay) {
+        if (blur > 0) {
+          overlay.style.backdropFilter = `blur(${blur}px)`;
+          overlay.style.webkitBackdropFilter = `blur(${blur}px)`;
+        } else {
+          overlay.style.backdropFilter = 'none';
+          overlay.style.webkitBackdropFilter = 'none';
+        }
+        overlay.style.backgroundColor = overlayColor;
+      }
     }
   }
 
@@ -118,6 +175,21 @@ export function applyBgEffects() {
     previewOverlay.style.backgroundColor = overlayColor;
   }
 }
+
+// -----------------------------------------------
+// VIDEO AUTO-PAUSE: Hemat GPU saat tab tidak terlihat
+// -----------------------------------------------
+document.addEventListener('visibilitychange', () => {
+  const bgVideo = document.getElementById('bgVideoLayer');
+  if (!bgVideo) return;
+  if (AppState.bgModeType !== 'video') return;
+
+  if (document.hidden) {
+    bgVideo.pause();
+  } else {
+    bgVideo.play().catch(() => {});
+  }
+});
 
 // Parallax Effect Smooth
 let parallaxCurrentX = 0;

@@ -64,6 +64,8 @@ export const AppState = {
   // --- Wallpaper Aktif ---
   customBackground: '',
   currentWallpaperUrl: '',
+  bgModeType: 'image', // 'image' atau 'video'
+  videoSizeLimit: 100, // 0 = unlimited, angka = MB
 
   // --- Custom Config ---
   customClock: { ...defaultCustomClock },
@@ -78,7 +80,8 @@ export const KeysToSave = [
   'themeMode', 'clockStyle', 'searchStyle', 'clockSize', 'weatherSize', 'weatherOpacity', 'settingsOpacity', 'iconSize', 'iconRadius',
   'useIconBg', 'useCardBg', 'titlePosition', 'defaultGroupBehavior', 'groupTransitionEffect', 'lastActiveGroup',
   'showGroupItemCount', 'openInNewTab', 'confirmDelete', 'customClock', 'customSearch',
-  'elyxoras', 'groups', 'clickStats'
+  'elyxoras', 'groups', 'clickStats',
+  'bgModeType', 'videoSizeLimit'
 ];
 
 // --- LOAD STATE ---

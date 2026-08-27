@@ -11,6 +11,8 @@
 <body>
   <!-- Layer background gambar (untuk blur ringan di mobile via filter, bukan backdrop-filter) -->
   <div id="bgImageLayer"></div>
+  <!-- Layer background video (Live Wallpaper) -->
+  <video id="bgVideoLayer" autoplay loop muted playsinline style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; pointer-events: none; transform: translate3d(0,0,0);"></video>
   <!-- Latar Belakang Overlay -->
   <div class="bg-overlay"></div>
 
@@ -767,7 +769,7 @@
             <label
               style="color: var(--text-dim); margin-bottom: 12px; display: block; font-size: 0.85rem; font-weight: 600;">Sumber
               Gambar</label>
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 24px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 24px;">
               <label style="cursor: pointer;">
                 <input type="radio" name="bgMode" value="default" checked style="display: none;">
                 <div class="bg-mode-card"
@@ -813,6 +815,20 @@
                     </svg>
                   </div>
                   <div style="font-size: 0.75rem; font-weight: 600;">Galeri</div>
+                </div>
+              </label>
+              <label style="cursor: pointer;">
+                <input type="radio" name="bgMode" value="video" style="display: none;">
+                <div class="bg-mode-card"
+                  style="padding: 12px 8px; border-radius: 12px; border: 2px solid var(--input-border); background: var(--input-bg); text-align: center; transition: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                  <div style="color: var(--text-dim); transition: 0.3s;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="23 7 16 12 23 17 23 7" />
+                      <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+                    </svg>
+                  </div>
+                  <div style="font-size: 0.75rem; font-weight: 600;">Video</div>
                 </div>
               </label>
             </div>
@@ -879,6 +895,41 @@
               <input type="file" id="bgFileInput" accept="image/*" style="display: none;">
             </div>
 
+            <!-- Video Upload -->
+            <div id="bgVideoWrapper" style="display: none; margin-bottom: 24px; animation: fadeIn 0.3s ease;">
+              <label for="bgVideoInput"
+                style="width: 100%; border-radius: 16px; border: 2px dashed var(--input-border); background: rgba(var(--overlay-base), 0.03); padding: 30px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; gap: 10px;">
+                <div
+                  style="width: 48px; height: 48px; background: var(--glass-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-color);">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="23 7 16 12 23 17 23 7" />
+                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+                  </svg>
+                </div>
+                <div style="text-align: center;">
+                  <div style="font-weight: 600; font-size: 0.9rem; color: var(--text-color);">Pilih Video dari Perangkat</div>
+                  <div id="bgVideoFileName" style="font-size: 0.75rem; color: var(--text-dim); margin-top: 4px;">Mendukung
+                    MP4, WebM</div>
+                </div>
+              </label>
+              <input type="file" id="bgVideoInput" accept="video/mp4,video/webm" style="display: none;">
+
+              <!-- Video Size Limit Option -->
+              <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center; background: var(--input-bg); padding: 10px 14px; border-radius: 10px; border: 1px solid var(--input-border);">
+                <div>
+                  <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-color);">Batas Ukuran File</div>
+                  <div style="font-size: 0.7rem; color: var(--text-dim);">Pilih unlimited atau batasi ukuran video</div>
+                </div>
+                <select id="videoSizeLimit" style="padding: 6px 10px; border-radius: 8px; background: var(--glass-bg); color: var(--text-color); border: 1px solid var(--input-border); font-size: 0.8rem; font-weight: 600; outline: none; cursor: pointer;">
+                  <option value="0">Unlimited</option>
+                  <option value="50">Maks 50 MB</option>
+                  <option value="100" selected>Maks 100 MB</option>
+                  <option value="200">Maks 200 MB</option>
+                  <option value="500">Maks 500 MB</option>
+                </select>
+              </div>
+            </div>
             <!-- Preview Section -->
             <div id="bgPreviewContainer"
               style="display: none; margin-bottom: 24px; position: relative; width: 100%; height: 160px; border-radius: 16px; border: 1px solid var(--modal-border); overflow: hidden; background: var(--input-bg); box-shadow: inset 0 0 20px rgba(0,0,0,0.2);">

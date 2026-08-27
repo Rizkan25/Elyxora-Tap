@@ -9,10 +9,12 @@ import { fetchWeather } from './weather.js';
 import { renderGroups, renderElyxoras } from './groups.js';
 import { debounce, escapeHTML } from './utils.js';
 import { loadTranslations, applyI18n } from './i18n.js';
+import { saveVideoBlob, deleteVideoBlob } from './idb.js';
 
 const setModal = document.getElementById('settingsModal');
 let settingsSnapshot = {};
 let uploadedBgBase64 = '';
+let uploadedVideoBlob = null;
 let currentBgModeOnOpen = 'default';
 
 // -----------------------------------------------
@@ -103,9 +105,12 @@ export function syncInputsWithVars() {
   const pw = get('parallaxStrengthWrapper');
   if (pw) pw.style.display = AppState.bgType === 'parallax' ? 'block' : 'none';
 
-  // Tentukan mode wallpaper berdasarkan apakah ada customBackground
+  // Tentukan mode wallpaper berdasarkan state
   let bgMode = 'default';
-  if (AppState.customBackground) {
+  if (AppState.bgModeType === 'video') {
+    bgMode = 'video';
+    if (get('videoSizeLimit')) get('videoSizeLimit').value = AppState.videoSizeLimit || 0;
+  } else if (AppState.customBackground) {
     if (AppState.customBackground.startsWith('data:image') || AppState.customBackground.startsWith('blob:')) {
       bgMode = 'file';
     } else {
@@ -254,11 +259,16 @@ if (settingsModalContent && settingsModalHeader) {
 // -----------------------------------------------
 const bgRadioUrl = document.querySelector('input[name="bgMode"][value="url"]');
 const bgRadioFile = document.querySelector('input[name="bgMode"][value="file"]');
+const bgRadioVideo = document.querySelector('input[name="bgMode"][value="video"]');
 const bgUrlWrapper = document.getElementById('bgUrlWrapper');
 const bgFileWrapper = document.getElementById('bgFileWrapper');
+const bgVideoWrapper = document.getElementById('bgVideoWrapper');
 const bgUrlInput = document.getElementById('bgUrlInput');
 const bgFileInput = document.getElementById('bgFileInput');
+const bgVideoInput = document.getElementById('bgVideoInput');
 const bgFileName = document.getElementById('bgFileName');
+const bgVideoFileName = document.getElementById('bgVideoFileName');
+const videoSizeLimitSelect = document.getElementById('videoSizeLimit');
 const bgBlurInput = document.getElementById('bgBlurInput');
 const bgDarkInput = document.getElementById('bgDarkInput');
 const bgPreviewContainer = document.getElementById('bgPreviewContainer');
@@ -326,6 +336,7 @@ document.querySelectorAll('input[name="bgMode"]').forEach(radio => {
   radio.addEventListener('change', () => {
     if (bgUrlWrapper) bgUrlWrapper.style.display = bgRadioUrl?.checked ? 'block' : 'none';
     if (bgFileWrapper) bgFileWrapper.style.display = bgRadioFile?.checked ? 'block' : 'none';
+    if (bgVideoWrapper) bgVideoWrapper.style.display = bgRadioVideo?.checked ? 'block' : 'none';
 
     const isDefault = document.querySelector('input[name="bgMode"][value="default"]')?.checked;
     if (isDefault) {
@@ -336,11 +347,20 @@ document.querySelectorAll('input[name="bgMode"]').forEach(radio => {
     } else if (bgRadioFile?.checked && uploadedBgBase64) {
       if (bgPreviewImg) bgPreviewImg.src = uploadedBgBase64;
       if (bgPreviewContainer) bgPreviewContainer.style.display = 'block';
+    } else if (bgRadioVideo?.checked && uploadedVideoBlob) {
+      if (bgPreviewImg) bgPreviewImg.src = '';
+      if (bgPreviewContainer) bgPreviewContainer.style.display = 'block';
     } else {
       if (bgPreviewContainer) bgPreviewContainer.style.display = 'none';
     }
   });
 });
+
+if (videoSizeLimitSelect) {
+  videoSizeLimitSelect.addEventListener('change', (e) => {
+    AppState.videoSizeLimit = parseInt(e.target.value);
+  });
+}
 
 if (bgFileInput) {
   bgFileInput.addEventListener('change', (e) => {
@@ -371,6 +391,29 @@ if (bgFileInput) {
       img.src = event.target.result;
     };
     reader.readAsDataURL(file);
+  });
+}
+
+if (bgVideoInput) {
+  bgVideoInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    // Validasi Limit Size
+    const limitMB = AppState.videoSizeLimit || 0;
+    if (limitMB > 0) {
+      const fileSizeMB = file.size / (1024 * 1024);
+      if (fileSizeMB > limitMB) {
+        alert(`Ukuran video (${fileSizeMB.toFixed(1)}MB) melebihi batas yang Anda atur (${limitMB}MB). Silakan pilih video yang lebih kecil atau ubah batas ukuran ke Unlimited.`);
+        e.target.value = '';
+        return;
+      }
+    }
+
+    if (bgVideoFileName) bgVideoFileName.textContent = file.name;
+    uploadedVideoBlob = file;
+    if (bgPreviewImg) bgPreviewImg.src = '';
+    if (bgPreviewContainer) bgPreviewContainer.style.display = 'block';
   });
 }
 
@@ -894,12 +937,28 @@ if (saveSettingsBtn) {
     currentBgModeOnOpen = bgModeVal;
 
     if (bgModeVal === 'url' && bgUrlInput?.value.trim()) {
+      AppState.bgModeType = 'image';
       AppState.currentWallpaperUrl = bgUrlInput.value.trim();
       AppState.customBackground = bgUrlInput.value.trim();
     } else if (bgModeVal === 'file' && uploadedBgBase64) {
+      AppState.bgModeType = 'image';
       AppState.currentWallpaperUrl = uploadedBgBase64;
       AppState.customBackground = uploadedBgBase64;
+    } else if (bgModeVal === 'video') {
+      AppState.bgModeType = 'video';
+      AppState.customBackground = ''; 
+      AppState.currentWallpaperUrl = '';
+      if (uploadedVideoBlob) {
+        try {
+          await saveVideoBlob(uploadedVideoBlob);
+          // Set null so we don't save repeatedly unless a new file is picked
+          uploadedVideoBlob = null;
+        } catch (e) {
+          console.error("Gagal menyimpan video ke IndexedDB", e);
+        }
+      }
     } else if (bgModeVal === 'default') {
+      AppState.bgModeType = 'image';
       AppState.currentWallpaperUrl = '';
       AppState.customBackground = '';
     }
