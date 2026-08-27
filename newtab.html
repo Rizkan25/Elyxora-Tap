@@ -1094,20 +1094,20 @@
                   style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text-color); font-size: 0.85rem; outline: none;" autocomplete="off">
                 <div id="weatherLocationSuggestions" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 8px; margin-top: 4px; max-height: 200px; overflow-y: auto; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.2);"></div>
               </div>
-              <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; align-items: center;">
+              <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px;">
                 <div
-                  style="display: flex; justify-content: space-between; align-items: center; background: var(--input-bg); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--input-border);">
-                  <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-dim);">Unit</span>
+                  style="display: flex; justify-content: space-between; align-items: center; background: var(--input-bg); padding: 4px 12px; border-radius: 8px; border: 1px solid var(--input-border); min-height: 36px;">
+                  <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-dim); display: flex; align-items: center; line-height: 1;">Unit</span>
                   <select id="weatherUnit"
-                    style="padding: 2px 4px; background: transparent; color: var(--text-color); border: none; font-size: 0.8rem; font-weight: 600; outline: none; cursor: pointer;">
+                    style="background: transparent; color: var(--text-color); border: none; font-size: 0.85rem; font-weight: 700; outline: none; cursor: pointer; padding: 0; margin: 0; display: flex; align-items: center; height: 100%;">
                     <option value="celsius">°C</option>
                     <option value="fahrenheit">°F</option>
                   </select>
                 </div>
-                <label class="toggle-container" style="margin: 0;">
+                <label class="toggle-container" style="margin: 0; height: 100%;">
                   <input type="checkbox" id="weatherForecast" style="display: none;">
-                  <div class="toggle-card" style="padding: 8px 12px; background: var(--input-bg);">
-                    <span style="font-size: 0.75rem; font-weight: 600;">Prakiraan</span>
+                  <div class="toggle-card" style="padding: 4px 12px; background: var(--input-bg); min-height: 36px; height: 100%; box-sizing: border-box;">
+                    <span style="font-size: 0.75rem; font-weight: 600; line-height: 1;">Prakiraan</span>
                     <div class="toggle-switch small"></div>
                   </div>
                 </label>

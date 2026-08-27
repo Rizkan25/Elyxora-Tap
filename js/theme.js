@@ -49,26 +49,53 @@ export function applyBgEffects() {
     document.body.style.backgroundImage = 'none';
 
     if (bgVideo) {
-      // Jika belum ada src (pertama kali load atau baru berubah), ambil dari IndexedDB
-      if (!bgVideo.src || bgVideo.src === '' || bgVideo.src === window.location.href) {
-        getVideoBlob().then(blob => {
-          if (blob) {
-            // Revoke URL lama jika ada
-            if (currentVideoObjectUrl) URL.revokeObjectURL(currentVideoObjectUrl);
-            currentVideoObjectUrl = URL.createObjectURL(blob);
-            bgVideo.src = currentVideoObjectUrl;
-            bgVideo.style.display = 'block';
-            bgVideo.play().catch(() => {});
-          }
-        });
+      // Terapkan tipe wallpaper ke video
+      if (bgType === 'none') {
+        bgVideo.style.display = 'none';
+        bgVideo.pause();
       } else {
-        bgVideo.style.display = 'block';
-      }
+        // Jika belum ada src (pertama kali load atau baru berubah), ambil dari IndexedDB
+        if (!bgVideo.src || bgVideo.src === '' || bgVideo.src === window.location.href) {
+          getVideoBlob().then(blob => {
+            if (blob) {
+              if (currentVideoObjectUrl) URL.revokeObjectURL(currentVideoObjectUrl);
+              currentVideoObjectUrl = URL.createObjectURL(blob);
+              bgVideo.src = currentVideoObjectUrl;
+              bgVideo.style.display = 'block';
+              bgVideo.play().catch(() => {});
+            }
+          });
+        } else {
+          bgVideo.style.display = 'block';
+        }
 
-      // Terapkan filter blur langsung ke element video
-      bgVideo.style.filter = blur > 0 ? `blur(${blur}px)` : 'none';
-      // Sedikit scale agar blur tidak memperlihatkan tepi kosong
-      bgVideo.style.transform = blur > 0 ? 'translate3d(0,0,0) scale(1.05)' : 'translate3d(0,0,0)';
+        // Terapkan object-fit sesuai bgType
+        if (bgType === 'fill' || bgType === 'parallax') {
+          bgVideo.style.objectFit = 'cover';
+        } else if (bgType === 'fit') {
+          bgVideo.style.objectFit = 'contain';
+        } else if (bgType === 'stretch') {
+          bgVideo.style.objectFit = 'fill';
+        } else if (bgType === 'center' || bgType === 'tile') {
+          // 'tile' secara native tidak didukung untuk video, jadi disamakan dengan 'center' 
+          // ('none' berarti ukurannya asli tanpa ditarik)
+          bgVideo.style.objectFit = 'none';
+        }
+
+        // Terapkan filter blur langsung ke element video
+        bgVideo.style.filter = blur > 0 ? `blur(${blur}px)` : 'none';
+        
+        // Scale dinamis untuk parallax atau untuk blur agar tepi tidak terpotong
+        let dynamicScale = 1.0;
+        if (bgType === 'parallax') {
+          const strength = (AppState.bgParallaxStrength !== undefined ? AppState.bgParallaxStrength : 50) / 100;
+          dynamicScale = 1.0 + (strength * 0.20);
+        } else if (blur > 0) {
+          dynamicScale = 1.05;
+        }
+        
+        bgVideo.style.transform = `translate3d(0,0,0) scale(${dynamicScale})`;
+      }
     }
 
     // Overlay tetap diterapkan
