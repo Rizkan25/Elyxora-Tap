@@ -7,7 +7,7 @@ import { applyThemeMode, applyBgEffects, applyAccentColor, applyVisualScales, ap
 import { updateClock } from './clock.js';
 import { fetchWeather } from './weather.js';
 import { renderGroups, renderElyxoras } from './groups.js';
-import { debounce } from './utils.js';
+import { debounce, escapeHTML } from './utils.js';
 import { loadTranslations, applyI18n } from './i18n.js';
 
 const setModal = document.getElementById('settingsModal');
@@ -778,6 +778,66 @@ if (defaultGroupBehaviorEl) defaultGroupBehaviorEl.addEventListener('change', (e
 
 const groupTransitionEl = document.getElementById('groupTransitionEffect');
 if (groupTransitionEl) groupTransitionEl.addEventListener('change', (e) => { AppState.groupTransitionEffect = e.target.value; renderElyxoras(); });
+
+// -----------------------------------------------
+// WEATHER LOCATION AUTOCOMPLETE
+// -----------------------------------------------
+const weatherLocationInput = document.getElementById('weatherLocation');
+const weatherLocSuggestions = document.getElementById('weatherLocationSuggestions');
+let weatherLocTimer;
+
+if (weatherLocationInput && weatherLocSuggestions) {
+  weatherLocationInput.addEventListener('input', (e) => {
+    const query = e.target.value.trim();
+    clearTimeout(weatherLocTimer);
+    
+    if (query.length < 2) {
+      weatherLocSuggestions.style.display = 'none';
+      return;
+    }
+    
+    weatherLocTimer = setTimeout(async () => {
+      try {
+        const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=5&language=${AppState.language === 'id' ? 'id' : 'en'}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.results && data.results.length > 0) {
+            weatherLocSuggestions.innerHTML = data.results.map((loc, idx) => {
+              const fullName = [loc.name, loc.admin1, loc.country].filter(Boolean).join(', ');
+              return `
+                <div class="loc-suggestion-item" data-name="${escapeHTML(loc.name)}" style="padding: 10px 16px; cursor: pointer; transition: 0.2s; color: var(--text-color); font-size: 0.9rem;" 
+                     onmouseover="this.style.background='rgba(255,255,255,0.1)'" 
+                     onmouseout="this.style.background=''">
+                  <div style="font-weight: 600;">${escapeHTML(loc.name)}</div>
+                  <div style="font-size: 0.75rem; color: var(--text-dim);">${escapeHTML(fullName)}</div>
+                </div>
+              `;
+            }).join('');
+            
+            weatherLocSuggestions.querySelectorAll('.loc-suggestion-item').forEach(item => {
+              item.addEventListener('click', () => {
+                weatherLocationInput.value = item.dataset.name;
+                weatherLocSuggestions.style.display = 'none';
+              });
+            });
+            
+            weatherLocSuggestions.style.display = 'block';
+          } else {
+            weatherLocSuggestions.style.display = 'none';
+          }
+        }
+      } catch (err) {
+        console.warn('Gagal memuat saran lokasi:', err);
+      }
+    }, 400);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#weatherLocation') && !e.target.closest('#weatherLocationSuggestions')) {
+      weatherLocSuggestions.style.display = 'none';
+    }
+  });
+}
 
 // -----------------------------------------------
 // SIMPAN PENGATURAN

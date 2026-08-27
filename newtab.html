@@ -1037,10 +1037,11 @@
                 <input type="range" id="weatherOpacity" min="0" max="100" value="100"
                   style="width: 100%; accent-color: var(--accent-color);">
               </div>
-              <div>
+              <div style="position: relative;">
                 <label class="input-label" style="margin-bottom: 8px;">Lokasi Spesifik</label>
                 <input type="text" id="weatherLocation" placeholder="Nama Kota (Kosongkan untuk otomatis)..."
-                  style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text-color); font-size: 0.85rem; outline: none;">
+                  style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text-color); font-size: 0.85rem; outline: none;" autocomplete="off">
+                <div id="weatherLocationSuggestions" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 8px; margin-top: 4px; max-height: 200px; overflow-y: auto; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.2);"></div>
               </div>
               <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; align-items: center;">
                 <div
