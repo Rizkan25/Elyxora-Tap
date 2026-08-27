@@ -18,14 +18,14 @@ function getWeatherEmoji(code) {
 }
 
 function getWeatherDesc(code) {
-  if (code === 0) return 'Cerah';
-  if (code === 1 || code === 2 || code === 3) return 'Berawan';
-  if (code === 45 || code === 48) return 'Berkabut';
-  if (code >= 51 && code <= 67) return 'Hujan Ringan';
-  if (code >= 71 && code <= 77) return 'Salju';
-  if (code >= 80 && code <= 82) return 'Hujan Deras';
-  if (code >= 95) return 'Badai Petir';
-  return 'Berawan';
+  if (code === 0) return getMessage('weatherSunny') || 'Cerah';
+  if (code === 1 || code === 2 || code === 3) return getMessage('weatherCloudy') || 'Berawan';
+  if (code === 45 || code === 48) return getMessage('weatherFoggy') || 'Berkabut';
+  if (code >= 51 && code <= 67) return getMessage('weatherLightRain') || 'Hujan Ringan';
+  if (code >= 71 && code <= 77) return getMessage('weatherSnow') || 'Salju';
+  if (code >= 80 && code <= 82) return getMessage('weatherHeavyRain') || 'Hujan Deras';
+  if (code >= 95) return getMessage('weatherThunderstorm') || 'Badai Petir';
+  return getMessage('weatherCloudy') || 'Berawan';
 }
 
 export async function fetchWeather() {

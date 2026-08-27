@@ -871,6 +871,10 @@ if (saveSettingsBtn) {
     // Periksa gaya ikon
     const iconStyleChanged = prev.iconRadius !== AppState.iconRadius || prev.useIconBg !== AppState.useIconBg || prev.useCardBg !== AppState.useCardBg;
     if (iconStyleChanged) applyIconStyles();
+    
+    // Periksa gaya pencarian
+    const searchStyleChanged = prev.searchStyle !== AppState.searchStyle || JSON.stringify(prev.customSearch) !== JSON.stringify(AppState.customSearch);
+    if (searchStyleChanged) applySearchStyle();
 
     // Periksa grup & shortcut (render ulang grup hanya jika visual atau behaviornya berubah)
     const groupsChanged = iconStyleChanged || 

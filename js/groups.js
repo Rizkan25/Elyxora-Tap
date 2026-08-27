@@ -37,8 +37,8 @@ export function renderGroups() {
   `;
 
   const groupTabsHtml = AppState.groups.map(group => `
-    <button type="button" class="group-tab ${AppState.activeGroup === group ? 'active' : ''}" data-group="${group}" data-name="${group}">
-      ${group} ${getBadgeHtml(counts[group])}
+    <button type="button" class="group-tab ${AppState.activeGroup === group ? 'active' : ''}" data-group="${escapeHTML(group)}" data-name="${escapeHTML(group)}">
+      ${escapeHTML(group)} ${getBadgeHtml(counts[group])}
     </button>
   `).join('');
 
@@ -88,7 +88,7 @@ function updateGroupDropdown() {
   const elyxoraGroupSelect = document.getElementById('elyxoraGroup');
   if (!elyxoraGroupSelect) return;
   const currentVal = elyxoraGroupSelect.value;
-  elyxoraGroupSelect.innerHTML = AppState.groups.map(g => `<option value="${g}">${g}</option>`).join('');
+  elyxoraGroupSelect.innerHTML = AppState.groups.map(g => `<option value="${escapeHTML(g)}">${escapeHTML(g)}</option>`).join('');
   if (AppState.groups.includes(currentVal)) elyxoraGroupSelect.value = currentVal;
   else if (AppState.groups.length > 0) elyxoraGroupSelect.value = AppState.groups[0];
 }
@@ -273,9 +273,9 @@ export function showContextMenu(x, y, id) {
     const moveGroupHtml = availableGroups.length > 0 ? `
       <div style="padding:6px 12px 2px;font-size:0.75rem;color:#888;text-transform:uppercase;margin-top:5px;">Pindah Grup</div>
       ${availableGroups.map(g => `
-        <div class="menu-item move-to-group" data-group="${g}">
+        <div class="menu-item move-to-group" data-group="${escapeHTML(g)}">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          ${g}
+          ${escapeHTML(g)}
         </div>
       `).join('')}
       <div style="height:1px;background:var(--glass-border);margin:5px 0;"></div>
@@ -405,7 +405,7 @@ function showGroupContextMenu(x, y, groupName) {
   }
 
   menu.innerHTML = `
-    <div class="menu-label" style="padding:8px 12px;font-size:0.75rem;opacity:0.5;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">${groupName}</div>
+    <div class="menu-label" style="padding:8px 12px;font-size:0.75rem;opacity:0.5;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">${escapeHTML(groupName)}</div>
     <div class="menu-item" id="gcMenuRename">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
       Ganti Nama
@@ -501,13 +501,13 @@ export function showGroupManagerModal() {
     list.innerHTML = AppState.groups.map((g, i) => {
       const count = AppState.elyxoras.filter(d => d.group === g).length;
       return `
-        <div class="gm-item" draggable="true" data-group="${g}" data-index="${i}"
+        <div class="gm-item" draggable="true" data-group="${escapeHTML(g)}" data-index="${i}"
           style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:var(--glass-bg);border:1px solid var(--glass-border);cursor:grab;user-select:none;">
           <span style="font-size:1rem;opacity:0.4;cursor:grab;">⠿</span>
-          <span style="flex:1;font-weight:600;">${g}</span>
+          <span style="flex:1;font-weight:600;" title="${escapeHTML(g)}">${escapeHTML(g)}</span>
           <span style="font-size:0.75rem;opacity:0.5;background:var(--input-bg);padding:2px 8px;border-radius:20px;">${count} tab</span>
-          <button class="gm-rename-btn" data-group="${g}" title="Ganti Nama" style="background:none;border:none;cursor:pointer;opacity:0.6;padding:4px;color:var(--text-color);display:flex;align-items:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-          <button class="gm-delete-btn" data-group="${g}" title="Hapus" style="background:none;border:none;cursor:pointer;opacity:0.7;padding:4px;color:#ff4d4d;display:flex;align-items:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+          <button class="gm-rename-btn" data-group="${escapeHTML(g)}" title="Ganti Nama" style="background:none;border:none;cursor:pointer;opacity:0.6;padding:4px;color:var(--text-color);display:flex;align-items:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="gm-delete-btn" data-group="${escapeHTML(g)}" title="Hapus" style="background:none;border:none;cursor:pointer;opacity:0.7;padding:4px;color:#ff4d4d;display:flex;align-items:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
         </div>
       `;
     }).join('');

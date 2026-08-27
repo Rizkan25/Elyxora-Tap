@@ -8,6 +8,13 @@
   "loadingWeather": { "message": "Loading Weather..." },
   "loadingDate": { "message": "Loading Date..." },
   "weatherError": { "message": "Failed to Load" },
+  "weatherSunny": { "message": "Sunny" },
+  "weatherCloudy": { "message": "Cloudy" },
+  "weatherFoggy": { "message": "Foggy" },
+  "weatherLightRain": { "message": "Light Rain" },
+  "weatherSnow": { "message": "Snow" },
+  "weatherHeavyRain": { "message": "Heavy Rain" },
+  "weatherThunderstorm": { "message": "Thunderstorm" },
   
   "searchPlaceholder": { "message": "Search on Google..." },
   "addShortcutFabTitle": { "message": "Add Shortcut" },

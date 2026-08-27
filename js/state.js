@@ -45,7 +45,7 @@ export const AppState = {
   weatherForecast: false,
   themeMode: 'dark',
   clockStyle: 'bold',
-  searchStyle: 'glass',
+  searchStyle: 'default',
   clockSize: 100,
   weatherSize: 100,
   weatherOpacity: 100,

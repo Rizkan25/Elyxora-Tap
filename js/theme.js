@@ -365,7 +365,9 @@ export function applySearchStyle() {
   if (submitBtn) {
     const btnSvg = submitBtn.querySelector('svg');
     if (btnSvg) btnSvg.style.stroke = '';
-  } else if (searchStyle === 'custom') {
+  } 
+  
+  if (searchStyle === 'custom') {
     const cs = customSearch;
     searchForm.style.background = cs.bgTransp ? 'transparent' : cs.bgColor;
     searchForm.style.backdropFilter = `blur(${cs.blur}px)`;

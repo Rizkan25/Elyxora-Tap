@@ -8,6 +8,7 @@ import { updateClock } from './clock.js';
 import { fetchWeather } from './weather.js';
 import { renderGroups, renderElyxoras, initGroupDrop, upgradeIconsToBase64, initFAB } from './groups.js';
 import { loadTranslations, applyI18n } from './i18n.js';
+import { escapeHTML } from './utils.js';
 import './modal.js';    // Modul modal diinisialisasi saat di-import
 import './settings.js'; // Modul settings diinisialisasi saat di-import
 
@@ -198,11 +199,11 @@ function initSearch() {
             const data = await res.json();
             const suggestions = data[1] || [];
             if (suggestions.length > 0) {
-              searchSuggestions.innerHTML = suggestions.map(s => `
-                <div class="suggestion-item" style="padding: 10px 16px; cursor: pointer; transition: 0.2s; color: var(--text-color); font-size: 0.95rem;" 
+              searchSuggestions.innerHTML = suggestions.map((s, idx) => `
+                <div class="suggestion-item" data-index="${idx}" style="padding: 10px 16px; cursor: pointer; transition: 0.2s; color: var(--text-color); font-size: 0.95rem;" 
                      onmouseover="this.style.background='var(--glass-bg)'" 
                      onmouseout="this.style.background=''">
-                  ${s}
+                  ${escapeHTML(s)}
                 </div>
               `).join('');
               
@@ -215,6 +216,7 @@ function initSearch() {
               });
               
               searchSuggestions.style.display = 'block';
+              searchSuggestions.dataset.selectedIndex = -1; // Reset selection
             } else {
               searchSuggestions.style.display = 'none';
             }
@@ -223,6 +225,44 @@ function initSearch() {
           console.warn('Error fetching suggestions:', err);
         }
       }, 300);
+    });
+
+    // Keyboard navigation
+    searchInput.addEventListener('keydown', (e) => {
+      if (searchSuggestions.style.display === 'none') return;
+      
+      const items = searchSuggestions.querySelectorAll('.suggestion-item');
+      if (items.length === 0) return;
+      
+      let selectedIndex = parseInt(searchSuggestions.dataset.selectedIndex || '-1');
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        selectedIndex = (selectedIndex + 1) % items.length;
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        selectedIndex = (selectedIndex - 1 + items.length) % items.length;
+      } else if (e.key === 'Escape') {
+        searchSuggestions.style.display = 'none';
+        return;
+      } else if (e.key === 'Enter' && selectedIndex >= 0) {
+        e.preventDefault();
+        searchInput.value = items[selectedIndex].textContent.trim();
+        searchSuggestions.style.display = 'none';
+        searchForm.dispatchEvent(new Event('submit'));
+        return;
+      } else {
+        return; // Ignore other keys
+      }
+
+      searchSuggestions.dataset.selectedIndex = selectedIndex;
+      items.forEach((item, idx) => {
+        if (idx === selectedIndex) {
+          item.style.background = 'var(--glass-bg)';
+        } else {
+          item.style.background = '';
+        }
+      });
     });
 
     // Tutup suggestions kalau klik di luar

@@ -8,6 +8,13 @@
   "loadingWeather": { "message": "Memuat Cuaca..." },
   "loadingDate": { "message": "Memuat Tanggal..." },
   "weatherError": { "message": "Gagal Memuat" },
+  "weatherSunny": { "message": "Cerah" },
+  "weatherCloudy": { "message": "Berawan" },
+  "weatherFoggy": { "message": "Berkabut" },
+  "weatherLightRain": { "message": "Hujan Ringan" },
+  "weatherSnow": { "message": "Salju" },
+  "weatherHeavyRain": { "message": "Hujan Deras" },
+  "weatherThunderstorm": { "message": "Badai Petir" },
   
   "searchPlaceholder": { "message": "Cari di Google..." },
   "addShortcutFabTitle": { "message": "Tambah Pintasan" },
