@@ -944,13 +944,20 @@ if (saveSettingsBtn) {
       AppState.bgModeType = 'image';
       AppState.currentWallpaperUrl = uploadedBgBase64;
       AppState.customBackground = uploadedBgBase64;
-    } else if (bgModeVal === 'video') {
+    }
+    
+    let videoUploaded = false;
+    if (bgModeVal === 'video') {
       AppState.bgModeType = 'video';
       AppState.customBackground = ''; 
       AppState.currentWallpaperUrl = '';
       if (uploadedVideoBlob) {
         try {
           await saveVideoBlob(uploadedVideoBlob);
+          videoUploaded = true;
+          // Kosongkan src video agar `applyBgEffects` mengambilnya lagi dari IndexedDB
+          const bgVideo = document.getElementById('bgVideoLayer');
+          if (bgVideo) bgVideo.src = '';
           // Set null so we don't save repeatedly unless a new file is picked
           uploadedVideoBlob = null;
         } catch (e) {
@@ -1016,11 +1023,13 @@ if (saveSettingsBtn) {
     
     // Periksa wallpaper
     const bgChanged = prev.bgMode !== currentBgModeOnOpen ||
+                      prev.bgModeType !== AppState.bgModeType ||
                       prev.bgType !== AppState.bgType || 
                       prev.bgBlurLevel !== AppState.bgBlurLevel || 
                       prev.bgDarkLevel !== AppState.bgDarkLevel || 
                       prev.bgParallaxStrength !== AppState.bgParallaxStrength || 
-                      prev.currentWallpaperUrl !== AppState.currentWallpaperUrl;
+                      prev.currentWallpaperUrl !== AppState.currentWallpaperUrl ||
+                      videoUploaded;
     if (bgChanged) applyBgEffects();
     
     // Periksa cuaca
