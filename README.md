@@ -28,7 +28,7 @@ Selamat datang di **Elyxora Tab**! 🎉
 - [📁 Struktur Proyek](#-struktur-proyek)
 - [🛠️ Panduan Instalasi](#️-panduan-instalasi)
 - [⚙️ Penggunaan & Konfigurasi](#️-penggunaan--konfigurasi)
-- [🤝 Kontribusi & Lisensi](#-kontribusi--lisensi)
+- [🤝 Kontribusi](#-kontribusi--lisensi)
 
 ---
 
