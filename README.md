@@ -173,10 +173,8 @@ Bagi Anda yang ingin menguji atau memasang Elyxora Tab secara manual di peramban
 
 ---
 
-## 🤝 Kontribusi & Lisensi
+## 🤝 Kontribusi
 
-Dibuat dengan ❤️ untuk meningkatkan kenyamanan, estetika, dan produktivitas harian Anda dalam berselancar di dunia web. 
+Untuk meningkatkan kenyamanan, estetika, dan produktivitas harian Anda dalam berselancar di dunia web. 
 
-Kontribusi, saran perbaikan, maupun pelaporan *bug* sangat kami apresiasi melalui *Pull Request* atau *Issue*.
-
-*© 2026 Elyxora Tab. Released under the MIT License.*
+Kontribusi, saran perbaikan, maupun pelaporan *bug* sangat diapresiasi melalui *Pull Request* atau *Issue*.
