@@ -219,11 +219,11 @@ export function applyIconStyles() {
   let finalRadius = iconRadius;
   let finalTitleDisplay = titlePosition === 'hidden' ? 'none' : 'block';
   let iconHeightPercent = titlePosition === 'inside' ? '75%' : '100%';
-  let gridColumnSize = `auto-fill, minmax(${finalWidth}px, 1fr)`;
+  let gridColumnSize = `auto-fit, ${finalWidth}px`;
 
   if (isPhoneScreen) {
     let mobileGridBase = 110 * (iconSize / 100);
-    gridColumnSize = `auto-fill, minmax(${mobileGridBase}px, 1fr)`;
+    gridColumnSize = `auto-fit, ${mobileGridBase}px`;
     finalWidth = '100%';
     finalHeight = 'auto';
     iconHeightPercent = titlePosition === 'inside' ? '55%' : '75%';
