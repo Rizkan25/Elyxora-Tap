@@ -3282,3 +3282,225 @@ body.zen-mode .time-widget {
   }
 }
 
+/* ==========================================================================
+   STITCH BENTO MASTER SPEED DIAL POLISH & RESPONSIVE PERFECTION
+   ========================================================================== */
+
+/* 1. Search Action Buttons Fix (Prevent 0px width SVG squashing) */
+#searchForm .search-actions-right button.search-icon-action {
+  width: 34px !important;
+  height: 34px !important;
+  padding: 0 !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--text-dim) !important;
+}
+
+#searchForm .search-actions-right button.search-icon-action:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: var(--text-color) !important;
+}
+
+#searchForm .search-actions-right button.search-icon-action svg {
+  width: 17px !important;
+  height: 17px !important;
+  flex-shrink: 0 !important;
+}
+
+/* 2. Hide Redundant Elements */
+#weatherWidget {
+  display: none !important;
+}
+
+#date {
+  display: none !important;
+}
+
+#fabAddBtn, #settingsBtn {
+  display: none !important;
+}
+
+/* 3. Speed Dial Bar & Group Tabs Ribbon Alignment */
+.speed-dial-bar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  max-width: 1100px !important;
+  margin: 18px auto 0 !important;
+  padding: 0 4px !important;
+}
+
+.group-tabs {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  scrollbar-width: none;
+}
+
+.group-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.group-tab {
+  padding: 6px 14px !important;
+  font-size: 0.8rem !important;
+}
+
+.group-tab.group-manage-btn {
+  padding: 6px 10px !important;
+}
+
+/* 4. Spatial Geometry Container Polishing */
+.app-container {
+  max-width: 1100px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 20px !important;
+}
+
+.search-section {
+  margin-top: 24px !important;
+  margin-bottom: 20px !important;
+}
+
+.time-widget {
+  margin: 76px auto 10px !important;
+}
+
+.precision-dock-container {
+  margin: 28px auto 14px !important;
+}
+
+.elyxora-footer {
+  margin-top: 14px !important;
+  padding: 10px 24px !important;
+}
+
+/* 5. Responsive Mastery (Mobile & Tablet) */
+@media (max-width: 1100px) {
+  body {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding-top: 70px !important;
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+  }
+
+  .elyxora-header {
+    order: 0 !important;
+  }
+
+  .time-widget {
+    order: 1 !important;
+    margin-top: 10px !important;
+    padding-top: 10px !important;
+  }
+
+  .search-section {
+    order: 2 !important;
+  }
+
+  .speed-dial-bar {
+    order: 3 !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+  }
+
+  .elyxora-grid {
+    order: 4 !important;
+  }
+
+  .bento-add-row {
+    order: 5 !important;
+  }
+
+  .precision-dock-container {
+    order: 6 !important;
+    margin: 24px auto 14px !important;
+  }
+
+  .elyxora-footer {
+    order: 7 !important;
+  }
+
+  .header-right .top-weather-pill {
+    display: none !important;
+  }
+
+  .nav-views {
+    display: none !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .elyxora-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .elyxora-item {
+    min-height: 64px !important;
+    height: auto !important;
+    aspect-ratio: auto !important;
+    padding: 10px 12px !important;
+    border-radius: 14px !important;
+  }
+
+  .elyxora-icon {
+    width: 36px !important;
+    height: 36px !important;
+    margin-right: 8px !important;
+    padding: 4px !important;
+  }
+
+  .elyxora-icon img {
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  .elyxora-title {
+    font-size: 0.82rem !important;
+  }
+
+  .elyxora-domain {
+    font-size: 0.65rem !important;
+  }
+
+  .elyxora-hotkey {
+    display: none !important;
+  }
+
+  .dock-latency-badge {
+    display: none !important;
+  }
+
+  .precision-dock {
+    padding: 6px 10px !important;
+    gap: 8px !important;
+  }
+
+  .dock-lofi {
+    padding: 4px 10px !important;
+  }
+
+  .dock-canvas-pill {
+    padding: 4px 10px !important;
+  }
+
+  .time {
+    font-size: 4rem !important;
+  }
+}
+
+

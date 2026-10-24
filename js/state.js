@@ -91,7 +91,21 @@ export const KeysToSave = [
 // --- LOAD STATE ---
 // Membaca semua data dari chrome.storage.local dan mengisi AppState
 export async function loadState() {
-  const result = await chrome.storage.local.get(null); // Ambil semua
+  let result = {};
+  if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+    try {
+      result = (await chrome.storage.local.get(null)) || {};
+    } catch (e) {
+      console.warn('Gagal membaca chrome.storage.local:', e);
+    }
+  } else {
+    try {
+      const saved = localStorage.getItem('elyxora_app_state');
+      if (saved) result = JSON.parse(saved);
+    } catch (e) {
+      console.warn('Gagal membaca localStorage fallback:', e);
+    }
+  }
 
   // Muat setiap key yang ada di storage ke AppState
   for (const key of Object.keys(AppState)) {
@@ -150,7 +164,13 @@ export async function saveState() {
       dataToSave[key] = AppState[key];
     }
   }
-  await chrome.storage.local.set(dataToSave);
+  if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+    await chrome.storage.local.set(dataToSave);
+  } else {
+    try {
+      localStorage.setItem('elyxora_app_state', JSON.stringify(dataToSave));
+    } catch (e) {}
+  }
 }
 
 // --- SAVE PARTIAL STATE ---
@@ -170,6 +190,13 @@ export async function savePartialState(partialData) {
     }
   }
   if (Object.keys(filtered).length > 0) {
-    await chrome.storage.local.set(filtered);
+    if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+      await chrome.storage.local.set(filtered);
+    } else {
+      try {
+        const existing = JSON.parse(localStorage.getItem('elyxora_app_state') || '{}');
+        localStorage.setItem('elyxora_app_state', JSON.stringify({ ...existing, ...filtered }));
+      } catch (e) {}
+    }
   }
 }

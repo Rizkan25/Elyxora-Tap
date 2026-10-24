@@ -136,6 +136,21 @@ export function renderElyxoras() {
     container.classList.remove('list-view');
   }
 
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 36px 20px; color: var(--text-dim); text-align: center; gap: 8px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="16"/>
+          <line x1="8" y1="12" x2="16" y2="12"/>
+        </svg>
+        <span style="font-size: 0.88rem; font-weight: 600;">Belum ada pintasan di grup ini</span>
+        <span style="font-size: 0.75rem; opacity: 0.7;">Klik tombol di bawah atau tekan [N] untuk menambahkan pintasan</span>
+      </div>
+    `;
+    return;
+  }
+
   container.innerHTML = filtered.map((elyxora, index) => {
     const iconSrc = elyxora.icon || OFFLINE_ICON_SVG;
     let domain = '';

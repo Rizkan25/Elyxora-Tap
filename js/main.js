@@ -787,7 +787,10 @@ function initExportJSONTrigger() {
   const btn = document.getElementById('dockExportBtn');
   if (!btn) return;
   btn.addEventListener('click', async () => {
-    const data = await chrome.storage.local.get(null);
+    let data = AppState;
+    if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+      data = (await chrome.storage.local.get(null)) || AppState;
+    }
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

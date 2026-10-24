@@ -13,7 +13,13 @@ export async function loadTranslations(langPreference) {
   
   if (!lang || lang === 'auto') {
     // Ambil bahasa browser, biasanya seperti "id" atau "en-US"
-    lang = chrome.i18n.getUILanguage().split('-')[0];
+    if (typeof chrome !== 'undefined' && chrome.i18n && chrome.i18n.getUILanguage) {
+      lang = chrome.i18n.getUILanguage().split('-')[0];
+    } else if (navigator && navigator.language) {
+      lang = navigator.language.split('-')[0];
+    } else {
+      lang = 'id';
+    }
     if (lang !== 'id' && lang !== 'en') {
       lang = 'id'; // Fallback default
     }
@@ -21,14 +27,21 @@ export async function loadTranslations(langPreference) {
 
   currentLang = lang;
 
+  const getLocaleUrl = (l) => {
+    if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.getURL) {
+      return chrome.runtime.getURL(`_locales/${l}/messages.json`);
+    }
+    return `_locales/${l}/messages.json`;
+  };
+
   try {
-    const res = await fetch(chrome.runtime.getURL(`_locales/${lang}/messages.json`));
+    const res = await fetch(getLocaleUrl(lang));
     if (!res.ok) throw new Error('File not found');
     dictionary = await res.json();
   } catch (err) {
     console.warn(`Failed to load ${lang} locale. Falling back to id.`, err);
     try {
-      const fb = await fetch(chrome.runtime.getURL(`_locales/id/messages.json`));
+      const fb = await fetch(getLocaleUrl('id'));
       dictionary = await fb.json();
       currentLang = 'id';
     } catch (e) {

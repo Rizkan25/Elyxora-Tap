@@ -313,76 +313,90 @@ export function applyIconStyles() {
   const isPhoneScreen = window.innerWidth <= 767;
   const { iconSize, iconRadius, titlePosition, useCardBg, useIconBg } = AppState;
 
-  let finalWidth = 180 * (iconSize / 100);
-  let finalHeight = 120 * (iconSize / 100);
-  let finalRadius = iconRadius;
+  let finalRadius = iconRadius || 18;
   let finalTitleDisplay = titlePosition === 'hidden' ? 'none' : 'block';
-  let iconHeightPercent = titlePosition === 'inside' ? '75%' : '100%';
-  let gridColumnSize = `auto-fit, ${finalWidth}px`;
-
-  if (isPhoneScreen) {
-    let mobileGridBase = 110 * (iconSize / 100);
-    gridColumnSize = `auto-fit, ${mobileGridBase}px`;
-    finalWidth = '100%';
-    finalHeight = 'auto';
-    iconHeightPercent = titlePosition === 'inside' ? '55%' : '75%';
-  }
 
   styleEl.textContent = `
-    .elyxora-grid { grid-template-columns: repeat(${gridColumnSize}) !important; }
-    .elyxora-item { 
-      width: ${isPhoneScreen ? finalWidth : finalWidth + 'px'} !important; 
-      height: ${isPhoneScreen ? finalHeight : finalHeight + 'px'} !important; 
-      aspect-ratio: ${isPhoneScreen ? '1 / 1' : 'auto'} !important;
-      border-radius: ${finalRadius}px !important; 
-      padding: ${isPhoneScreen ? '0' : '8px'} !important;
-      margin-bottom: ${titlePosition === 'outside' ? '30px' : '0'} !important;
+    .elyxora-grid {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fill, minmax(${isPhoneScreen ? '140px' : '220px'}, 1fr)) !important;
+      gap: ${isPhoneScreen ? '10px' : '16px'} !important;
+      width: 100% !important;
+      max-width: 1100px !important;
+    }
+    .elyxora-item {
+      width: 100% !important;
+      height: auto !important;
+      min-height: ${isPhoneScreen ? '62px' : '72px'} !important;
+      aspect-ratio: auto !important;
+      border-radius: ${finalRadius}px !important;
+      padding: ${isPhoneScreen ? '8px 12px' : '12px 16px'} !important;
+      margin-bottom: 0 !important;
       background: ${useCardBg ? 'var(--glass-bg)' : 'transparent'} !important;
       border: ${useCardBg ? '1px solid var(--glass-border)' : 'none'} !important;
-      box-shadow: ${useCardBg ? 'var(--glass-shadow)' : 'none'} !important;
-      backdrop-filter: ${(useCardBg) ? 'blur(20px) saturate(180%)' : 'none'} !important;
-      -webkit-backdrop-filter: ${(useCardBg) ? 'blur(20px) saturate(180%)' : 'none'} !important;
+      box-shadow: ${useCardBg ? '0 4px 20px rgba(0, 0, 0, 0.15)' : 'none'} !important;
+      backdrop-filter: ${useCardBg ? 'blur(20px) saturate(180%)' : 'none'} !important;
+      -webkit-backdrop-filter: ${useCardBg ? 'blur(20px) saturate(180%)' : 'none'} !important;
       display: flex !important;
-      flex-direction: column !important;
+      flex-direction: row !important;
       align-items: center !important;
-      justify-content: center !important;
-      gap: 4px !important;
+      justify-content: flex-start !important;
+      gap: 0 !important;
       position: relative !important;
-      overflow: visible !important;
+      overflow: hidden !important;
     }
     .elyxora-icon {
-      width: ${isPhoneScreen ? iconHeightPercent : '100%'} !important;
-      height: ${isPhoneScreen ? iconHeightPercent : iconHeightPercent} !important;
+      width: ${isPhoneScreen ? '36px' : '44px'} !important;
+      height: ${isPhoneScreen ? '36px' : '44px'} !important;
       flex-shrink: 0 !important;
-      border-radius: ${Math.max(0, finalRadius - 4)}px !important;
-      background: ${useIconBg ? 'white' : 'transparent'} !important;
+      border-radius: ${Math.max(6, finalRadius - 6)}px !important;
+      background: ${useIconBg ? 'white' : 'rgba(var(--overlay-base), 0.6)'} !important;
       box-shadow: ${useIconBg ? '0 4px 12px rgba(0,0,0,0.12)' : 'none'} !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
       overflow: hidden !important;
+      margin-right: ${isPhoneScreen ? '8px' : '12px'} !important;
+      padding: 6px !important;
+    }
+    .elyxora-icon img {
+      width: ${isPhoneScreen ? '22px' : '28px'} !important;
+      height: ${isPhoneScreen ? '22px' : '28px'} !important;
+      object-fit: contain !important;
+      padding: 0 !important;
+    }
+    .elyxora-info {
+      flex: 1 !important;
+      min-width: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      text-align: left !important;
+      justify-content: center !important;
     }
     .elyxora-title {
       display: ${finalTitleDisplay} !important;
-      position: ${titlePosition === 'outside' ? 'absolute' : 'static'} !important;
-      bottom: ${titlePosition === 'outside' ? '-28px' : 'auto'} !important;
+      position: static !important;
+      bottom: auto !important;
       width: 100% !important;
       flex: none !important;
-      text-align: center !important;
-      font-size: ${isPhoneScreen ? '0.85rem' : '0.9rem'} !important;
-      font-weight: 600 !important;
-      opacity: 0.9 !important;
+      text-align: left !important;
+      font-size: ${isPhoneScreen ? '0.82rem' : '0.92rem'} !important;
+      font-weight: 700 !important;
+      opacity: 1 !important;
       color: var(--text-color) !important;
-      text-shadow: ${titlePosition === 'outside' ? '0 2px 4px rgba(0,0,0,0.5)' : 'none'} !important;
+      text-shadow: none !important;
       white-space: nowrap !important;
       overflow: hidden !important;
       text-overflow: ellipsis !important;
     }
-    .elyxora-icon img {
-      width: 100% !important;
-      height: 100% !important;
-      object-fit: contain !important;
-      padding: ${isPhoneScreen ? '2px' : '8px'} !important;
+    .elyxora-domain {
+      font-size: ${isPhoneScreen ? '0.66rem' : '0.72rem'} !important;
+      color: var(--text-dim) !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      margin-top: 2px !important;
+      text-align: left !important;
     }
   `;
 }
