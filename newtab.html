@@ -285,10 +285,24 @@
 
 
     <!-- Modal for Add/Edit -->
+    <!-- Modal for Add/Edit -->
     <div id="elyxoraModal" class="modal">
-      <div class="modal-content">
+      <div class="modal-content bento-modal-content">
         <div class="modal-header">
-          <h3 id="elyxoraModalTitle">Tambah di Elyxora Tab</h3>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="modal-header-icon-pill">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="16"/>
+                <line x1="8" y1="12" x2="16" y2="12"/>
+              </svg>
+            </div>
+            <div>
+              <h3 id="elyxoraModalTitle" style="margin: 0; font-size: 1.05rem; font-weight: 700;">Tambah di Elyxora Tab</h3>
+              <span style="font-size: 0.72rem; color: var(--text-dim);">Pintasan Cepat Speed Dial Bento</span>
+            </div>
+          </div>
+          <button id="closeElyxoraXBtn" class="close-modal-btn" aria-label="Tutup Modal">✕</button>
         </div>
 
         <div class="modal-body">
@@ -329,18 +343,18 @@
           </div>
 
           <div class="preview-container">
-            <p style="font-size: 11px; color: #555; font-style: italic; margin-bottom: 8px;" data-i18n="iconPreviewHelp">Help us to improve
+            <p style="font-size: 11px; color: var(--text-dim); font-style: italic; margin-bottom: 8px;" data-i18n="iconPreviewHelp">Help us to improve
               predefined images. Custom logos will be saved locally!</p>
             <div class="preview-box">
-              <img id="iconPreview" src="" alt="Preview">
+              <img id="iconPreview" src="" alt="Preview" style="display: none;">
               <div id="previewPlaceholder" data-i18n="iconPreviewPlaceholder">Akan muncul di sini</div>
             </div>
           </div>
         </div>
 
         <div class="modal-footer">
-          <button id="saveElyxoraBtn" class="save-btn" data-i18n="addShortcutAddBtn">Add Elyxora</button>
-          <button id="cancelElyxoraBtn" class="cancel-btn" data-i18n="cancelShortcutBtn">Cancel</button>
+          <button id="cancelElyxoraBtn" class="btn-secondary" data-i18n="cancelShortcutBtn">Batal</button>
+          <button id="saveElyxoraBtn" class="btn-primary" data-i18n="addShortcutAddBtn">Simpan Pintasan</button>
         </div>
       </div>
     </div>
@@ -475,27 +489,73 @@
     </div>
   </div>
 
-  <!-- Floating Action Buttons (Bottom Right) -->
-  <div
-    style="position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 12px; z-index: 100;">
-    <button id="fabAddBtn" class="settings-btn" title="Tambah Pintasan" data-i18n="addShortcutFabTitle" data-i18n-attr="title"
-      style="position: static; display: flex; align-items: center; justify-content: center; padding: 0;">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-        stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10" />
-        <line x1="12" y1="8" x2="12" y2="16" />
-        <line x1="8" y1="12" x2="16" y2="12" />
-      </svg>
-    </button>
-    <button id="settingsBtn" class="settings-btn" title="Pengaturan Umum" data-i18n="settingsFabTitle" data-i18n-attr="title"
-      style="position: static; display: flex; align-items: center; justify-content: center; padding: 0;">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-        stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="3" />
-        <path
-          d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
-      </svg>
-    </button>
+  <!-- Modal Quick Notes (Notes View) -->
+  <div id="notesModal" class="modal">
+    <div class="modal-content notes-modal-content">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="modal-header-icon-pill">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+          </div>
+          <div>
+            <h3 style="margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--text-color);">Quick Scratchpad & Notes</h3>
+            <span style="font-size: 0.72rem; color: var(--text-dim);">Tersimpan otomatis di penyimpanan lokal</span>
+          </div>
+        </div>
+        <button id="closeNotesBtn" class="close-modal-btn">✕</button>
+      </div>
+      <div class="modal-body" style="padding: 18px 20px;">
+        <textarea id="quickNotesArea" placeholder="Tulis catatan cepat, to-do list, atau ide di sini... (otomatis tersimpan)"></textarea>
+        <div class="notes-meta-bar">
+          <span id="notesCharCount">0 karakter • 0 kata</span>
+          <div style="display: flex; gap: 8px;">
+            <button id="copyNotesBtn" class="notes-action-btn" type="button" title="Salin Catatan">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span>Salin</span>
+            </button>
+            <button id="clearNotesBtn" class="notes-action-btn danger" type="button" title="Hapus Semua">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6"/></svg>
+              <span>Bersihkan</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Detail Cuaca (Weather Detail Popover) -->
+  <div id="weatherDetailModal" class="modal">
+    <div class="modal-content weather-modal-content">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="modal-header-icon-pill">
+            <span id="wDetailHeaderIcon" style="font-size: 1.1rem;">⛅</span>
+          </div>
+          <div>
+            <h3 style="margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--text-color);">Prakiraan Cuaca Lokal</h3>
+            <span id="wDetailLocation" style="font-size: 0.72rem; color: var(--text-dim);">Jakarta • Indonesia</span>
+          </div>
+        </div>
+        <button id="closeWeatherModalBtn" class="close-modal-btn">✕</button>
+      </div>
+      <div class="modal-body" style="padding: 0;">
+        <div class="weather-detail-hero">
+          <div id="wDetailIconLarge" style="font-size: 3.2rem; line-height: 1;">⛅</div>
+          <div class="weather-detail-temp" id="wDetailTemp">28°C</div>
+          <div id="wDetailDesc" style="font-size: 0.95rem; font-weight: 600; color: var(--text-color);">Hujan Ringan</div>
+          <div id="wDetailMeta" style="font-size: 0.75rem; color: var(--text-dim); margin-top: 6px;">Kelembaban: 78% • Angin: 12 km/jam</div>
+        </div>
+        <div class="weather-forecast-row" id="wDetailForecastRow">
+          <!-- Diisi dinamis -->
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Modal Pengaturan Umum -->
@@ -503,17 +563,18 @@
     <div id="settingsModalContent" class="modal-content" style="position: relative;">
 
       <!-- Header -->
-      <div id="settingsModalHeader"
-        style="padding: 15px 25px; border-bottom: 1px solid var(--modal-border); flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; background: rgba(var(--overlay-base), 0.03); cursor: grab;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <div
-            style="width: 32px; height: 32px; background: var(--accent-color); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; overflow: hidden;">
-            <img src="icons/icon128.png" style="width: 100%; height: 100%; object-fit: cover;">
+      <div id="settingsModalHeader" class="settings-modal-header">
+        <div class="settings-header-brand">
+          <img src="icons/elyxora_logo.png" alt="Elyxora" class="settings-header-logo">
+          <div class="settings-header-titles">
+            <div class="settings-title-row">
+              <h3 data-i18n="settingsModalTitle">Pengaturan Elyxora</h3>
+              <span class="settings-version-pill">v2.5 Bento</span>
+            </div>
+            <span class="settings-subtitle">Kustomisasi Tampilan, Wallpaper, dan Pengalaman Tab</span>
           </div>
-          <h3 style="margin: 0; color: var(--text-color); font-size: 1.1rem; font-weight: 700;" data-i18n="settingsModalTitle">Pengaturan Umum</h3>
         </div>
-        <button id="closeSettingsXBtn"
-          style="background: transparent; border: none; color: var(--text-dim); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;">✕</button>
+        <button id="closeSettingsXBtn" class="close-modal-btn" aria-label="Tutup Pengaturan">✕</button>
       </div>
 
       <div class="settings-layout">
@@ -1456,13 +1517,9 @@
       </div>
 
       <!-- Footer -->
-      <div
-        style="padding: 20px 24px; border-top: 1px solid var(--modal-border); display: flex; justify-content: flex-end; gap: 12px; flex-shrink: 0; background: rgba(var(--overlay-base), 0.03);">
-        <button id="closeSettingsBtn"
-          style="padding: 10px 20px; border-radius: 10px; background: var(--glass-bg); border: 1px solid var(--input-border); color: var(--text-color); cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: 0.2s;">Batal</button>
-        <button id="saveSettingsBtn"
-          style="padding: 10px 24px; border-radius: 10px; background: var(--accent-color); border: none; color: white; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(var(--accent-color), 0.3);">Simpan
-          Pengaturan</button>
+      <div class="settings-modal-footer">
+        <button id="closeSettingsBtn" class="btn-secondary">Batal</button>
+        <button id="saveSettingsBtn" class="btn-primary">Simpan Pengaturan</button>
       </div>
     </div>
   </div>

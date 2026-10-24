@@ -139,6 +139,15 @@ if (cancelBtn) {
   };
 }
 
+const closeXBtn = document.getElementById('closeElyxoraXBtn');
+if (closeXBtn) {
+  closeXBtn.onclick = () => {
+    if (modal) modal.style.display = 'none';
+    resetModal();
+    editingId = null;
+  };
+}
+
 // Tutup modal saat klik di luar
 if (modal) {
   modal.addEventListener('click', (e) => {
@@ -281,6 +290,10 @@ async function fetchSuggestedIcons(url) {
 // -----------------------------------------------
 // EVENT: Buka Modal dari Groups / Context Menu
 // -----------------------------------------------
+export function openAddModal(id = null) {
+  document.dispatchEvent(new CustomEvent('openElyxoraModal', { detail: { id } }));
+}
+
 document.addEventListener('openElyxoraModal', (e) => {
   const id = e.detail?.id;
 

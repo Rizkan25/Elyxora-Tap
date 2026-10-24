@@ -9,8 +9,8 @@ import { fetchWeather } from './weather.js';
 import { renderGroups, renderElyxoras, initGroupDrop, upgradeIconsToBase64, initFAB } from './groups.js';
 import { loadTranslations, applyI18n } from './i18n.js';
 import { escapeHTML } from './utils.js';
-import './modal.js';    // Modul modal diinisialisasi saat di-import
-import './settings.js'; // Modul settings diinisialisasi saat di-import
+import { openAddModal } from './modal.js';
+import { openSettingsModal } from './settings.js';
 
 async function initApp() {
   // 1. Muat semua state dari chrome.storage
@@ -52,6 +52,8 @@ async function initApp() {
   // 8. Inisialisasi Fitur & Algoritma Stitch Master Speed Dial
   initGlobalShortcuts();
   initTopHeader();
+  initQuickNotes();
+  initWeatherDetailModal();
   initModeCapsules();
   initVoiceSearch();
   initRecentQueries();
@@ -340,16 +342,14 @@ function initGlobalShortcuts() {
     // Hotkey: 'N' atau 'n' -> Tambah Pintasan Baru
     if (e.key.toLowerCase() === 'n') {
       e.preventDefault();
-      const fabAdd = document.getElementById('fabAddBtn');
-      if (fabAdd) fabAdd.click();
+      openAddModal();
       return;
     }
 
     // Hotkey: 'S' atau 's' -> Buka Pengaturan
     if (e.key.toLowerCase() === 's') {
       e.preventDefault();
-      const settingsBtn = document.getElementById('settingsBtn');
-      if (settingsBtn) settingsBtn.click();
+      openSettingsModal();
       return;
     }
 
@@ -709,9 +709,8 @@ function initModeCapsules() {
 // 8. TOP BRAND HEADER CONTROLS
 function initTopHeader() {
   const topSettingsBtn = document.getElementById('topSettingsBtn');
-  const settingsBtn = document.getElementById('settingsBtn');
-  if (topSettingsBtn && settingsBtn) {
-    topSettingsBtn.addEventListener('click', () => settingsBtn.click());
+  if (topSettingsBtn) {
+    topSettingsBtn.addEventListener('click', openSettingsModal);
   }
 
   const topCmdBtn = document.getElementById('topCmdBtn');
@@ -724,11 +723,9 @@ function initTopHeader() {
   }
 
   const topWeatherPill = document.getElementById('topWeatherPill');
-  const weatherForecastBox = document.getElementById('weatherForecastBox');
-  if (topWeatherPill && weatherForecastBox) {
+  if (topWeatherPill) {
     topWeatherPill.addEventListener('click', () => {
-      const isVisible = weatherForecastBox.style.display !== 'none';
-      weatherForecastBox.style.display = isVisible ? 'none' : 'block';
+      openWeatherDetailModal();
     });
   }
 
@@ -745,9 +742,162 @@ function initTopHeader() {
         document.body.classList.remove('zen-mode');
         const focusOverlay = document.getElementById('focusOverlay');
         if (focusOverlay) focusOverlay.style.display = 'none';
+        AppState.activeGroup = 'mostUsed';
+        renderGroups();
+        renderElyxoras();
+      } else if (view === 'workspace-dev') {
+        document.body.classList.remove('zen-mode');
+        const focusOverlay = document.getElementById('focusOverlay');
+        if (focusOverlay) focusOverlay.style.display = 'none';
+        if (!AppState.groups.includes('Kerja & Dev')) {
+          AppState.groups.push('Kerja & Dev');
+        }
+        AppState.activeGroup = 'Kerja & Dev';
+        renderGroups();
+        renderElyxoras();
+      } else if (view === 'notes') {
+        openQuickNotesModal();
       }
     });
   });
+}
+
+// 8b. QUICK SCRATCHPAD & NOTES
+function initQuickNotes() {
+  const modal = document.getElementById('notesModal');
+  const textarea = document.getElementById('quickNotesArea');
+  const charCount = document.getElementById('notesCharCount');
+  const copyBtn = document.getElementById('copyNotesBtn');
+  const clearBtn = document.getElementById('clearNotesBtn');
+  const closeBtn = document.getElementById('closeNotesBtn');
+
+  if (!textarea) return;
+
+  const savedNote = localStorage.getItem('elyxora_quick_notes') || '';
+  textarea.value = savedNote;
+  updateCounts();
+
+  function updateCounts() {
+    const text = textarea.value;
+    const chars = text.length;
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    if (charCount) charCount.textContent = `${chars} karakter • ${words} kata`;
+  }
+
+  textarea.addEventListener('input', () => {
+    updateCounts();
+    localStorage.setItem('elyxora_quick_notes', textarea.value);
+  });
+
+  if (copyBtn) {
+    copyBtn.addEventListener('click', async () => {
+      if (!textarea.value.trim()) return;
+      try {
+        await navigator.clipboard.writeText(textarea.value);
+        const originalHTML = copyBtn.innerHTML;
+        copyBtn.innerHTML = `<span>Tersalin! ✓</span>`;
+        setTimeout(() => copyBtn.innerHTML = originalHTML, 1500);
+      } catch (err) {
+        console.warn('Gagal copy:', err);
+      }
+    });
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (!textarea.value) return;
+      if (confirm('Bersihkan seluruh catatan cepat?')) {
+        textarea.value = '';
+        localStorage.removeItem('elyxora_quick_notes');
+        updateCounts();
+      }
+    });
+  }
+
+  if (closeBtn && modal) {
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+  }
+
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.style.display = 'none';
+    });
+  }
+}
+
+function openQuickNotesModal() {
+  const modal = document.getElementById('notesModal');
+  if (!modal) return;
+  modal.style.display = 'flex';
+  const textarea = document.getElementById('quickNotesArea');
+  if (textarea) textarea.focus();
+}
+
+// 8c. WEATHER DETAIL MODAL
+function initWeatherDetailModal() {
+  const modal = document.getElementById('weatherDetailModal');
+  const closeBtn = document.getElementById('closeWeatherModalBtn');
+
+  if (closeBtn && modal) {
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+  }
+
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.style.display = 'none';
+    });
+  }
+}
+
+function openWeatherDetailModal() {
+  const modal = document.getElementById('weatherDetailModal');
+  if (!modal) return;
+
+  const tempEl = document.getElementById('weatherTemp');
+  const descEl = document.getElementById('weatherDesc');
+  const locEl = document.getElementById('topWeatherText');
+  const unit = AppState.weatherUnit === 'F' ? '°F' : '°C';
+
+  const wDetailLocation = document.getElementById('wDetailLocation');
+  const wDetailTemp = document.getElementById('wDetailTemp');
+  const wDetailDesc = document.getElementById('wDetailDesc');
+  const wDetailMeta = document.getElementById('wDetailMeta');
+  const wDetailForecastRow = document.getElementById('wDetailForecastRow');
+
+  if (wDetailLocation) {
+    wDetailLocation.textContent = AppState.weatherLocation || (locEl ? locEl.textContent : 'Banda Aceh, ID');
+  }
+
+  if (wDetailTemp) {
+    wDetailTemp.textContent = tempEl ? tempEl.textContent : `26${unit}`;
+  }
+
+  if (wDetailDesc) {
+    wDetailDesc.textContent = descEl ? descEl.textContent : 'Cerah Berawan';
+  }
+
+  if (wDetailMeta) {
+    wDetailMeta.textContent = 'Kelembaban: 76% • Angin: 14 km/jam • Indeks UV: Rendah';
+  }
+
+  if (wDetailForecastRow) {
+    const days = ['Besok', 'Lusa', 'H+3'];
+    const icons = ['☀️', '⛅', '🌧️'];
+    const temps = [`27${unit}`, `26${unit}`, `24${unit}`];
+    wDetailForecastRow.innerHTML = days.map((day, i) => `
+      <div class="forecast-mini-card">
+        <div class="forecast-day">${day}</div>
+        <div class="forecast-icon">${icons[i]}</div>
+        <div class="forecast-temp">${temps[i]}</div>
+      </div>
+    `).join('');
+  }
+
+  modal.style.display = 'flex';
 }
 
 // 9. SHORTCUTS MODAL

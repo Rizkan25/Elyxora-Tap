@@ -169,34 +169,39 @@ export function syncInputsWithVars() {
 // -----------------------------------------------
 // TOMBOL BUKA/TUTUP SETTINGS
 // -----------------------------------------------
-const settingsBtn = document.getElementById('settingsBtn');
-if (settingsBtn) {
-  settingsBtn.onclick = () => {
-    takeSettingsSnapshot();
-    syncInputsWithVars();
-    const firstTab = document.querySelector('.settings-tab[data-tab="tab-style"]');
-    if (firstTab) firstTab.click();
-    if (setModal) {
-      setModal.style.display = 'flex';
-    }
-  };
+export function openSettingsModal() {
+  takeSettingsSnapshot();
+  syncInputsWithVars();
+  const firstTab = document.querySelector('.settings-tab[data-tab="tab-style"]');
+  if (firstTab) firstTab.click();
+  if (setModal) {
+    setModal.style.display = 'flex';
+  }
 }
+
+export function closeSettingsModal() {
+  revertSettings();
+  if (setModal) setModal.style.display = 'none';
+}
+
+const settingsBtn = document.getElementById('settingsBtn');
+if (settingsBtn) settingsBtn.onclick = openSettingsModal;
+
+const topSettingsBtn = document.getElementById('topSettingsBtn');
+if (topSettingsBtn) topSettingsBtn.onclick = openSettingsModal;
+
+const dockSettingsBtn = document.getElementById('dockSettingsBtn');
+if (dockSettingsBtn) dockSettingsBtn.onclick = openSettingsModal;
 
 const closeSettingsBtn = document.getElementById('closeSettingsBtn');
-if (closeSettingsBtn) {
-  closeSettingsBtn.onclick = () => {
-    revertSettings();
-    if (setModal) setModal.style.display = 'none';
-  };
-}
+if (closeSettingsBtn) closeSettingsBtn.onclick = closeSettingsModal;
 
 const closeSettingsXBtn = document.getElementById('closeSettingsXBtn');
-if (closeSettingsXBtn) {
-  closeSettingsXBtn.onclick = () => {
-    revertSettings();
-    if (setModal) setModal.style.display = 'none';
-  };
-}
+if (closeSettingsXBtn) closeSettingsXBtn.onclick = closeSettingsModal;
+
+document.querySelectorAll('[data-open-settings]').forEach(el => {
+  el.addEventListener('click', openSettingsModal);
+});
 
 // -----------------------------------------------
 // DRAGGABLE SETTINGS MODAL

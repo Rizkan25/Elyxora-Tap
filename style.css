@@ -1527,29 +1527,96 @@ input[type="radio"]:checked+.bg-mode-card {
    GROUP TRANSITION EFFECTS
    ============================================ */
 
-/* Settings Modal Layout - Nebula Glass Aesthetic */
+/* Settings Modal Layout - Stitch Bento Glass Aesthetic */
 #settingsModal .modal-content {
-  max-width: 860px !important;
+  max-width: 880px !important;
   width: 95% !important;
-  height: 650px !important;
-  max-height: 90vh !important;
+  height: 660px !important;
+  max-height: 88vh !important;
   display: flex !important;
   flex-direction: column !important;
   border-radius: 24px !important;
   overflow: hidden !important;
   
-  /* Clean Minimalist Dark Theme */
-  background: #0f172a !important; /* Solid dark background */
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border: 1px solid rgba(255, 255, 255, 0.05) !important;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+  background: rgba(15, 23, 42, 0.9) !important;
+  backdrop-filter: blur(32px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 35px rgba(0, 245, 212, 0.1) !important;
 }
 
 [data-theme="light"] #settingsModal .modal-content {
-  background: #ffffff !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1) !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15) !important;
+}
+
+.settings-modal-header {
+  height: 70px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  flex-shrink: 0;
+}
+
+[data-theme="light"] .settings-modal-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.settings-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.settings-header-logo {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 10px !important;
+  object-fit: contain !important;
+  filter: drop-shadow(0 2px 8px rgba(0, 245, 212, 0.35)) !important;
+  display: block !important;
+}
+
+.settings-header-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.settings-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.settings-title-row h3 {
+  margin: 0;
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--text-color);
+  letter-spacing: -0.01em;
+}
+
+.settings-version-pill {
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: rgba(0, 245, 212, 0.12);
+  color: #00f5d4;
+  border: 1px solid rgba(0, 245, 212, 0.3);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.settings-subtitle {
+  font-size: 0.76rem;
+  color: var(--text-dim);
 }
 
 .settings-layout {
@@ -1559,13 +1626,13 @@ input[type="radio"]:checked+.bg-mode-card {
 }
 
 .settings-sidebar {
-  width: 220px;
+  width: 210px;
   background: rgba(255, 255, 255, 0.02);
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 24px 16px;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 20px 14px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   flex-shrink: 0;
 }
 
@@ -1576,7 +1643,7 @@ input[type="radio"]:checked+.bg-mode-card {
 
 .settings-content {
   flex: 1;
-  padding: 32px 40px;
+  padding: 28px 36px;
   overflow-y: auto;
   scrollbar-width: thin;
 }
@@ -1585,15 +1652,15 @@ input[type="radio"]:checked+.bg-mode-card {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
+  padding: 11px 16px;
   border-radius: 12px;
-  border: none;
+  border: 1px solid transparent;
   background: transparent;
   color: var(--text-dim);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.2s;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   width: 100%;
   text-align: left;
 }
@@ -1601,21 +1668,42 @@ input[type="radio"]:checked+.bg-mode-card {
 .settings-tab svg {
   opacity: 0.6;
   transition: 0.2s;
+  flex-shrink: 0;
 }
 
 .settings-tab:hover {
-  background: rgba(var(--overlay-base), 0.05);
+  background: rgba(255, 255, 255, 0.06);
   color: var(--text-color);
+  transform: translateX(2px);
 }
 
 .settings-tab.active {
-  background: rgba(var(--accent-color), 0.15);
-  color: var(--accent-color);
+  background: rgba(0, 245, 212, 0.12);
+  color: #00f5d4;
+  border-color: rgba(0, 245, 212, 0.25);
+  box-shadow: 0 0 16px rgba(0, 245, 212, 0.12);
 }
 
 .settings-tab.active svg {
   opacity: 1;
-  color: var(--accent-color);
+  color: #00f5d4;
+}
+
+.settings-modal-footer {
+  height: 66px;
+  padding: 0 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+[data-theme="light"] .settings-modal-footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(0, 0, 0, 0.02);
 }
 
 .tab-pane {
@@ -3501,6 +3589,506 @@ body.zen-mode .time-widget {
   .time {
     font-size: 4rem !important;
   }
+}
+
+/* ========================================================
+   STITCH BENTO GLASS ADVANCED VIEWS & MODAL SYSTEM
+   ======================================================== */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(3, 7, 18, 0.72) !important;
+  backdrop-filter: blur(24px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.close-modal-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-dim);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.close-modal-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #ef4444;
+  transform: rotate(90deg) scale(1.08);
+}
+
+.modal-header-icon-pill {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(0, 245, 212, 0.12);
+  border: 1px solid rgba(0, 245, 212, 0.25);
+  color: #00f5d4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(0, 245, 212, 0.15);
+}
+
+.btn-secondary {
+  padding: 10px 20px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-color);
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  padding: 10px 24px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent-color, #00f5d4), #3b82f6);
+  border: none;
+  color: #090d16;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 18px rgba(0, 245, 212, 0.3);
+  outline: none;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(0, 245, 212, 0.45);
+  filter: brightness(1.08);
+}
+
+/* 1. Modal Tambah / Edit Pintasan Bento (#elyxoraModal) */
+.bento-modal-content {
+  width: 92%;
+  max-width: 480px;
+  border-radius: 24px;
+  background: rgba(15, 23, 42, 0.92) !important;
+  backdrop-filter: blur(32px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 245, 212, 0.12) !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.bento-modal-content .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.bento-modal-content .modal-body {
+  padding: 20px 22px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.bento-modal-content .modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.bento-modal-content input[type="text"],
+.bento-modal-content input[type="url"],
+.bento-modal-content select {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.bento-modal-content input[type="text"]:focus,
+.bento-modal-content input[type="url"]:focus,
+.bento-modal-content select:focus {
+  border-color: var(--accent-color, #00f5d4);
+  box-shadow: 0 0 16px rgba(0, 245, 212, 0.2);
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.radio-group {
+  display: flex;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 5px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 6px;
+  margin-bottom: 14px;
+}
+
+.radio-group label {
+  flex: 1;
+  text-align: center;
+  padding: 8px 10px;
+  border-radius: 9px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid transparent;
+}
+
+.radio-group label:has(input:checked) {
+  background: rgba(0, 245, 212, 0.15);
+  color: #00f5d4;
+  border: 1px solid rgba(0, 245, 212, 0.3);
+  box-shadow: 0 0 12px rgba(0, 245, 212, 0.15);
+}
+
+.radio-group input[type="radio"] {
+  display: none;
+}
+
+.preview-container {
+  margin-top: 14px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 14px;
+  text-align: center;
+}
+
+.preview-box {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.preview-box:hover {
+  border-color: var(--accent-color, #00f5d4);
+  box-shadow: 0 0 16px rgba(0, 245, 212, 0.2);
+}
+
+.preview-box img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.preview-box #previewPlaceholder {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  padding: 4px;
+}
+
+/* 2. Modal Keyboard Shortcuts (#shortcutsModal) */
+.shortcuts-modal-content {
+  width: 92%;
+  max-width: 580px;
+  border-radius: 24px;
+  background: rgba(15, 23, 42, 0.92) !important;
+  backdrop-filter: blur(32px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 245, 212, 0.12) !important;
+  overflow: hidden;
+}
+
+.shortcuts-modal-content .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.shortcuts-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 24px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.shortcut-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.shortcut-row:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(0, 245, 212, 0.25);
+  transform: translateX(2px);
+}
+
+.shortcut-row span {
+  font-size: 0.86rem;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+/* 3. Modal Quick Notes (#notesModal) */
+.notes-modal-content {
+  width: 92%;
+  max-width: 560px;
+  border-radius: 24px;
+  background: rgba(15, 23, 42, 0.92) !important;
+  backdrop-filter: blur(32px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 245, 212, 0.12) !important;
+  overflow: hidden;
+}
+
+.notes-modal-content .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#quickNotesArea {
+  width: 100%;
+  height: 250px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  color: var(--text-color);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  padding: 14px 16px;
+  outline: none;
+  resize: vertical;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+#quickNotesArea:focus {
+  border-color: var(--accent-color, #00f5d4);
+  box-shadow: 0 0 16px rgba(0, 245, 212, 0.2);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.notes-meta-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.notes-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.notes-action-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.notes-action-btn.danger:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #ef4444;
+}
+
+/* 4. Modal Weather Detail (#weatherDetailModal) */
+.weather-modal-content {
+  width: 92%;
+  max-width: 480px;
+  border-radius: 24px;
+  background: rgba(15, 23, 42, 0.92) !important;
+  backdrop-filter: blur(32px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 245, 212, 0.12) !important;
+  overflow: hidden;
+}
+
+.weather-modal-content .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.weather-detail-hero {
+  padding: 26px 22px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(0, 245, 212, 0.08) 0%, rgba(59, 130, 246, 0.02) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.weather-detail-temp {
+  font-size: 3.2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #ffffff 40%, var(--accent-color, #00f5d4) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 6px 0;
+  line-height: 1.1;
+}
+
+.weather-forecast-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 20px 22px;
+}
+
+.forecast-mini-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  padding: 14px 10px;
+  text-align: center;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.forecast-mini-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(0, 245, 212, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.forecast-day {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+
+.forecast-icon {
+  font-size: 1.6rem;
+  margin: 6px 0;
+}
+
+.forecast-temp {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+/* 5. Sleek Context Menu (.custom-menu) */
+.custom-menu {
+  position: fixed;
+  background: rgba(15, 23, 42, 0.94) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 245, 212, 0.08) !important;
+  padding: 6px !important;
+  min-width: 190px !important;
+  z-index: 3000 !important;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.custom-menu-item {
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.custom-menu-item:hover {
+  background: rgba(0, 245, 212, 0.12);
+  color: #00f5d4;
+  transform: translateX(2px);
+}
+
+.custom-menu-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 4px 6px;
 }
 
 
