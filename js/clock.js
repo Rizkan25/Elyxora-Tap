@@ -47,6 +47,8 @@ export function updateClock() {
 
     if (dateEl && lastDateStr !== newDateStr) {
       dateEl.textContent = newDateStr;
+      const contextDateEl = document.getElementById('contextDateText');
+      if (contextDateEl) contextDateEl.textContent = newDateStr;
       lastDateStr = newDateStr;
     }
   } else {
@@ -66,6 +68,11 @@ export function updateClock() {
   if (greetingEl && lastGreetingStr !== newGreetingStr) {
     greetingEl.textContent = newGreetingStr;
     lastGreetingStr = newGreetingStr;
+  }
+
+  const userInitialEl = document.getElementById('userAvatarInitial');
+  if (userInitialEl) {
+    userInitialEl.textContent = (AppState.userName || 'K').charAt(0).toUpperCase();
   }
 }
 

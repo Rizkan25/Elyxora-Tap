@@ -69,9 +69,22 @@ export async function fetchWeather() {
         return '⛅';
       };
 
-      document.getElementById('wIcon').textContent = wwoEmoji(curr.weatherCode);
-      document.getElementById('wTemp').textContent = `${displayTemp}°${AppState.weatherUnit === 'fahrenheit' ? 'F' : 'C'}`;
+      const emoji = wwoEmoji(curr.weatherCode);
+      const unitSym = AppState.weatherUnit === 'fahrenheit' ? 'F' : 'C';
+      document.getElementById('wIcon').textContent = emoji;
+      document.getElementById('wTemp').textContent = `${displayTemp}°${unitSym}`;
       document.getElementById('wDesc').textContent = `${desc} - ${finalCity}`;
+
+      // Update top header bar weather pill & context zone
+      const topWIcon = document.getElementById('topWIcon');
+      const topWText = document.getElementById('topWText');
+      if (topWIcon) topWIcon.textContent = emoji;
+      if (topWText) topWText.textContent = `${finalCity} ${displayTemp}°${unitSym} ${desc}`;
+
+      const zoneEl = document.getElementById('contextZoneText');
+      if (zoneEl) {
+        zoneEl.textContent = `WIB (UTC+7) • ${finalCity.toUpperCase()}`;
+      }
 
       // Forecast 3 hari
       if (AppState.weatherForecast && data.weather) {
@@ -130,10 +143,24 @@ export async function fetchWeather() {
 
       if (weatherRes.ok) {
         const data = await weatherRes.json();
-        const curr = data.current;
-        document.getElementById('wIcon').textContent = getWeatherEmoji(curr.weather_code);
-        document.getElementById('wTemp').textContent = `${Math.round(curr.temperature_2m)}°${AppState.weatherUnit === 'fahrenheit' ? 'F' : 'C'}`;
-        document.getElementById('wDesc').textContent = `${getWeatherDesc(curr.weather_code)} - ${cityName}`;
+        const e = getWeatherEmoji(curr.weather_code);
+        const wDesc = getWeatherDesc(curr.weather_code);
+        const unitSym = AppState.weatherUnit === 'fahrenheit' ? 'F' : 'C';
+        const t = `${Math.round(curr.temperature_2m)}°${unitSym}`;
+
+        document.getElementById('wIcon').textContent = e;
+        document.getElementById('wTemp').textContent = t;
+        document.getElementById('wDesc').textContent = `${wDesc} - ${cityName}`;
+
+        const topWIcon = document.getElementById('topWIcon');
+        const topWText = document.getElementById('topWText');
+        if (topWIcon) topWIcon.textContent = e;
+        if (topWText) topWText.textContent = `${cityName} ${t} ${wDesc}`;
+
+        const zoneEl = document.getElementById('contextZoneText');
+        if (zoneEl) {
+          zoneEl.textContent = `WIB (UTC+7) • ${cityName.toUpperCase()}`;
+        }
 
         // Forecast 3 hari Open-Meteo
         if (AppState.weatherForecast && data.daily) {

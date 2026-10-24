@@ -2261,3 +2261,1024 @@ input:checked + .toggle-card .toggle-switch::after {
 #searchForm.search-form-style-oled { background: #000000; backdrop-filter: none; border: 1px solid rgba(255,255,255,0.1); border-radius: 40px; padding: 12px 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
 #engineDropdown.engine-dropdown-style-oled { background: #000000; backdrop-filter: none; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
 #searchForm.search-form-style-custom { display: flex; align-items: stretch; width: 100%; transition: all 0.3s ease; position: relative; z-index: 10; }
+
+/* =============================================
+   STITCH CONCEPT: ELYXORA TAB MASTER DESIGN SYSTEM
+   ============================================= */
+
+/* --- 1. TOP BRAND HEADER BAR --- */
+.elyxora-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  background: rgba(var(--overlay-base), 0.75);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: 0 1px 15px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-logo {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0, 240, 255, 0.3));
+}
+
+.brand-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-color);
+  background: linear-gradient(135deg, #ffffff 0%, var(--accent-color) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme="light"] .brand-title {
+  background: linear-gradient(135deg, #0f172a 0%, var(--accent-color) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(57, 255, 20, 0.08);
+  border: 1px solid rgba(57, 255, 20, 0.25);
+  color: #39ff14;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #39ff14;
+  box-shadow: 0 0 8px #39ff14;
+  animation: pulseGreen 2s infinite;
+}
+
+@keyframes pulseGreen {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* Nav View Pills */
+.nav-views {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 12px;
+  background: rgba(var(--overlay-base), 0.5);
+  border: 1px solid var(--glass-border);
+}
+
+.nav-pill {
+  padding: 6px 14px;
+  border-radius: 9px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-pill:hover {
+  color: var(--text-color);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.nav-pill.active {
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  color: var(--accent-color);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* Header Right Controls */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.top-weather-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.top-weather-pill:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--accent-color);
+}
+
+.top-cmd-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: rgba(var(--overlay-base), 0.5);
+  border: 1px solid var(--glass-border);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.top-cmd-pill:hover {
+  color: var(--text-color);
+  background: var(--glass-bg);
+}
+
+.top-icon-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.top-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: var(--accent-color);
+  transform: rotate(30deg);
+}
+
+.user-avatar-badge {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 10px rgba(var(--accent-color-rgb, 59, 130, 246), 0.4);
+  cursor: pointer;
+}
+
+/* --- 2. SPATIAL HUD OPTICAL BACKDROP --- */
+.spatial-hud-backdrop {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spatial-glow-orb {
+  width: 850px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
+  opacity: 0.14;
+  filter: blur(130px);
+  transform: translateY(-80px);
+}
+
+.spatial-grid-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.7;
+}
+
+/* --- 3. CONTEXT RIBBON & MODE SELECTOR CAPSULES --- */
+.context-ribbon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.context-date-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-border);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-color);
+  letter-spacing: 0.04em;
+}
+
+.pulse-dot-amber {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow: 0 0 8px #f59e0b;
+  animation: pulseGlow 2s infinite;
+}
+
+.context-zone {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.85;
+}
+
+.mode-capsules {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 30px;
+  background: rgba(var(--overlay-base), 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  margin-top: 14px;
+}
+
+.mode-capsule {
+  padding: 5px 16px;
+  border-radius: 20px;
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.mode-capsule:hover {
+  color: var(--text-color);
+}
+
+.mode-capsule.active {
+  background: var(--accent-color);
+  color: #ffffff;
+  box-shadow: 0 2px 10px rgba(var(--accent-color-rgb, 59, 130, 246), 0.4);
+}
+
+.focus-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00dbe9;
+  margin-right: 6px;
+  box-shadow: 0 0 6px #00dbe9;
+}
+
+/* --- 4. RAYCAST / ARC STYLE OMNIBOX ENHANCEMENTS --- */
+.search-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-right: 6px;
+  flex-shrink: 0;
+}
+
+.kbd-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(var(--overlay-base), 0.5);
+  border: 1px solid var(--glass-border);
+  color: var(--text-dim);
+  font-size: 0.68rem;
+  font-family: monospace;
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.search-icon-action {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.search-icon-action:hover {
+  color: var(--text-color);
+  background: var(--glass-bg);
+}
+
+.search-icon-action.listening {
+  color: #ef4444;
+  animation: pulseGlow 1s infinite;
+}
+
+/* Recent Queries Ribbon */
+.recent-queries-ribbon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  width: 100%;
+  padding: 10px 4px 0;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.recent-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.recent-chips {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.recent-chip {
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-dim);
+  font-size: 0.74rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.recent-chip:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--text-color);
+  border-color: var(--accent-color);
+  transform: translateY(-1px);
+}
+
+.chip-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-color);
+}
+
+/* --- 5. SPEED DIAL MATRIX BAR & BENTO GRID --- */
+.speed-dial-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 16px;
+  margin-top: 26px;
+  flex-wrap: wrap;
+}
+
+.matrix-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.matrix-sort-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.matrix-sort-badge strong {
+  color: var(--text-color);
+  font-weight: 700;
+}
+
+.view-switcher {
+  display: flex;
+  align-items: center;
+  background: rgba(var(--overlay-base), 0.5);
+  padding: 3px;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+}
+
+.view-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.view-btn.active {
+  background: var(--glass-bg);
+  color: var(--text-color);
+}
+
+/* Bento Grid Cards */
+.elyxora-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+  width: 100%;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.elyxora-item {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 14px 18px;
+  border-radius: 18px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  text-decoration: none;
+  color: var(--text-color);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.elyxora-item:hover {
+  transform: translateY(-4px) scale(1.02);
+  background: rgba(255, 255, 255, 0.14);
+  border-color: var(--accent-color);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(var(--accent-color-rgb, 59, 130, 246), 0.25);
+}
+
+.elyxora-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(var(--overlay-base), 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 12px;
+  padding: 6px;
+  transition: transform 0.25s ease;
+}
+
+.elyxora-item:hover .elyxora-icon {
+  transform: scale(1.08) rotate(3deg);
+}
+
+.elyxora-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.elyxora-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.elyxora-domain {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+
+.elyxora-hotkey {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: rgba(var(--overlay-base), 0.5);
+  border: 1px solid var(--glass-border);
+  color: var(--text-dim);
+  font-size: 0.68rem;
+  font-family: monospace;
+  font-weight: 700;
+  opacity: 0.7;
+  transition: opacity 0.2s, color 0.2s;
+}
+
+.elyxora-item:hover .elyxora-hotkey {
+  opacity: 1;
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+/* List View Mode */
+.elyxora-grid.list-view {
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.elyxora-grid.list-view .elyxora-item {
+  padding: 10px 18px;
+}
+
+/* Bento Add Button */
+.bento-add-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.bento-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: 14px;
+  background: rgba(var(--overlay-base), 0.5);
+  border: 1px solid var(--glass-border);
+  color: var(--text-dim);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bento-add-btn:hover {
+  background: var(--glass-bg);
+  color: var(--text-color);
+  border-color: var(--accent-color);
+  transform: translateY(-2px);
+}
+
+/* --- 6. PRECISION DOCK & UTILITY CAPSULE --- */
+.precision-dock-container {
+  display: flex;
+  justify-content: center;
+  margin: 36px auto 16px;
+  width: 100%;
+  z-index: 20;
+}
+
+.precision-dock {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: rgba(var(--overlay-base), 0.85);
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* Dock Lo-fi */
+.dock-lofi {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  border-radius: 14px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+}
+
+.eq-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 16px;
+  width: 15px;
+}
+
+.eq-bar {
+  width: 3px;
+  background: #39ff14;
+  border-radius: 2px;
+  height: 6px;
+  transition: height 0.2s;
+}
+
+.eq-bars.playing .eq-bar:nth-child(1) { animation: eqBounce1 0.8s ease-in-out infinite; }
+.eq-bars.playing .eq-bar:nth-child(2) { animation: eqBounce2 0.6s ease-in-out infinite 0.2s; }
+.eq-bars.playing .eq-bar:nth-child(3) { animation: eqBounce3 0.7s ease-in-out infinite 0.4s; }
+
+@keyframes eqBounce1 { 0%, 100% { height: 4px; } 50% { height: 16px; } }
+@keyframes eqBounce2 { 0%, 100% { height: 8px; } 50% { height: 14px; } }
+@keyframes eqBounce3 { 0%, 100% { height: 5px; } 50% { height: 15px; } }
+
+.dock-lofi-info {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.dock-lofi-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-color);
+  line-height: 1.2;
+}
+
+.dock-lofi-desc {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+}
+
+.dock-lofi-toggle {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  border: none;
+  background: var(--glass-bg);
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-left: 4px;
+}
+
+.dock-lofi-toggle:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Canvas Quick Switcher Pill */
+.dock-canvas-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 14px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-dim);
+  font-size: 0.75rem;
+}
+
+.canvas-label {
+  font-weight: 700;
+}
+
+.canvas-btn {
+  padding: 3px 10px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.canvas-btn:hover {
+  color: var(--text-color);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.canvas-btn.active {
+  background: var(--accent-color);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 1px 6px rgba(var(--accent-color-rgb, 59, 130, 246), 0.4);
+}
+
+/* Latency Badge */
+.dock-latency-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 14px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.latency-val {
+  font-family: monospace;
+  font-size: 0.7rem;
+  color: #39ff14;
+  font-weight: 700;
+}
+
+/* Export JSON Trigger */
+.dock-export-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 14px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dock-export-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: var(--text-color);
+  border-color: var(--accent-color);
+}
+
+/* --- 7. FUTURISTIC FOOTER --- */
+.elyxora-footer {
+  width: 100%;
+  border-top: 1px solid var(--glass-border);
+  padding: 12px 32px;
+  margin-top: 24px;
+  background: rgba(var(--overlay-base), 0.75);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-left, .footer-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-shortcuts-link {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.footer-shortcuts-link:hover {
+  color: var(--accent-color);
+}
+
+.engine-highlight {
+  color: var(--text-color);
+  font-weight: 700;
+}
+
+/* --- 8. SHORTCUTS MODAL & FOCUS OVERLAY --- */
+.shortcuts-modal-content {
+  max-width: 520px !important;
+}
+
+.shortcuts-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.shortcut-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  font-size: 0.85rem;
+}
+
+.shortcut-row span {
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+/* Focus Mode Card */
+.focus-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInDown 0.3s ease;
+}
+
+.focus-card {
+  width: 90%;
+  max-width: 420px;
+  padding: 32px 28px;
+  border-radius: 24px;
+  background: var(--modal-bg);
+  border: 1px solid var(--modal-border);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.focus-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.focus-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-color);
+  letter-spacing: -0.01em;
+}
+
+.close-focus-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.focus-timer-display {
+  font-size: 4.5rem;
+  font-weight: 800;
+  font-family: monospace;
+  letter-spacing: 2px;
+  color: var(--text-color);
+  margin: 10px 0;
+  text-shadow: 0 0 20px rgba(var(--accent-color-rgb, 59, 130, 246), 0.4);
+}
+
+.focus-timer-controls {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.focus-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--text-color);
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.focus-btn.primary {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(var(--accent-color-rgb, 59, 130, 246), 0.35);
+}
+
+.focus-quote {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* --- 9. MINIMAL ZEN MODE --- */
+body.zen-mode .elyxora-header,
+body.zen-mode .speed-dial-bar,
+body.zen-mode .elyxora-grid,
+body.zen-mode .bento-add-row,
+body.zen-mode .precision-dock-container,
+body.zen-mode .elyxora-footer {
+  display: none !important;
+}
+
+body.zen-mode .time-widget {
+  margin-top: 15vh !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .elyxora-header {
+    padding: 0 16px;
+    height: 56px;
+  }
+  .nav-views, .top-cmd-pill {
+    display: none !important;
+  }
+  .precision-dock {
+    gap: 8px;
+    padding: 8px 12px;
+  }
+  .dock-latency-badge {
+    display: none !important;
+  }
+}
+

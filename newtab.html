@@ -16,14 +16,81 @@
   <!-- Latar Belakang Overlay -->
   <div class="bg-overlay"></div>
 
-  <!-- Widget Waktu & Tanggal -->
-  <div class="time-widget">
-    <div id="greeting" class="greeting">Selamat Pagi</div>
-    <div id="time" class="time">--:--</div>
-    <div id="date" class="date">Memuat Tanggal...</div>
+  <!-- Top Brand Header Bar (Stitch Concept) -->
+  <header class="elyxora-header" id="elyxoraHeader">
+    <div class="header-left">
+      <div class="brand-container">
+        <img src="icons/elyxora_logo.png" alt="Elyxora Tab" class="brand-logo" draggable="false">
+        <span class="brand-title">Elyxora Tab</span>
+      </div>
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        <span class="status-text">Active • Offline Ready</span>
+      </div>
+    </div>
+
+    <nav class="nav-views" id="navViews">
+      <button class="nav-pill active" data-view="speed-dial" type="button">Speed Dial</button>
+      <button class="nav-pill" data-view="workspace-dev" type="button">Workspace Dev</button>
+      <button class="nav-pill" data-view="focus-mode" type="button">Focus Mode</button>
+      <button class="nav-pill" data-view="notes" type="button">Notes</button>
+    </nav>
+
+    <div class="header-right">
+      <div class="top-weather-pill" id="topWeatherPill" title="Lihat Detail Cuaca">
+        <span class="top-w-icon" id="topWIcon">⛅</span>
+        <span class="top-w-text" id="topWText">Jakarta 28°C Hujan Ringan</span>
+      </div>
+      <button class="top-cmd-pill" id="topCmdBtn" type="button" title="Fokus Pencarian (⌘K / Ctrl+K)">
+        <kbd class="kbd-badge">⌘K</kbd>
+        <span class="cmd-label">Search</span>
+      </button>
+      <button id="topSettingsBtn" class="top-icon-btn" type="button" title="Pengaturan Umum (S)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+        </svg>
+      </button>
+      <div class="user-avatar-badge" id="userAvatarBadge" title="Profil Pengguna">
+        <span class="user-avatar-initial" id="userAvatarInitial">K</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Spatial Optical HUD Backdrop -->
+  <div class="spatial-hud-backdrop" aria-hidden="true">
+    <div class="spatial-glow-orb"></div>
+    <div class="spatial-grid-pattern"></div>
   </div>
 
-  <!-- Widget Cuaca -->
+  <!-- Widget Waktu & Tanggal -->
+  <div class="time-widget" id="timeWidgetContainer">
+    <!-- Localized Context Ribbon -->
+    <div class="context-ribbon">
+      <span class="context-date-pill">
+        <span class="pulse-dot-amber"></span>
+        <span id="contextDateText">Memuat Tanggal...</span>
+      </span>
+      <span class="context-zone" id="contextZoneText">WIB (UTC+7) • JAKARTA</span>
+    </div>
+
+    <!-- Humanized Greeting Header -->
+    <div id="greeting" class="greeting">Selamat Pagi</div>
+    <div id="time" class="time">--:--</div>
+    <div id="date" class="date" style="display: none;">Memuat Tanggal...</div>
+
+    <!-- Mode Selector Capsules -->
+    <div class="mode-capsules" id="modeCapsules">
+      <button class="mode-capsule active" data-mode="default" type="button">Default</button>
+      <button class="mode-capsule" data-mode="zen" type="button">Minimal Zen</button>
+      <button class="mode-capsule" data-mode="focus" id="focusModeBtn" type="button">
+        <span class="focus-dot"></span>
+        <span id="focusTimerLabel">Focus (25:00)</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Widget Cuaca (Floating Detail Card) -->
   <div class="weather-widget" id="weatherWidget" title="Prakiraan Cuaca Lokal">
     <div style="display: flex; align-items: center; gap: 12px;">
       <div class="weather-icon" id="wIcon">⛅</div>
@@ -41,10 +108,10 @@
   </div>
 
   <div class="app-container">
-    <!-- Search Bar -->
+    <!-- Search Bar Section -->
     <div class="search-section">
       <div id="searchFormContainer"
-        style="display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 680px;">
+        style="display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 720px;">
         <form id="searchForm" action="https://www.google.com/search" method="GET" target="_blank">
           <!-- Search Engine Selector -->
           <div class="engine-selector"
@@ -107,29 +174,114 @@
                 </svg>
                 <span>DuckDuckGo</span>
               </div>
+              <!-- GitHub -->
+              <div class="engine-option" data-engine="github" data-action="https://github.com/search" data-param="q"
+                style="padding: 10px 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.2s;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+                </svg>
+                <span>GitHub</span>
+              </div>
+              <!-- YouTube -->
+              <div class="engine-option" data-engine="youtube" data-action="https://www.youtube.com/results" data-param="search_query"
+                style="padding: 10px 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.2s;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#FF0000">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+                <span>YouTube</span>
+              </div>
+              <!-- Perplexity -->
+              <div class="engine-option" data-engine="perplexity" data-action="https://www.perplexity.ai/search" data-param="q"
+                style="padding: 10px 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.2s;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22B8CD" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><path d="M11 8v6M8 11h6"/>
+                </svg>
+                <span>Perplexity</span>
+              </div>
             </div>
           </div>
 
-          <input type="text" name="q" placeholder="Cari di Google..." id="searchInput" autocomplete="off" data-i18n="searchPlaceholder">
-          <button type="submit" id="searchSubmitBtn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-              stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-          </button>
+          <input type="text" name="q" placeholder="Cari di web atau ketik perintah... (Tekan / untuk fokus)" id="searchInput" autocomplete="off" data-i18n="searchPlaceholder">
+          <div class="search-actions-right">
+            <kbd class="kbd-badge search-hint-tab">Tab ⇥</kbd>
+            <kbd class="kbd-badge search-hint-enter">↵ Enter</kbd>
+            <button type="button" id="voiceSearchBtn" class="search-icon-action" title="Pencarian Suara">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                <line x1="12" y1="19" x2="12" y2="23"/>
+                <line x1="8" y1="23" x2="16" y2="23"/>
+              </svg>
+            </button>
+            <button type="submit" id="searchSubmitBtn" class="search-icon-action">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </button>
+          </div>
         </form>
 
         <!-- Suggestions Dropdown -->
         <div id="searchSuggestions" class="search-suggestions" style="display: none;"></div>
+
+        <!-- Quick Recent Query / Docs Ribbon -->
+        <div class="recent-queries-ribbon" id="recentQueriesRibbon">
+          <span class="recent-label">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Terkini:
+          </span>
+          <div class="recent-chips" id="recentChips">
+            <button class="recent-chip" type="button" data-query="github.com/Rizkan25/Elyxora-Tap">
+              <span class="chip-dot"></span>
+              <span>github.com/Rizkan25/Elyxora-Tap</span>
+            </button>
+            <button class="recent-chip" type="button" data-query="Tailwind CSS">Tailwind CSS</button>
+            <button class="recent-chip" type="button" data-query="Next.js 15 Docs">Next.js 15 Docs</button>
+            <button class="recent-chip" type="button" data-query="ChatGPT Plus">ChatGPT Plus</button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Group Tabs -->
-    <div class="group-tabs" id="groupTabs"></div>
+    <!-- Speed Dial Bar (Group Tabs & Matrix Controls) -->
+    <div class="speed-dial-bar">
+      <!-- Group Tabs Container (Dynamic) -->
+      <div class="group-tabs" id="groupTabs"></div>
+
+      <!-- Matrix Options & Sort Indicator -->
+      <div class="matrix-controls">
+        <div class="matrix-sort-badge" id="matrixSortIndicator" title="Urutan Pintasan">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="8" y2="18"/></svg>
+          <span>Urutan: <strong id="sortModeLabel">Sering Dikunjungi</strong></span>
+        </div>
+        <div class="view-switcher" id="viewSwitcher">
+          <button class="view-btn active" id="gridViewBtn" type="button" title="Grid View">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          </button>
+          <button class="view-btn" id="listViewBtn" type="button" title="List View">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!-- Elyxora Grid -->
     <div class="elyxora-grid" id="elyxoraGrid"></div>
+
+    <!-- Add Action Trigger Row -->
+    <div class="bento-add-row">
+      <button class="bento-add-btn" id="bentoAddBtn" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="16" />
+          <line x1="8" y1="12" x2="16" y2="12" />
+        </svg>
+        <span>Tambah Pintasan Baru</span>
+        <kbd class="kbd-badge">N</kbd>
+      </button>
+    </div>
 
 
     <!-- Modal for Add/Edit -->
@@ -193,6 +345,136 @@
       </div>
     </div>
   </div>
+
+  <!-- STAGE 5: BOTTOM PRECISION DOCK & UTILITY CAPSULE (Stitch Concept) -->
+  <section class="precision-dock-container" id="precisionDock">
+    <div class="precision-dock">
+      <!-- Live Lo-fi Music Stream Mini Widget -->
+      <div class="dock-lofi" id="dockLofi">
+        <div class="eq-bars" id="eqBars">
+          <span class="eq-bar"></span>
+          <span class="eq-bar"></span>
+          <span class="eq-bar"></span>
+        </div>
+        <div class="dock-lofi-info">
+          <span class="dock-lofi-title">Lofi Hip Hop Radio</span>
+          <span class="dock-lofi-desc">Chilled Cow • Live Stream</span>
+        </div>
+        <button type="button" class="dock-lofi-toggle" id="dockLofiToggle" aria-label="Play/Pause Music">
+          <svg id="lofiPlayIcon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <svg id="lofiPauseIcon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+      </div>
+
+      <!-- Wallpaper Quick Switcher Pill -->
+      <div class="dock-canvas-pill" id="dockCanvasPill">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span class="canvas-label">Canvas:</span>
+        <button class="canvas-btn active" data-canvas="obsidian" type="button">Obsidian Solid</button>
+        <button class="canvas-btn" data-canvas="sunset" type="button">Sunset</button>
+        <button class="canvas-btn" data-canvas="cyber" type="button">Cyber City</button>
+        <button class="canvas-btn" data-canvas="live" id="canvasLiveBtn" type="button" style="display: none;">Live Video</button>
+      </div>
+
+      <!-- Sync Latency Status -->
+      <div class="dock-latency-badge" title="Status Sinkronisasi Penyimpanan Lokal">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 11a7 7 0 0 1-7 7m0 0a7 7 0 0 1-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+        <span>Tersinkronisasi</span>
+        <span class="latency-val">0.3ms</span>
+      </div>
+
+      <!-- Export JSON Trigger -->
+      <button class="dock-export-btn" id="dockExportBtn" type="button" title="Ekspor Cadangan Konfigurasi Profile (JSON)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>Export JSON</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Futuristic Footer -->
+  <footer class="elyxora-footer" id="elyxoraFooter">
+    <div class="footer-content">
+      <div class="footer-left">
+        <span class="footer-version">Elyxora v2.5</span>
+        <span class="footer-dot">•</span>
+        <span class="footer-channel">Stable Channel</span>
+      </div>
+      <div class="footer-right">
+        <a href="#" id="shortcutsHelpLink" class="footer-shortcuts-link">
+          <span class="kbd-bracket">[?]</span>
+          <span>Shortcuts</span>
+        </a>
+        <span class="footer-dot">•</span>
+        <span class="footer-engine-status">Wallpaper Engine: <span id="footerEngineMode" class="engine-highlight">Solid Obsidian</span></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal Keyboard Shortcuts Cheat Sheet -->
+  <div id="shortcutsModal" class="modal">
+    <div class="modal-content shortcuts-modal-content">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 1.2rem;">⌨️</span>
+          <h3 style="margin: 0; font-size: 1.1rem; font-weight: 700;">Pintasan Keyboard (Shortcuts)</h3>
+        </div>
+        <button id="closeShortcutsBtn" class="close-modal-btn">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="shortcuts-grid">
+          <div class="shortcut-row">
+            <kbd class="kbd-badge">/ atau ⌘K</kbd>
+            <span>Fokus ke Pencarian Omnibox</span>
+          </div>
+          <div class="shortcut-row">
+            <kbd class="kbd-badge">Tab ⇥</kbd>
+            <span>Ganti Search Engine saat di form pencarian</span>
+          </div>
+          <div class="shortcut-row">
+            <kbd class="kbd-badge">1 - 8</kbd>
+            <span>Buka Pintasan Speed Dial 1 sampai 8 secara instan</span>
+          </div>
+          <div class="shortcut-row">
+            <kbd class="kbd-badge">N</kbd>
+            <span>Tambah Pintasan Baru</span>
+          </div>
+          <div class="shortcut-row">
+            <kbd class="kbd-badge">S</kbd>
+            <span>Buka Pengaturan Umum</span>
+          </div>
+          <div class="shortcut-row">
+            <kbd class="kbd-badge">Space / P</kbd>
+            <span>Play / Pause Musik Lo-fi</span>
+          </div>
+          <div class="shortcut-row">
+            <kbd class="kbd-badge">?</kbd>
+            <span>Buka / Tutup Panduan Shortcut ini</span>
+          </div>
+          <div class="shortcut-row">
+            <kbd class="kbd-badge">Esc</kbd>
+            <span>Tutup Modal atau Batal Fokus</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pomodoro Focus Mode Overlay / Card -->
+  <div id="focusOverlay" class="focus-overlay" style="display: none;">
+    <div class="focus-card">
+      <div class="focus-header">
+        <span class="focus-title">Focus Session</span>
+        <button id="closeFocusBtn" class="close-focus-btn">✕</button>
+      </div>
+      <div class="focus-timer-display" id="focusTimerDisplay">25:00</div>
+      <div class="focus-timer-controls">
+        <button class="focus-btn primary" id="focusStartPauseBtn" type="button">Mulai</button>
+        <button class="focus-btn" id="focusResetBtn" type="button">Reset</button>
+      </div>
+      <div class="focus-quote">"Tetap tenang dan fokus pada tujuan utama."</div>
+    </div>
+  </div>
+
   <!-- Floating Action Buttons (Bottom Right) -->
   <div
     style="position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 12px; z-index: 100;">

@@ -129,18 +129,41 @@ export function renderElyxoras() {
   const transClass = `transition-${AppState.groupTransitionEffect || 'fadeUp'}`;
   const target = AppState.openInNewTab ? '_blank' : '_self';
 
+  // Sinkronkan class list-view jika viewMode adalah 'list'
+  if (AppState.viewMode === 'list') {
+    container.classList.add('list-view');
+  } else {
+    container.classList.remove('list-view');
+  }
+
   container.innerHTML = filtered.map((elyxora, index) => {
     const iconSrc = elyxora.icon || OFFLINE_ICON_SVG;
+    let domain = '';
+    try {
+      const parsed = new URL(elyxora.url);
+      domain = parsed.hostname.replace(/^www\./, '');
+    } catch (e) {
+      domain = '';
+    }
+
+    const hotkeyBadge = index < 8 ? `<kbd class="elyxora-hotkey">${index + 1}</kbd>` : '';
+
     return `
       <a href="${elyxora.url}" target="${target}" class="elyxora-item ${transClass}"
          data-id="${elyxora.id}"
+         data-index="${index}"
+         data-hotkey="${index < 8 ? index + 1 : ''}"
          ${AppState.activeGroup !== 'mostUsed' ? 'draggable="true"' : ''}
          style="animation-delay:${index * 0.04}s; --anim-delay:${index * 0.04}s; animation-fill-mode:both;">
         <div class="elyxora-icon">
-          <img src="${iconSrc}" alt="${elyxora.title}" draggable="false"
+          <img src="${iconSrc}" alt="${escapeHTML(elyxora.title)}" draggable="false"
                onerror="this.src='${OFFLINE_ICON_SVG}'">
         </div>
-        <div class="elyxora-title">${elyxora.title}</div>
+        <div class="elyxora-info">
+          <div class="elyxora-title">${escapeHTML(elyxora.title)}</div>
+          ${domain ? `<span class="elyxora-domain">${escapeHTML(domain)}</span>` : ''}
+        </div>
+        ${hotkeyBadge}
       </a>
     `;
   }).join('');

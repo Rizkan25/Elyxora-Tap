@@ -49,7 +49,18 @@ async function initApp() {
   updateClock();
   fetchWeather();
 
-  // 8. Upgrade ikon ke base64 di background (tidak blocking)
+  // 8. Inisialisasi Fitur & Algoritma Stitch Master Speed Dial
+  initGlobalShortcuts();
+  initTopHeader();
+  initModeCapsules();
+  initVoiceSearch();
+  initRecentQueries();
+  initViewSwitcher();
+  initPrecisionDock();
+  initShortcutsModal();
+  initExportJSONTrigger();
+
+  // 9. Upgrade ikon ke base64 di background (tidak blocking)
   setTimeout(() => upgradeIconsToBase64(), 2000);
 }
 
@@ -274,5 +285,521 @@ function initSearch() {
   }
 }
 
+// =============================================
+// ALGORITMA FITUR STITCH CONCEPT
+// =============================================
+
+// 1. GLOBAL KEYBOARD SHORTCUTS
+function initGlobalShortcuts() {
+  window.addEventListener('keydown', (e) => {
+    const activeEl = document.activeElement;
+    const isInput = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.isContentEditable);
+    const searchInput = document.getElementById('searchInput');
+
+    // Shortcut di dalam search input: Tab untuk rotasi search engine
+    if (activeEl === searchInput && e.key === 'Tab') {
+      e.preventDefault();
+      cycleSearchEngine();
+      return;
+    }
+
+    // Escape untuk menutup modal atau melepas fokus
+    if (e.key === 'Escape') {
+      const modals = document.querySelectorAll('.modal');
+      modals.forEach(m => m.style.display = 'none');
+      const focusOverlay = document.getElementById('focusOverlay');
+      if (focusOverlay) focusOverlay.style.display = 'none';
+      if (isInput) activeEl.blur();
+      return;
+    }
+
+    // Jika sedang mengetik di input/textarea, abaikan shortcut huruf tunggal
+    if (isInput) return;
+
+    // Hotkey: '/' atau Cmd+K / Ctrl+K untuk fokus pencarian
+    if (e.key === '/' || ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k')) {
+      e.preventDefault();
+      if (searchInput) {
+        searchInput.focus();
+        searchInput.select();
+      }
+      return;
+    }
+
+    // Hotkey: 1 - 8 untuk membuka pintasan Speed Dial secara instan
+    if (/^[1-8]$/.test(e.key)) {
+      const idx = parseInt(e.key) - 1;
+      const items = document.querySelectorAll('.elyxora-item');
+      if (items[idx]) {
+        e.preventDefault();
+        items[idx].click();
+      }
+      return;
+    }
+
+    // Hotkey: 'N' atau 'n' -> Tambah Pintasan Baru
+    if (e.key.toLowerCase() === 'n') {
+      e.preventDefault();
+      const fabAdd = document.getElementById('fabAddBtn');
+      if (fabAdd) fabAdd.click();
+      return;
+    }
+
+    // Hotkey: 'S' atau 's' -> Buka Pengaturan
+    if (e.key.toLowerCase() === 's') {
+      e.preventDefault();
+      const settingsBtn = document.getElementById('settingsBtn');
+      if (settingsBtn) settingsBtn.click();
+      return;
+    }
+
+    // Hotkey: '?' -> Cheat Sheet Shortcuts
+    if (e.key === '?') {
+      e.preventDefault();
+      toggleShortcutsModal();
+      return;
+    }
+
+    // Hotkey: 'P' atau 'p' -> Toggle Musik Lo-fi
+    if (e.key.toLowerCase() === 'p') {
+      e.preventDefault();
+      toggleLofiAudio();
+      return;
+    }
+  });
+}
+
+function cycleSearchEngine() {
+  const options = Array.from(document.querySelectorAll('.engine-option'));
+  if (options.length === 0) return;
+  const currentEngine = localStorage.getItem('elyxora_search_engine') || 'google';
+  const currentIndex = options.findIndex(o => o.dataset.engine === currentEngine);
+  const nextIndex = (currentIndex + 1) % options.length;
+  options[nextIndex].click();
+}
+
+// 2. LO-FI MUSIC & AMBIENT CHORD ENGINE (OFFLINE-READY)
+let lofiAudio = null;
+let isLofiPlaying = false;
+let audioCtx = null;
+let ambientOscillators = [];
+
+function toggleLofiAudio() {
+  const eqBars = document.getElementById('eqBars');
+  const playIcon = document.getElementById('lofiPlayIcon');
+  const pauseIcon = document.getElementById('lofiPauseIcon');
+
+  if (!isLofiPlaying) {
+    if (!lofiAudio) {
+      lofiAudio = new Audio('https://streams.ilovemusic.de/iloveradio17.mp3');
+      lofiAudio.crossOrigin = 'anonymous';
+      lofiAudio.volume = 0.5;
+      lofiAudio.addEventListener('error', () => {
+        playAmbientSynth();
+      });
+    }
+
+    lofiAudio.play().then(() => {
+      isLofiPlaying = true;
+      if (eqBars) eqBars.classList.add('playing');
+      if (playIcon) playIcon.style.display = 'none';
+      if (pauseIcon) pauseIcon.style.display = 'block';
+    }).catch(() => {
+      playAmbientSynth();
+      isLofiPlaying = true;
+      if (eqBars) eqBars.classList.add('playing');
+      if (playIcon) playIcon.style.display = 'none';
+      if (pauseIcon) pauseIcon.style.display = 'block';
+    });
+  } else {
+    if (lofiAudio) {
+      lofiAudio.pause();
+    }
+    stopAmbientSynth();
+    isLofiPlaying = false;
+    if (eqBars) eqBars.classList.remove('playing');
+    if (playIcon) playIcon.style.display = 'block';
+    if (pauseIcon) pauseIcon.style.display = 'none';
+  }
+}
+
+function playAmbientSynth() {
+  try {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    stopAmbientSynth();
+
+    const chord = [220, 261.63, 329.63, 392.00]; // A minor 7 warm lo-fi pad
+    chord.forEach((freq) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.015, audioCtx.currentTime);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      ambientOscillators.push({ osc, gain });
+    });
+  } catch (e) {
+    console.warn('Ambient synth unavailable', e);
+  }
+}
+
+function stopAmbientSynth() {
+  ambientOscillators.forEach(({ osc, gain }) => {
+    try {
+      gain.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime + 0.3);
+      setTimeout(() => osc.stop(), 300);
+    } catch(e) {}
+  });
+  ambientOscillators = [];
+}
+
+// 3. CANVAS QUICK SWITCHER
+function initCanvasSwitcher() {
+  const canvasBtns = document.querySelectorAll('.canvas-btn');
+  const footerMode = document.getElementById('footerEngineMode');
+  const liveBtn = document.getElementById('canvasLiveBtn');
+
+  if (liveBtn && AppState.bgModeType === 'video' && AppState.bgType !== 'none') {
+    liveBtn.style.display = 'inline-block';
+  }
+
+  canvasBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      canvasBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const canvas = btn.dataset.canvas;
+      AppState.activeCanvas = canvas;
+
+      if (canvas === 'obsidian') {
+        document.body.style.backgroundImage = 'linear-gradient(135deg, #10131c 0%, #0b0e17 100%)';
+        if (footerMode) footerMode.textContent = 'Solid Obsidian';
+      } else if (canvas === 'sunset') {
+        document.body.style.backgroundImage = 'linear-gradient(135deg, #1a1035 0%, #2c0051 50%, #480081 100%)';
+        if (footerMode) footerMode.textContent = 'Neon Sunset';
+      } else if (canvas === 'cyber') {
+        document.body.style.backgroundImage = 'linear-gradient(135deg, #001e2c 0%, #00363a 50%, #0d111e 100%)';
+        if (footerMode) footerMode.textContent = 'Cyber City';
+      } else if (canvas === 'live') {
+        applyBgEffects();
+        if (footerMode) footerMode.textContent = 'Live Wallpaper Engine';
+      }
+    });
+  });
+}
+
+function initPrecisionDock() {
+  const toggleBtn = document.getElementById('dockLofiToggle');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', toggleLofiAudio);
+  }
+  initCanvasSwitcher();
+}
+
+// 4. VOICE SEARCH (WEB SPEECH API)
+function initVoiceSearch() {
+  const voiceBtn = document.getElementById('voiceSearchBtn');
+  const searchInput = document.getElementById('searchInput');
+  const searchForm = document.getElementById('searchForm');
+  if (!voiceBtn || !searchInput) return;
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    voiceBtn.style.display = 'none';
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = AppState.language === 'en' ? 'en-US' : 'id-ID';
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  let listening = false;
+
+  voiceBtn.addEventListener('click', () => {
+    if (listening) {
+      recognition.stop();
+      return;
+    }
+    try {
+      recognition.start();
+      listening = true;
+      voiceBtn.classList.add('listening');
+    } catch(e) {
+      voiceBtn.classList.remove('listening');
+      listening = false;
+    }
+  });
+
+  recognition.onresult = (e) => {
+    const text = e.results[0][0].transcript;
+    searchInput.value = text;
+    voiceBtn.classList.remove('listening');
+    listening = false;
+    if (searchForm) searchForm.dispatchEvent(new Event('submit'));
+  };
+
+  recognition.onerror = () => {
+    voiceBtn.classList.remove('listening');
+    listening = false;
+  };
+
+  recognition.onend = () => {
+    voiceBtn.classList.remove('listening');
+    listening = false;
+  };
+}
+
+// 5. RECENT SEARCH CHIPS
+function initRecentQueries() {
+  const chips = document.querySelectorAll('.recent-chip');
+  const searchInput = document.getElementById('searchInput');
+  const searchForm = document.getElementById('searchForm');
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const q = chip.dataset.query || chip.textContent.trim();
+      if (searchInput && q) {
+        searchInput.value = q;
+        if (searchForm) searchForm.dispatchEvent(new Event('submit'));
+      }
+    });
+  });
+}
+
+// 6. VIEW SWITCHER & SPEED DIAL CONTROLS
+function initViewSwitcher() {
+  const gridBtn = document.getElementById('gridViewBtn');
+  const listBtn = document.getElementById('listViewBtn');
+  const sortIndicator = document.getElementById('matrixSortIndicator');
+  const sortModeLabel = document.getElementById('sortModeLabel');
+  const bentoAddBtn = document.getElementById('bentoAddBtn');
+  const fabAddBtn = document.getElementById('fabAddBtn');
+
+  if (gridBtn && listBtn) {
+    if (AppState.viewMode === 'list') {
+      listBtn.classList.add('active');
+      gridBtn.classList.remove('active');
+    }
+
+    gridBtn.addEventListener('click', () => {
+      gridBtn.classList.add('active');
+      listBtn.classList.remove('active');
+      AppState.viewMode = 'grid';
+      savePartialState({ viewMode: 'grid' });
+      renderElyxoras();
+    });
+
+    listBtn.addEventListener('click', () => {
+      listBtn.classList.add('active');
+      gridBtn.classList.remove('active');
+      AppState.viewMode = 'list';
+      savePartialState({ viewMode: 'list' });
+      renderElyxoras();
+    });
+  }
+
+  if (sortIndicator && sortModeLabel) {
+    sortIndicator.style.cursor = 'pointer';
+    sortIndicator.addEventListener('click', () => {
+      if (AppState.activeGroup === 'mostUsed') {
+        const targetGroup = AppState.groups[0] || 'Default';
+        AppState.activeGroup = targetGroup;
+        sortModeLabel.textContent = `Grup: ${targetGroup}`;
+      } else {
+        AppState.activeGroup = 'mostUsed';
+        sortModeLabel.textContent = 'Sering Dikunjungi';
+      }
+      renderGroups();
+      renderElyxoras();
+    });
+  }
+
+  if (bentoAddBtn && fabAddBtn) {
+    bentoAddBtn.addEventListener('click', () => fabAddBtn.click());
+  }
+}
+
+// 7. MODE CAPSULES & POMODORO FOCUS TIMER
+let focusInterval = null;
+let focusSecondsLeft = 25 * 60;
+let isFocusRunning = false;
+
+function initModeCapsules() {
+  const capsules = document.querySelectorAll('.mode-capsule');
+  const focusOverlay = document.getElementById('focusOverlay');
+  const closeFocusBtn = document.getElementById('closeFocusBtn');
+  const startPauseBtn = document.getElementById('focusStartPauseBtn');
+  const resetBtn = document.getElementById('focusResetBtn');
+  const timerDisplay = document.getElementById('focusTimerDisplay');
+
+  capsules.forEach(cap => {
+    cap.addEventListener('click', () => {
+      capsules.forEach(c => c.classList.remove('active'));
+      cap.classList.add('active');
+      const mode = cap.dataset.mode;
+
+      if (mode === 'zen') {
+        document.body.classList.add('zen-mode');
+        if (focusOverlay) focusOverlay.style.display = 'none';
+      } else if (mode === 'focus') {
+        document.body.classList.remove('zen-mode');
+        if (focusOverlay) focusOverlay.style.display = 'flex';
+      } else {
+        document.body.classList.remove('zen-mode');
+        if (focusOverlay) focusOverlay.style.display = 'none';
+      }
+    });
+  });
+
+  if (closeFocusBtn && focusOverlay) {
+    closeFocusBtn.addEventListener('click', () => {
+      focusOverlay.style.display = 'none';
+      capsules.forEach(c => c.classList.remove('active'));
+      const defCap = document.querySelector('.mode-capsule[data-mode="default"]');
+      if (defCap) defCap.classList.add('active');
+    });
+  }
+
+  function updateTimerDisplay() {
+    const mins = String(Math.floor(focusSecondsLeft / 60)).padStart(2, '0');
+    const secs = String(focusSecondsLeft % 60).padStart(2, '0');
+    if (timerDisplay) timerDisplay.textContent = `${mins}:${secs}`;
+    const label = document.getElementById('focusTimerLabel');
+    if (label) label.textContent = `Focus (${mins}:${secs})`;
+  }
+
+  if (startPauseBtn) {
+    startPauseBtn.addEventListener('click', () => {
+      if (!isFocusRunning) {
+        isFocusRunning = true;
+        startPauseBtn.textContent = 'Jeda';
+        focusInterval = setInterval(() => {
+          if (focusSecondsLeft > 0) {
+            focusSecondsLeft--;
+            updateTimerDisplay();
+          } else {
+            clearInterval(focusInterval);
+            isFocusRunning = false;
+            startPauseBtn.textContent = 'Selesai!';
+          }
+        }, 1000);
+      } else {
+        clearInterval(focusInterval);
+        isFocusRunning = false;
+        startPauseBtn.textContent = 'Lanjut';
+      }
+    });
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      clearInterval(focusInterval);
+      isFocusRunning = false;
+      focusSecondsLeft = 25 * 60;
+      updateTimerDisplay();
+      if (startPauseBtn) startPauseBtn.textContent = 'Mulai';
+    });
+  }
+}
+
+// 8. TOP BRAND HEADER CONTROLS
+function initTopHeader() {
+  const topSettingsBtn = document.getElementById('topSettingsBtn');
+  const settingsBtn = document.getElementById('settingsBtn');
+  if (topSettingsBtn && settingsBtn) {
+    topSettingsBtn.addEventListener('click', () => settingsBtn.click());
+  }
+
+  const topCmdBtn = document.getElementById('topCmdBtn');
+  const searchInput = document.getElementById('searchInput');
+  if (topCmdBtn && searchInput) {
+    topCmdBtn.addEventListener('click', () => {
+      searchInput.focus();
+      searchInput.select();
+    });
+  }
+
+  const topWeatherPill = document.getElementById('topWeatherPill');
+  const weatherForecastBox = document.getElementById('weatherForecastBox');
+  if (topWeatherPill && weatherForecastBox) {
+    topWeatherPill.addEventListener('click', () => {
+      const isVisible = weatherForecastBox.style.display !== 'none';
+      weatherForecastBox.style.display = isVisible ? 'none' : 'block';
+    });
+  }
+
+  const navPills = document.querySelectorAll('.nav-pill');
+  navPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      navPills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const view = pill.dataset.view;
+      if (view === 'focus-mode') {
+        const focusCap = document.getElementById('focusModeBtn');
+        if (focusCap) focusCap.click();
+      } else if (view === 'speed-dial') {
+        document.body.classList.remove('zen-mode');
+        const focusOverlay = document.getElementById('focusOverlay');
+        if (focusOverlay) focusOverlay.style.display = 'none';
+      }
+    });
+  });
+}
+
+// 9. SHORTCUTS MODAL
+function initShortcutsModal() {
+  const link = document.getElementById('shortcutsHelpLink');
+  const modal = document.getElementById('shortcutsModal');
+  const closeBtn = document.getElementById('closeShortcutsBtn');
+
+  if (link && modal) {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      modal.style.display = 'flex';
+    });
+  }
+
+  if (closeBtn && modal) {
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+  }
+
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.style.display = 'none';
+    });
+  }
+}
+
+function toggleShortcutsModal() {
+  const modal = document.getElementById('shortcutsModal');
+  if (!modal) return;
+  modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+}
+
+// 10. EXPORT JSON TRIGGER
+function initExportJSONTrigger() {
+  const btn = document.getElementById('dockExportBtn');
+  if (!btn) return;
+  btn.addEventListener('click', async () => {
+    const data = await chrome.storage.local.get(null);
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `elyxora-tab-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+}
+
 // Jalankan
 initApp();
+

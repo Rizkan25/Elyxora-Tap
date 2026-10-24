@@ -67,6 +67,10 @@ export const AppState = {
   bgModeType: 'image', // 'image' atau 'video'
   videoSizeLimit: 100, // 0 = unlimited, angka = MB
 
+  // --- View Mode & Canvas ---
+  viewMode: 'grid', // 'grid' atau 'list'
+  activeCanvas: 'obsidian', // 'obsidian', 'sunset', 'cyber', 'live'
+
   // --- Custom Config ---
   customClock: { ...defaultCustomClock },
   customSearch: { ...defaultCustomSearch }
@@ -81,7 +85,7 @@ export const KeysToSave = [
   'useIconBg', 'useCardBg', 'titlePosition', 'defaultGroupBehavior', 'groupTransitionEffect', 'lastActiveGroup',
   'showGroupItemCount', 'openInNewTab', 'confirmDelete', 'customClock', 'customSearch',
   'elyxoras', 'groups', 'clickStats',
-  'bgModeType', 'videoSizeLimit'
+  'bgModeType', 'videoSizeLimit', 'viewMode', 'activeCanvas'
 ];
 
 // --- LOAD STATE ---
@@ -102,15 +106,21 @@ export async function loadState() {
     }
   }
 
-  // Jika tidak ada data awal, buat default elyxoras
+  // Jika tidak ada data awal, buat default elyxoras (Stitch Master Speed Dial)
   if (!AppState.elyxoras || AppState.elyxoras.length === 0) {
     AppState.elyxoras = [
-      { id: 1, title: 'Google', url: 'https://google.com', icon: '', iconMode: 'auto', group: 'Default' },
-      { id: 2, title: 'YouTube', url: 'https://youtube.com', icon: '', iconMode: 'auto', group: 'Default' }
+      { id: 1, title: 'Google', url: 'https://google.com', icon: '', iconMode: 'auto', group: 'Favorit' },
+      { id: 2, title: 'GitHub', url: 'https://github.com/Rizkan25', icon: '', iconMode: 'auto', group: 'Favorit' },
+      { id: 3, title: 'Claude AI', url: 'https://claude.ai', icon: '', iconMode: 'auto', group: 'Favorit' },
+      { id: 4, title: 'ChatGPT', url: 'https://chatgpt.com', icon: '', iconMode: 'auto', group: 'Favorit' },
+      { id: 5, title: 'YouTube', url: 'https://youtube.com', icon: '', iconMode: 'auto', group: 'Favorit' },
+      { id: 6, title: 'Perplexity', url: 'https://perplexity.ai', icon: '', iconMode: 'auto', group: 'Favorit' },
+      { id: 7, title: 'WhatsApp', url: 'https://web.whatsapp.com', icon: '', iconMode: 'auto', group: 'Favorit' },
+      { id: 8, title: 'Notion', url: 'https://notion.so', icon: '', iconMode: 'auto', group: 'Favorit' }
     ];
   }
   if (!AppState.groups || AppState.groups.length === 0) {
-    AppState.groups = ['Default'];
+    AppState.groups = ['Favorit', 'Kerja & Dev', 'AI Tools', 'Sosial & Media'];
   }
 
   // Tentukan activeGroup sesuai dengan preferensi perilaku default
