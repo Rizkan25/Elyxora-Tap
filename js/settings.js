@@ -3,7 +3,7 @@
 // Mengelola modal pengaturan, wallpaper, dan live preview
 // =============================================
 import { AppState, saveState, KeysToSave } from './state.js';
-import { applyThemeMode, applyBgEffects, applyAccentColor, applyVisualScales, applyIconStyles, applyClockStyle, applySearchStyle } from './theme.js';
+import { applyThemeMode, applyBgEffects, applyAccentColor, applyVisualScales, applyIconStyles, applyClockStyle, applySearchStyle, applyWatermarkVisibility, applyProfileAvatar, updateCanvasPillVisibility } from './theme.js';
 import { updateClock } from './clock.js';
 import { fetchWeather } from './weather.js';
 import { renderGroups, renderElyxoras } from './groups.js';
@@ -58,6 +58,9 @@ function revertSettings() {
   applySearchStyle();
   applyIconStyles();
   applyBgEffects();
+  applyWatermarkVisibility();
+  applyProfileAvatar();
+  updateCanvasPillVisibility();
   updateClock();
   renderGroups();
   syncInputsWithVars();
@@ -66,11 +69,40 @@ function revertSettings() {
 // -----------------------------------------------
 // SYNC INPUTS
 // -----------------------------------------------
+// -----------------------------------------------
+// SYNC INPUTS
+// -----------------------------------------------
+export function updateSettingsAvatarPreview(url) {
+  const previewImg = document.getElementById('settingsAvatarPreviewImg');
+  const fallback = document.getElementById('settingsAvatarFallback');
+  if (url) {
+    if (previewImg) {
+      previewImg.src = url;
+      previewImg.style.display = 'block';
+    }
+    if (fallback) fallback.style.display = 'none';
+  } else {
+    if (previewImg) {
+      previewImg.src = '';
+      previewImg.style.display = 'none';
+    }
+    if (fallback) {
+      fallback.style.display = 'flex';
+      const initial = (AppState.userName || 'M').trim().charAt(0).toUpperCase() || 'M';
+      fallback.textContent = initial;
+    }
+  }
+}
+
 export function syncInputsWithVars() {
   const get = id => document.getElementById(id);
 
   if (get('appLanguage')) get('appLanguage').value = AppState.language;
   if (get('userNameInput')) get('userNameInput').value = AppState.userName;
+  if (get('profileAvatarUrlInput')) get('profileAvatarUrlInput').value = AppState.profileAvatar || '';
+  updateSettingsAvatarPreview(AppState.profileAvatar);
+  if (get('showWatermarkToggle')) get('showWatermarkToggle').checked = AppState.showWatermark !== false;
+
   if (get('clockFormat')) get('clockFormat').value = AppState.clockFormat;
   if (get('showSeconds')) get('showSeconds').checked = AppState.showSeconds;
   if (get('showDate')) get('showDate').checked = AppState.showDate;
@@ -169,11 +201,11 @@ export function syncInputsWithVars() {
 // -----------------------------------------------
 // TOMBOL BUKA/TUTUP SETTINGS
 // -----------------------------------------------
-export function openSettingsModal() {
+export function openSettingsModal(defaultTab = 'tab-style') {
   takeSettingsSnapshot();
   syncInputsWithVars();
-  const firstTab = document.querySelector('.settings-tab[data-tab="tab-style"]');
-  if (firstTab) firstTab.click();
+  const targetTab = document.querySelector(`.settings-tab[data-tab="${defaultTab}"]`) || document.querySelector('.settings-tab[data-tab="tab-style"]');
+  if (targetTab) targetTab.click();
   if (setModal) {
     setModal.style.display = 'flex';
   }
@@ -185,13 +217,13 @@ export function closeSettingsModal() {
 }
 
 const settingsBtn = document.getElementById('settingsBtn');
-if (settingsBtn) settingsBtn.onclick = openSettingsModal;
+if (settingsBtn) settingsBtn.onclick = () => openSettingsModal('tab-style');
 
 const topSettingsBtn = document.getElementById('topSettingsBtn');
-if (topSettingsBtn) topSettingsBtn.onclick = openSettingsModal;
+if (topSettingsBtn) topSettingsBtn.onclick = () => openSettingsModal('tab-style');
 
 const dockSettingsBtn = document.getElementById('dockSettingsBtn');
-if (dockSettingsBtn) dockSettingsBtn.onclick = openSettingsModal;
+if (dockSettingsBtn) dockSettingsBtn.onclick = () => openSettingsModal('tab-style');
 
 const closeSettingsBtn = document.getElementById('closeSettingsBtn');
 if (closeSettingsBtn) closeSettingsBtn.onclick = closeSettingsModal;
@@ -200,7 +232,7 @@ const closeSettingsXBtn = document.getElementById('closeSettingsXBtn');
 if (closeSettingsXBtn) closeSettingsXBtn.onclick = closeSettingsModal;
 
 document.querySelectorAll('[data-open-settings]').forEach(el => {
-  el.addEventListener('click', openSettingsModal);
+  el.addEventListener('click', () => openSettingsModal('tab-style'));
 });
 
 // -----------------------------------------------
@@ -908,6 +940,13 @@ if (saveSettingsBtn) {
 
     AppState.language = readVal('appLanguage', AppState.language);
     AppState.userName = readVal('userNameInput', AppState.userName);
+    AppState.showWatermark = readCheck('showWatermarkToggle', AppState.showWatermark);
+
+    const profileUrlVal = document.getElementById('profileAvatarUrlInput')?.value.trim();
+    if (profileUrlVal) {
+      AppState.profileAvatar = profileUrlVal;
+    }
+
     AppState.clockFormat = readVal('clockFormat', AppState.clockFormat);
     AppState.showSeconds = readCheck('showSeconds', AppState.showSeconds);
     AppState.showDate = readCheck('showDate', AppState.showDate);
@@ -978,6 +1017,11 @@ if (saveSettingsBtn) {
 
     // Simpan ke storage
     await saveState();
+
+    // Terapkan efek visual
+    applyWatermarkVisibility();
+    applyProfileAvatar();
+    updateCanvasPillVisibility();
 
     // Terapkan perubahan HANYA jika ada yang berubah
     const prev = settingsSnapshot;
@@ -1053,6 +1097,54 @@ if (saveSettingsBtn) {
 
     if (setModal) setModal.style.display = 'none';
   };
+}
+
+// -----------------------------------------------
+// LIVE LISTENERS UNTUK WATERMARK & PROFIL AVATAR
+// -----------------------------------------------
+const showWatermarkToggle = document.getElementById('showWatermarkToggle');
+if (showWatermarkToggle) {
+  showWatermarkToggle.addEventListener('change', (e) => {
+    AppState.showWatermark = e.target.checked;
+    applyWatermarkVisibility();
+  });
+}
+
+const profileAvatarUrlInput = document.getElementById('profileAvatarUrlInput');
+if (profileAvatarUrlInput) {
+  profileAvatarUrlInput.addEventListener('input', (e) => {
+    const val = e.target.value.trim();
+    AppState.profileAvatar = val;
+    updateSettingsAvatarPreview(val);
+    applyProfileAvatar();
+  });
+}
+
+const profileAvatarFileInput = document.getElementById('profileAvatarFileInput');
+if (profileAvatarFileInput) {
+  profileAvatarFileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      AppState.profileAvatar = event.target.result;
+      if (profileAvatarUrlInput) profileAvatarUrlInput.value = '';
+      updateSettingsAvatarPreview(AppState.profileAvatar);
+      applyProfileAvatar();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+const resetProfileAvatarBtn = document.getElementById('resetProfileAvatarBtn');
+if (resetProfileAvatarBtn) {
+  resetProfileAvatarBtn.addEventListener('click', () => {
+    AppState.profileAvatar = '';
+    if (profileAvatarUrlInput) profileAvatarUrlInput.value = '';
+    if (profileAvatarFileInput) profileAvatarFileInput.value = '';
+    updateSettingsAvatarPreview('');
+    applyProfileAvatar();
+  });
 }
 
 // -----------------------------------------------

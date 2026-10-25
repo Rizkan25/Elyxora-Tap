@@ -201,6 +201,9 @@ export function applyBgEffects() {
     previewOverlay.style.webkitBackdropFilter = blur > 0 ? `blur(${blur}px)` : 'none';
     previewOverlay.style.backgroundColor = overlayColor;
   }
+
+  // Update visibilitas dock canvas pill
+  updateCanvasPillVisibility();
 }
 
 // -----------------------------------------------
@@ -557,3 +560,36 @@ export function applySearchStyle() {
     }
   }
 }
+
+// -----------------------------------------------
+// 7. VISIBILITY & DOCK ADAPTATIONS
+// -----------------------------------------------
+export function updateCanvasPillVisibility() {
+  const canvasPill = document.getElementById('dockCanvasPill');
+  if (!canvasPill) return;
+  // Canvas Quick Switcher HANYA muncul jika memakai latar belakang bawaan
+  const isDefaultBg = !AppState.customBackground && AppState.bgModeType !== 'video';
+  canvasPill.style.display = isDefaultBg ? 'flex' : 'none';
+}
+
+export function applyWatermarkVisibility() {
+  const brandLogoContainer = document.getElementById('brandLogoContainer');
+  if (!brandLogoContainer) return;
+  const show = AppState.showWatermark !== false; // default true
+  brandLogoContainer.style.display = show ? 'flex' : 'none';
+}
+
+export function applyProfileAvatar() {
+  const avatarBadge = document.getElementById('userAvatarBadge');
+  if (!avatarBadge) return;
+  
+  const avatarUrl = AppState.profileAvatar;
+  const initial = (AppState.userName || 'K').trim().charAt(0).toUpperCase() || 'K';
+  
+  if (avatarUrl) {
+    avatarBadge.innerHTML = `<img src="${avatarUrl}" alt="Avatar" class="user-avatar-img">`;
+  } else {
+    avatarBadge.innerHTML = `<span class="user-avatar-initial" id="userAvatarInitial">${initial}</span>`;
+  }
+}
+

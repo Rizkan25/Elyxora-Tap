@@ -3,7 +3,7 @@
 // Menginisialisasi aplikasi dan merangkai semua modul
 // =============================================
 import { AppState, loadState } from './state.js';
-import { applyThemeMode, applyBgEffects, applyAccentColor, applyVisualScales, applyClockStyle, applySearchStyle, applyIconStyles } from './theme.js';
+import { applyThemeMode, applyBgEffects, applyAccentColor, applyVisualScales, applyClockStyle, applySearchStyle, applyIconStyles, applyWatermarkVisibility, applyProfileAvatar, updateCanvasPillVisibility } from './theme.js';
 import { updateClock } from './clock.js';
 import { fetchWeather } from './weather.js';
 import { renderGroups, renderElyxoras, initGroupDrop, upgradeIconsToBase64, initFAB } from './groups.js';
@@ -15,6 +15,8 @@ import { openSettingsModal } from './settings.js';
 async function initApp() {
   // 1. Muat semua state dari chrome.storage
   await loadState();
+  window.AppState = AppState;
+  window.updateCanvasPillVisibility = updateCanvasPillVisibility;
 
   // 2. Muat file bahasa (i18n) berdasarkan preferensi
   await loadTranslations(AppState.language);
@@ -28,6 +30,9 @@ async function initApp() {
   applyIconStyles();
   applyVisualScales();
   applyBgEffects();
+  applyWatermarkVisibility();
+  applyProfileAvatar();
+  updateCanvasPillVisibility();
   applySearchTarget();
 
   // 3. Render grup dan pintasan
@@ -710,15 +715,13 @@ function initModeCapsules() {
 function initTopHeader() {
   const topSettingsBtn = document.getElementById('topSettingsBtn');
   if (topSettingsBtn) {
-    topSettingsBtn.addEventListener('click', openSettingsModal);
+    topSettingsBtn.addEventListener('click', () => openSettingsModal('tab-style'));
   }
 
-  const topCmdBtn = document.getElementById('topCmdBtn');
-  const searchInput = document.getElementById('searchInput');
-  if (topCmdBtn && searchInput) {
-    topCmdBtn.addEventListener('click', () => {
-      searchInput.focus();
-      searchInput.select();
+  const userAvatarBadge = document.getElementById('userAvatarBadge');
+  if (userAvatarBadge) {
+    userAvatarBadge.addEventListener('click', () => {
+      openSettingsModal('tab-general');
     });
   }
 
@@ -927,9 +930,7 @@ function initShortcutsModal() {
 }
 
 function toggleShortcutsModal() {
-  const modal = document.getElementById('shortcutsModal');
-  if (!modal) return;
-  modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+  openSettingsModal('tab-shortcuts');
 }
 
 // 10. EXPORT JSON TRIGGER

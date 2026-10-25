@@ -2555,6 +2555,41 @@ input:checked + .toggle-card .toggle-switch::after {
   font-size: 0.85rem;
   box-shadow: 0 2px 10px rgba(var(--accent-color-rgb, 59, 130, 246), 0.4);
   cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-avatar-badge:hover {
+  transform: scale(1.12);
+  box-shadow: 0 0 16px rgba(var(--accent-color-rgb, 59, 130, 246), 0.7);
+  border-color: #ffffff;
+}
+
+.user-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.shortcut-setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: rgba(var(--overlay-base), 0.04);
+  border: 1px solid var(--input-border);
+  transition: all 0.2s ease;
+}
+
+.shortcut-setting-row:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateX(2px);
 }
 
 /* --- 2. SPATIAL HUD OPTICAL BACKDROP --- */
@@ -2994,7 +3029,7 @@ input:checked + .toggle-card .toggle-switch::after {
 .precision-dock-container {
   display: flex;
   justify-content: center;
-  margin: 36px auto 16px;
+  margin: 36px auto 36px;
   width: 100%;
   z-index: 20;
 }
@@ -3462,7 +3497,7 @@ body.zen-mode .time-widget {
 }
 
 .precision-dock-container {
-  margin: 28px auto 14px !important;
+  margin: 28px auto 32px !important;
 }
 
 .elyxora-footer {

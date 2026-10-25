@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Elyxora Tab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=2">
 </head>
 
@@ -19,13 +21,9 @@
   <!-- Top Brand Header Bar (Stitch Concept) -->
   <header class="elyxora-header" id="elyxoraHeader">
     <div class="header-left">
-      <div class="brand-container">
+      <div class="brand-container" id="brandLogoContainer">
         <img src="icons/elyxora_logo.png" alt="Elyxora Tab" class="brand-logo" draggable="false">
         <span class="brand-title">Elyxora Tab</span>
-      </div>
-      <div class="status-badge">
-        <span class="status-dot"></span>
-        <span class="status-text">Active • Offline Ready</span>
       </div>
     </div>
 
@@ -41,17 +39,13 @@
         <span class="top-w-icon" id="topWIcon">⛅</span>
         <span class="top-w-text" id="topWText">Jakarta 28°C Hujan Ringan</span>
       </div>
-      <button class="top-cmd-pill" id="topCmdBtn" type="button" title="Fokus Pencarian (⌘K / Ctrl+K)">
-        <kbd class="kbd-badge">⌘K</kbd>
-        <span class="cmd-label">Search</span>
-      </button>
       <button id="topSettingsBtn" class="top-icon-btn" type="button" title="Pengaturan Umum (S)">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="3" />
           <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
         </svg>
       </button>
-      <div class="user-avatar-badge" id="userAvatarBadge" title="Profil Pengguna">
+      <div class="user-avatar-badge" id="userAvatarBadge" title="Profil Pengguna (Klik untuk atur)">
         <span class="user-avatar-initial" id="userAvatarInitial">K</span>
       </div>
     </div>
@@ -75,8 +69,19 @@
     </div>
 
     <!-- Humanized Greeting Header -->
-    <div id="greeting" class="greeting">Selamat Pagi</div>
-    <div id="time" class="time">--:--</div>
+    <div id="greeting" class="greeting">
+      <span id="greetingSalutation">Selamat Sore</span>, <span id="greetingUserName" class="greeting-user-highlight">Rizkan</span>
+    </div>
+    
+    <!-- Precision Typographic Digital Telemetry Clock -->
+    <div id="time" class="time telemetry-clock" aria-label="Waktu Digital Telemetri">
+      <span class="telemetry-digit" id="telemetryHours">04</span>
+      <span class="telemetry-colon">:</span>
+      <span class="telemetry-digit" id="telemetryMinutes">10</span>
+      <span class="telemetry-colon telemetry-colon-sec">:</span>
+      <span class="telemetry-seconds" id="telemetrySeconds">23</span>
+      <span class="telemetry-ampm" id="telemetryAmPm" style="display:none;"></span>
+    </div>
     <div id="date" class="date" style="display: none;">Memuat Tanggal...</div>
 
     <!-- Mode Selector Capsules -->
@@ -113,95 +118,58 @@
       <div id="searchFormContainer"
         style="display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 720px;">
         <form id="searchForm" action="https://www.google.com/search" method="GET" target="_blank">
-          <!-- Search Engine Selector -->
-          <div class="engine-selector"
-            style="position: relative; display: flex; align-items: center; padding-left: 0px;">
-            <div id="activeEngineIcon"
-              style="cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 0 8px; height: 36px; border-radius: 20px; transition: 0.3s; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-              <!-- Ikon aktif default: Google -->
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48">
-                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-              </svg>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
-                stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.7;">
+          <!-- Search Engine Switcher Capsule -->
+          <div class="engine-selector">
+            <button class="engine-capsule-btn" id="activeEngineIcon" type="button" aria-haspopup="true" aria-expanded="false" title="Pilih Mesin Pencari">
+              <span class="engine-dot-cyan"></span>
+              <span class="engine-label-text" id="activeEngineLabel">Google</span>
+              <svg class="engine-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="6 9 12 15 18 9" />
               </svg>
-            </div>
-            <div id="engineDropdown" 
-              style="display: none;">
+            </button>
+            <div id="engineDropdown" style="display: none;">
               <!-- Google -->
-              <div class="engine-option" data-engine="google" data-action="https://www.google.com/search" data-param="q"
-                style="padding: 10px 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.2s;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48">
-                  <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                  <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                  <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                  <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-                </svg>
+              <div class="engine-option" data-engine="google" data-action="https://www.google.com/search" data-param="q">
+                <span class="option-dot" style="background:#00f0ff;"></span>
                 <span>Google</span>
               </div>
               <!-- Bing -->
-              <div class="engine-option" data-engine="bing" data-action="https://www.bing.com/search" data-param="q"
-                style="padding: 10px 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.2s;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48">
-                  <path fill="#0078D4" d="M12 4v30.3l8 4.5V24.6l16 9.2-16 8.9V48l16-9v-.1L12 4z"/>
-                  <path fill="#00ADEF" d="M12 4l8 18.6v12.2l-8-4.5V4z"/>
-                </svg>
+              <div class="engine-option" data-engine="bing" data-action="https://www.bing.com/search" data-param="q">
+                <span class="option-dot" style="background:#0078d4;"></span>
                 <span>Bing</span>
               </div>
-              <!-- Yahoo -->
-              <div class="engine-option" data-engine="yahoo" data-action="https://search.yahoo.com/search"
-                data-param="p"
-                style="padding: 10px 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.2s;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48">
-                  <path fill="#5c00b3" d="M0 7h13l8 14 8-14h13L24 32v9h-8v-9L0 7z"/>
-                </svg>
-                <span>Yahoo</span>
-              </div>
               <!-- DuckDuckGo -->
-              <div class="engine-option" data-engine="duckduckgo" data-action="https://duckduckgo.com/" data-param="q"
-                style="padding: 10px 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.2s;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48">
-                  <circle cx="24" cy="24" r="22" fill="#DE5833"/>
-                  <circle cx="24" cy="24" r="16" fill="#fff"/>
-                  <circle cx="20" cy="20" r="3" fill="#333"/>
-                  <circle cx="21" cy="19" r="1" fill="#fff"/>
-                  <path fill="#DE5833" d="M24 34c-5.5 0-10-4.5-10-10h20c0 5.5-4.5 10-10 10z"/>
-                  <path fill="#fff" d="M17 27c1.5 2 4 3 7 3s5.5-1 7-3H17z"/>
-                </svg>
+              <div class="engine-option" data-engine="duckduckgo" data-action="https://duckduckgo.com/" data-param="q">
+                <span class="option-dot" style="background:#de5833;"></span>
                 <span>DuckDuckGo</span>
               </div>
               <!-- GitHub -->
-              <div class="engine-option" data-engine="github" data-action="https://github.com/search" data-param="q"
-                style="padding: 10px 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.2s;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
-                </svg>
+              <div class="engine-option" data-engine="github" data-action="https://github.com/search" data-param="q">
+                <span class="option-dot" style="background:#ffffff;"></span>
                 <span>GitHub</span>
               </div>
               <!-- YouTube -->
-              <div class="engine-option" data-engine="youtube" data-action="https://www.youtube.com/results" data-param="search_query"
-                style="padding: 10px 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.2s;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="#FF0000">
-                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                </svg>
+              <div class="engine-option" data-engine="youtube" data-action="https://www.youtube.com/results" data-param="search_query">
+                <span class="option-dot" style="background:#ff0000;"></span>
                 <span>YouTube</span>
               </div>
               <!-- Perplexity -->
-              <div class="engine-option" data-engine="perplexity" data-action="https://www.perplexity.ai/search" data-param="q"
-                style="padding: 10px 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.2s;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22B8CD" stroke-width="2">
-                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><path d="M11 8v6M8 11h6"/>
-                </svg>
+              <div class="engine-option" data-engine="perplexity" data-action="https://www.perplexity.ai/search" data-param="q">
+                <span class="option-dot" style="background:#22b8cd;"></span>
                 <span>Perplexity</span>
               </div>
             </div>
           </div>
 
-          <input type="text" name="q" placeholder="Cari di web atau ketik perintah..." id="searchInput" autocomplete="off" data-i18n="searchPlaceholder">
+          <div class="search-lead-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </div>
+
+          <input type="text" name="q" placeholder="Cari di web atau ketik perintah... (Tekan / untuk fokus)" id="searchInput" autocomplete="off" spellcheck="false">
+          
           <div class="search-actions-right">
             <kbd class="kbd-badge search-hint-tab">Tab ⇥</kbd>
             <kbd class="kbd-badge search-hint-enter">↵ Enter</kbd>
@@ -211,13 +179,6 @@
                 <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
                 <line x1="12" y1="19" x2="12" y2="23"/>
                 <line x1="8" y1="23" x2="16" y2="23"/>
-              </svg>
-            </button>
-            <button type="submit" id="searchSubmitBtn" class="search-icon-action">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
             </button>
           </div>
@@ -389,89 +350,8 @@
         <button class="canvas-btn" data-canvas="cyber" type="button">Cyber City</button>
         <button class="canvas-btn" data-canvas="live" id="canvasLiveBtn" type="button" style="display: none;">Live Video</button>
       </div>
-
-      <!-- Sync Latency Status -->
-      <div class="dock-latency-badge" title="Status Sinkronisasi Penyimpanan Lokal">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 11a7 7 0 0 1-7 7m0 0a7 7 0 0 1-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-        <span>Tersinkronisasi</span>
-        <span class="latency-val">0.3ms</span>
-      </div>
-
-      <!-- Export JSON Trigger -->
-      <button class="dock-export-btn" id="dockExportBtn" type="button" title="Ekspor Cadangan Konfigurasi Profile (JSON)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        <span>Export JSON</span>
-      </button>
     </div>
   </section>
-
-  <!-- Futuristic Footer -->
-  <footer class="elyxora-footer" id="elyxoraFooter">
-    <div class="footer-content">
-      <div class="footer-left">
-        <span class="footer-version">Elyxora v2.5</span>
-        <span class="footer-dot">•</span>
-        <span class="footer-channel">Stable Channel</span>
-      </div>
-      <div class="footer-right">
-        <a href="#" id="shortcutsHelpLink" class="footer-shortcuts-link">
-          <span class="kbd-bracket">[?]</span>
-          <span>Shortcuts</span>
-        </a>
-        <span class="footer-dot">•</span>
-        <span class="footer-engine-status">Wallpaper Engine: <span id="footerEngineMode" class="engine-highlight">Solid Obsidian</span></span>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Modal Keyboard Shortcuts Cheat Sheet -->
-  <div id="shortcutsModal" class="modal">
-    <div class="modal-content shortcuts-modal-content">
-      <div class="modal-header">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 1.2rem;">⌨️</span>
-          <h3 style="margin: 0; font-size: 1.1rem; font-weight: 700;">Pintasan Keyboard (Shortcuts)</h3>
-        </div>
-        <button id="closeShortcutsBtn" class="close-modal-btn">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="shortcuts-grid">
-          <div class="shortcut-row">
-            <kbd class="kbd-badge">/ atau ⌘K</kbd>
-            <span>Fokus ke Pencarian Omnibox</span>
-          </div>
-          <div class="shortcut-row">
-            <kbd class="kbd-badge">Tab ⇥</kbd>
-            <span>Ganti Search Engine saat di form pencarian</span>
-          </div>
-          <div class="shortcut-row">
-            <kbd class="kbd-badge">1 - 8</kbd>
-            <span>Buka Pintasan Speed Dial 1 sampai 8 secara instan</span>
-          </div>
-          <div class="shortcut-row">
-            <kbd class="kbd-badge">N</kbd>
-            <span>Tambah Pintasan Baru</span>
-          </div>
-          <div class="shortcut-row">
-            <kbd class="kbd-badge">S</kbd>
-            <span>Buka Pengaturan Umum</span>
-          </div>
-          <div class="shortcut-row">
-            <kbd class="kbd-badge">Space / P</kbd>
-            <span>Play / Pause Musik Lo-fi</span>
-          </div>
-          <div class="shortcut-row">
-            <kbd class="kbd-badge">?</kbd>
-            <span>Buka / Tutup Panduan Shortcut ini</span>
-          </div>
-          <div class="shortcut-row">
-            <kbd class="kbd-badge">Esc</kbd>
-            <span>Tutup Modal atau Batal Fokus</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Pomodoro Focus Mode Overlay / Card -->
   <div id="focusOverlay" class="focus-overlay" style="display: none;">
@@ -613,6 +493,14 @@
               <path d="M2 12l10 5 10-5" />
             </svg>
             <span data-i18n="settingsTabGroups">Grup</span>
+          </button>
+          <button class="settings-tab" data-tab="tab-shortcuts">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2" ry="2"/>
+              <path d="M6 8h.001M10 8h.001M14 8h.001M18 8h.001M8 12h.001M12 12h.001M16 12h.001M7 16h10"/>
+            </svg>
+            <span data-i18n="settingsTabShortcuts">Pintasan</span>
           </button>
         </div>
 
@@ -1100,6 +988,19 @@
                 </div>
               </label>
             </div>
+
+            <div style="margin-top: 12px;">
+              <label class="toggle-container" style="margin-bottom: 0;">
+                <input type="checkbox" id="showWatermarkToggle" checked style="display: none;">
+                <div class="toggle-card" style="padding: 12px 16px;">
+                  <div style="display: flex; flex-direction: column;">
+                    <span style="font-size: 0.85rem; font-weight: 600;">Logo / Watermark Elyxora Tab</span>
+                    <span style="font-size: 0.72rem; color: var(--text-dim);">Tampilkan logo brand di sudut kiri atas layar</span>
+                  </div>
+                  <div class="toggle-switch"></div>
+                </div>
+              </label>
+            </div>
           </div>
 
           <!-- TAB: WALLPAPER -->
@@ -1368,15 +1269,48 @@
               </label>
             </div>
 
+            <!-- Kustomisasi Profil Pengguna (Gambar / GIF) -->
+            <label
+              style="color: var(--text-dim); margin-bottom: 16px; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Profil Pengguna</label>
+
+            <div style="background: rgba(var(--overlay-base), 0.03); border-radius: 16px; padding: 20px; border: 1px solid var(--input-border); margin-bottom: 24px;">
+              <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 18px;">
+                <!-- Avatar Preview Box -->
+                <div id="settingsAvatarPreviewBox" style="width: 64px; height: 64px; border-radius: 50%; background: var(--accent-color); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.5rem; flex-shrink: 0; overflow: hidden; border: 2px solid rgba(255,255,255,0.2); box-shadow: 0 4px 16px rgba(0,0,0,0.3); position: relative;">
+                  <span id="settingsAvatarFallback">M</span>
+                  <img id="settingsAvatarPreviewImg" src="" alt="Avatar Preview" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                </div>
+                <div style="flex: 1;">
+                  <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-color);">Foto / GIF Profil</div>
+                  <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 2px;">Gunakan gambar statis atau animasi GIF favorit Anda</div>
+                  <div style="display: flex; gap: 8px; margin-top: 8px;">
+                    <label for="profileAvatarFileInput" style="padding: 6px 12px; border-radius: 8px; background: var(--glass-bg); border: 1px solid var(--input-border); color: var(--text-color); font-size: 0.75rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s;">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                      <span>Unggah File</span>
+                    </label>
+                    <input type="file" id="profileAvatarFileInput" accept="image/*,.gif" style="display: none;">
+                    <button type="button" id="resetProfileAvatarBtn" style="padding: 6px 12px; border-radius: 8px; background: transparent; border: 1px solid rgba(255,255,255,0.12); color: var(--text-dim); font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: 0.2s;">Reset ke Inisial</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Input URL Gambar / GIF -->
+              <div style="margin-bottom: 14px;">
+                <label class="input-label" style="font-size: 0.78rem;">Atau Masukkan URL Gambar / GIF</label>
+                <input type="url" id="profileAvatarUrlInput" placeholder="https://contoh.com/avatar.gif atau .png..."
+                  style="width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text-color); font-size: 0.85rem; outline: none; transition: 0.2s;">
+              </div>
+
+              <div>
+                <label class="input-label" style="font-size: 0.78rem;">Sapaan / Nama Anda</label>
+                <input type="text" id="userNameInput" placeholder="Ketik nama Anda..."
+                  style="width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text-color); font-size: 0.85rem; outline: none; transition: 0.2s;">
+              </div>
+            </div>
+
             <label
               style="color: var(--text-dim); margin-bottom: 16px; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Jam
-              & Sapaan</label>
-
-            <div style="margin-bottom: 24px;">
-              <label class="input-label">Sapaan / Nama Anda</label>
-              <input type="text" id="userNameInput" placeholder="Ketik nama Anda..."
-                style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text-color); font-size: 0.9rem; outline: none; transition: 0.2s;">
-            </div>
+              & Waktu</label>
 
             <div
               style="background: rgba(var(--overlay-base), 0.03); border-radius: 16px; padding: 16px; margin-bottom: 32px;">
@@ -1457,12 +1391,29 @@
               </div>
             </div>
 
-            <!-- Export / Import Data -->
-            <label style="color: var(--text-dim); margin-bottom: 16px; margin-top: 16px; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;" data-i18n="dataManagementLabel">Data Management</label>
-            <div style="background: rgba(var(--overlay-base), 0.03); border-radius: 16px; padding: 16px; margin-bottom: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-              <button id="exportDataBtn" type="button" style="padding: 10px; border-radius: 8px; background: var(--glass-bg); border: 1px solid var(--input-border); color: var(--text-color); cursor: pointer; transition: 0.2s; font-size: 0.85rem; font-weight: 600;" onmouseover="this.style.background='var(--input-bg)'" onmouseout="this.style.background='var(--glass-bg)'" data-i18n="exportDataBtn">Export Data</button>
-              <button id="importDataBtn" type="button" style="padding: 10px; border-radius: 8px; background: var(--glass-bg); border: 1px solid var(--input-border); color: var(--text-color); cursor: pointer; transition: 0.2s; font-size: 0.85rem; font-weight: 600;" onmouseover="this.style.background='var(--input-bg)'" onmouseout="this.style.background='var(--glass-bg)'" data-i18n="importDataBtn">Import Data</button>
-              <input type="file" id="importDataFile" accept=".json" style="display: none;">
+            <!-- Export / Import Data & Sinkronisasi -->
+            <label style="color: var(--text-dim); margin-bottom: 16px; margin-top: 16px; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;" data-i18n="dataManagementLabel">Data & Sinkronisasi</label>
+            <div style="background: rgba(var(--overlay-base), 0.03); border-radius: 16px; padding: 16px; margin-bottom: 32px; border: 1px solid var(--input-border);">
+              <!-- Status Sinkronisasi -->
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-radius: 10px; background: rgba(var(--overlay-base), 0.05); border: 1px solid var(--input-border); margin-bottom: 14px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="width: 8px; height: 8px; border-radius: 50%; background: #39ff14; box-shadow: 0 0 8px #39ff14; display: inline-block;"></span>
+                  <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-color);">Penyimpanan Lokal & Cloud</span>
+                </div>
+                <span style="font-size: 0.74rem; font-family: monospace; font-weight: 700; color: #39ff14;">Tersinkronisasi 0.3ms</span>
+              </div>
+              
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <button id="exportDataBtn" type="button" style="padding: 10px; border-radius: 8px; background: var(--glass-bg); border: 1px solid var(--input-border); color: var(--text-color); cursor: pointer; transition: 0.2s; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 6px;" onmouseover="this.style.background='var(--input-bg)'" onmouseout="this.style.background='var(--glass-bg)'" data-i18n="exportDataBtn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>Export JSON</span>
+                </button>
+                <button id="importDataBtn" type="button" style="padding: 10px; border-radius: 8px; background: var(--glass-bg); border: 1px solid var(--input-border); color: var(--text-color); cursor: pointer; transition: 0.2s; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 6px;" onmouseover="this.style.background='var(--input-bg)'" onmouseout="this.style.background='var(--glass-bg)'" data-i18n="importDataBtn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span>Import JSON</span>
+                </button>
+                <input type="file" id="importDataFile" accept=".json" style="display: none;">
+              </div>
             </div>
           </div>
 
@@ -1512,6 +1463,82 @@
                 <div class="toggle-switch large"></div>
               </div>
             </label>
+          </div>
+
+          <!-- TAB: SHORTCUTS (PANDUAN PINTASAN KEYBOARD) -->
+          <div class="tab-pane" id="tab-shortcuts">
+            <label
+              style="color: var(--text-dim); margin-bottom: 16px; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Panduan Pintasan Keyboard</label>
+
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px;">
+              <div class="shortcut-setting-row">
+                <div style="display: flex; flex-direction: column;">
+                  <span style="font-size: 0.88rem; font-weight: 600; color: var(--text-color);">Fokus Bar Pencarian Cepat</span>
+                  <span style="font-size: 0.72rem; color: var(--text-dim);">Aktifkan input search secara instan dari mana saja</span>
+                </div>
+                <div style="display: flex; gap: 6px; align-items: center;">
+                  <kbd class="kbd-badge">/</kbd>
+                  <span style="font-size: 0.72rem; color: var(--text-dim);">atau</span>
+                  <kbd class="kbd-badge">Ctrl / ⌘ + K</kbd>
+                </div>
+              </div>
+
+              <div class="shortcut-setting-row">
+                <div style="display: flex; flex-direction: column;">
+                  <span style="font-size: 0.88rem; font-weight: 600; color: var(--text-color);">Buka Pengaturan Elyxora</span>
+                  <span style="font-size: 0.72rem; color: var(--text-dim);">Buka panel pengaturan lengkap</span>
+                </div>
+                <kbd class="kbd-badge">S</kbd>
+              </div>
+
+              <div class="shortcut-setting-row">
+                <div style="display: flex; flex-direction: column;">
+                  <span style="font-size: 0.88rem; font-weight: 600; color: var(--text-color);">Tambah Pintasan Baru</span>
+                  <span style="font-size: 0.72rem; color: var(--text-dim);">Buka dialog cepat tambah speed dial</span>
+                </div>
+                <kbd class="kbd-badge">N</kbd>
+              </div>
+
+              <div class="shortcut-setting-row">
+                <div style="display: flex; flex-direction: column;">
+                  <span style="font-size: 0.88rem; font-weight: 600; color: var(--text-color);">Putar / Jeda Audio Lo-fi</span>
+                  <span style="font-size: 0.72rem; color: var(--text-dim);">Audio synthesizer ambient lo-fi relaksasi</span>
+                </div>
+                <kbd class="kbd-badge">P</kbd>
+              </div>
+
+              <div class="shortcut-setting-row">
+                <div style="display: flex; flex-direction: column;">
+                  <span style="font-size: 0.88rem; font-weight: 600; color: var(--text-color);">Buka Speed Dial Nomor 1 - 8</span>
+                  <span style="font-size: 0.72rem; color: var(--text-dim);">Buka item speed dial langsung dengan angka</span>
+                </div>
+                <kbd class="kbd-badge">1 — 8</kbd>
+              </div>
+
+              <div class="shortcut-setting-row">
+                <div style="display: flex; flex-direction: column;">
+                  <span style="font-size: 0.88rem; font-weight: 600; color: var(--text-color);">Rotasi Mesin Pencari</span>
+                  <span style="font-size: 0.72rem; color: var(--text-dim);">Ganti Google, DuckDuckGo, Bing, dll (saat di kolom cari)</span>
+                </div>
+                <kbd class="kbd-badge">Tab</kbd>
+              </div>
+
+              <div class="shortcut-setting-row">
+                <div style="display: flex; flex-direction: column;">
+                  <span style="font-size: 0.88rem; font-weight: 600; color: var(--text-color);">Tutup Dialog / Modal Aktif</span>
+                  <span style="font-size: 0.72rem; color: var(--text-dim);">Kembali ke halaman utama New Tab</span>
+                </div>
+                <kbd class="kbd-badge">Esc</kbd>
+              </div>
+
+              <div class="shortcut-setting-row">
+                <div style="display: flex; flex-direction: column;">
+                  <span style="font-size: 0.88rem; font-weight: 600; color: var(--text-color);">Buka Pintasan Panduan Ini</span>
+                  <span style="font-size: 0.72rem; color: var(--text-dim);">Tampilkan cheatsheet pintasan keyboard</span>
+                </div>
+                <kbd class="kbd-badge">?</kbd>
+              </div>
+            </div>
           </div>
         </div>
       </div>

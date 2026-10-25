@@ -71,6 +71,10 @@ export const AppState = {
   viewMode: 'grid', // 'grid' atau 'list'
   activeCanvas: 'obsidian', // 'obsidian', 'sunset', 'cyber', 'live'
 
+  // --- Watermark & Avatar ---
+  showWatermark: true,
+  profileAvatar: '', // URL atau data:image Base64/GIF
+
   // --- Custom Config ---
   customClock: { ...defaultCustomClock },
   customSearch: { ...defaultCustomSearch }
@@ -85,7 +89,8 @@ export const KeysToSave = [
   'useIconBg', 'useCardBg', 'titlePosition', 'defaultGroupBehavior', 'groupTransitionEffect', 'lastActiveGroup',
   'showGroupItemCount', 'openInNewTab', 'confirmDelete', 'customClock', 'customSearch',
   'elyxoras', 'groups', 'clickStats',
-  'bgModeType', 'videoSizeLimit', 'viewMode', 'activeCanvas'
+  'bgModeType', 'videoSizeLimit', 'viewMode', 'activeCanvas',
+  'showWatermark', 'profileAvatar'
 ];
 
 // --- LOAD STATE ---
