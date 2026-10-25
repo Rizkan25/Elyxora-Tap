@@ -4,8 +4,11 @@
 // =============================================
 import { AppState } from './state.js';
 import { getMessage, getCurrentLocale } from './i18n.js';
+import { escapeHTML } from './utils.js';
 
-let lastTimeStr = '';
+let lastHoursStr = '';
+let lastMinStr = '';
+let lastSecStr = '';
 let lastDateStr = '';
 let lastGreetingStr = '';
 
@@ -29,16 +32,33 @@ export function updateClock() {
   }
 
   const hrStr = String(hr).padStart(2, '0');
-  const newTimeStr = `${hrStr}:${m}${AppState.showSeconds ? ':' + s : ''}${ampm}`;
 
-  if (lastTimeStr !== newTimeStr) {
-    timeEl.textContent = newTimeStr;
-    lastTimeStr = newTimeStr;
+  // Precision Typographic Digital Telemetry Clock
+  const hoursEl = document.getElementById('telemetryHours');
+  const minutesEl = document.getElementById('telemetryMinutes');
+  const secondsEl = document.getElementById('telemetrySeconds');
+  const ampmEl = document.getElementById('telemetryAmPm');
+
+  if (hoursEl && minutesEl && secondsEl) {
+    if (lastHoursStr !== hrStr) { hoursEl.textContent = hrStr; lastHoursStr = hrStr; }
+    if (lastMinStr !== m) { minutesEl.textContent = m; lastMinStr = m; }
+    if (lastSecStr !== s) { secondsEl.textContent = s; lastSecStr = s; }
+    if (ampmEl) {
+      if (ampm) {
+        ampmEl.textContent = ampm.trim();
+        ampmEl.style.display = 'inline-block';
+      } else {
+        ampmEl.style.display = 'none';
+      }
+    }
+  } else {
+    // Fallback standard text
+    const newTimeStr = `${hrStr}:${m}${AppState.showSeconds ? ':' + s : ''}${ampm}`;
+    if (timeEl.textContent !== newTimeStr) timeEl.textContent = newTimeStr;
   }
 
   if (AppState.showDate) {
     if (dateEl && dateEl.style.display !== 'block') dateEl.style.display = 'block';
-    // Gunakan Intl.DateTimeFormat agar bahasa tanggal otomatis menyesuaikan dengan locale yang sedang aktif
     const locale = getCurrentLocale();
     const formatter = new Intl.DateTimeFormat(locale, { 
       weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' 
@@ -55,6 +75,21 @@ export function updateClock() {
     if (dateEl && dateEl.style.display !== 'none') dateEl.style.display = 'none';
   }
 
+  // Update Context Zone Ribbon (WIB (UTC+7) • KOTA)
+  const contextZoneEl = document.getElementById('contextZoneText');
+  if (contextZoneEl) {
+    const timeZoneOffset = -now.getTimezoneOffset() / 60;
+    const sign = timeZoneOffset >= 0 ? '+' : '';
+    let zoneCode = 'WIB';
+    if (timeZoneOffset === 8) zoneCode = 'WITA';
+    else if (timeZoneOffset === 9) zoneCode = 'WIT';
+    else if (timeZoneOffset !== 7) zoneCode = 'UTC';
+
+    const city = (AppState.weatherLocation || 'JAKARTA').toUpperCase();
+    contextZoneEl.textContent = `${zoneCode} (UTC${sign}${timeZoneOffset}) • ${city}`;
+  }
+
+  // Greeting Humanized Header
   const actualHr = now.getHours();
   let greetingKey = '';
   if (actualHr >= 5 && actualHr < 11) greetingKey = 'greetingMorning';
@@ -63,16 +98,17 @@ export function updateClock() {
   else greetingKey = 'greetingNight';
 
   const greetingI18n = getMessage(greetingKey) || 'Selamat Pagi';
-  const newGreetingStr = `${greetingI18n}, ${AppState.userName}`;
+  const userName = AppState.userName || 'Rizkan';
+  const newGreetingHtml = `${greetingI18n}, <span class="greeting-user-highlight">${escapeHTML(userName)}</span>`;
 
-  if (greetingEl && lastGreetingStr !== newGreetingStr) {
-    greetingEl.textContent = newGreetingStr;
-    lastGreetingStr = newGreetingStr;
+  if (greetingEl && lastGreetingStr !== newGreetingHtml) {
+    greetingEl.innerHTML = newGreetingHtml;
+    lastGreetingStr = newGreetingHtml;
   }
 
   const userInitialEl = document.getElementById('userAvatarInitial');
   if (userInitialEl) {
-    userInitialEl.textContent = (AppState.userName || 'K').charAt(0).toUpperCase();
+    userInitialEl.textContent = (userName || 'R').charAt(0).toUpperCase();
   }
 }
 

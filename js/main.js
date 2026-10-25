@@ -131,22 +131,20 @@ function initSearch() {
   function setActiveEngine(eng) {
     currentEngine = eng;
     localStorage.setItem('elyxora_search_engine', eng);
-    // Ganti ikon di tombol
+    
     const activeOpt = document.querySelector(`.engine-option[data-engine="${eng}"]`);
-    if (activeEngineIcon && activeOpt) {
-      const svg = activeOpt.querySelector('svg');
-      if (svg) {
-        const chevron = activeEngineIcon.querySelector('svg:last-child');
-        activeEngineIcon.innerHTML = '';
-        activeEngineIcon.appendChild(svg.cloneNode(true));
-        if (chevron) activeEngineIcon.appendChild(chevron.cloneNode(true));
-      }
+    const labelEl = document.getElementById('activeEngineLabel');
+    const name = activeOpt?.querySelector('span:last-child')?.textContent || eng.charAt(0).toUpperCase() + eng.slice(1);
+    
+    if (labelEl) {
+      labelEl.textContent = name;
     }
-    // Update placeholder
+    
+    // Update placeholder Stitch
     if (searchInput) {
-      const name = activeOpt?.querySelector('span')?.textContent || eng;
-      searchInput.placeholder = `Cari di ${name}...`;
+      searchInput.placeholder = `Cari di ${name} atau ketik perintah... (Tekan / untuk fokus)`;
     }
+    
     // Update form action
     const form = document.getElementById('searchForm');
     if (form && activeOpt) {

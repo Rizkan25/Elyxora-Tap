@@ -6,6 +6,31 @@ import { AppState, savePartialState } from './state.js';
 import { fetchIconAsBase64, OFFLINE_ICON_SVG, escapeHTML } from './utils.js';
 import { getMessage } from './i18n.js';
 
+// Kamus Ikon Vektor Tajam & Berwarna Khas Desain Stitch
+export const STITCH_ICONS = {
+  'google.com': `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#00dbe9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+  'github.com': `<svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" style="color:#ffffff;"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>`,
+  'claude.ai': `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><line x1="9" y1="21" x2="15" y2="21"/></svg>`,
+  'chatgpt.com': `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#00dbe9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`,
+  'youtube.com': `<svg width="26" height="26" viewBox="0 0 24 24" fill="#e63946"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`,
+  'perplexity.ai': `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7bd0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><circle cx="12" cy="9" r="3"/><line x1="12" y1="12" x2="12" y2="15"/></svg>`,
+  'web.whatsapp.com': `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#39ff14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>`,
+  'whatsapp.com': `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#39ff14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>`,
+  'notion.so': `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`
+};
+
+// Pemetaan Badge Tag Subtitle Stitch
+export const STITCH_TAGS = {
+  'github.com': { tag: 'Elyxora-Tap', colorClass: 'badge-purple' },
+  'claude.ai': { tag: '3.7 Sonnet', colorClass: 'badge-amber' },
+  'chatgpt.com': { tag: 'GPT-4o', colorClass: 'badge-cyan' },
+  'youtube.com': { tag: 'Lofi Focus', colorClass: 'badge-crimson' },
+  'perplexity.ai': { tag: 'Deep Research', colorClass: 'badge-blue' },
+  'web.whatsapp.com': { isOnline: true },
+  'whatsapp.com': { isOnline: true },
+  'notion.so': { tag: 'Roadmap Q4', colorClass: 'badge-slate' }
+};
+
 // -----------------------------------------------
 // RENDER GRUP TABS
 // -----------------------------------------------
@@ -25,28 +50,37 @@ export function renderGroups() {
   const getBadgeHtml = (count) =>
     AppState.showGroupItemCount ? `<span class="group-count-badge">${count}</span>` : '';
 
-  const mostUsedStr = getMessage('groupMostUsed') || 'Teratas';
+  // Jika grup yang aktif saat ini memiliki 0 item sedangkan Favorit memiliki item, otomatis jadikan Favorit aktif
+  if (counts[AppState.activeGroup] === 0 && (counts['Favorit'] > 0 || AppState.elyxoras.length > 0)) {
+    AppState.activeGroup = 'Favorit';
+  }
+
+  // Tab pertama dengan bintang amber khas Stitch: Favorit
+  const isMostUsedActive = AppState.activeGroup === 'mostUsed' || AppState.activeGroup === 'Favorit';
 
   const smartTabHtml = `
-    <button type="button" class="group-tab smart-tab ${AppState.activeGroup === 'mostUsed' ? 'active' : ''}" data-group="mostUsed">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:2px;">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-      </svg>
-      ${mostUsedStr} ${getBadgeHtml(counts['mostUsed'])}
+    <button type="button" class="group-tab smart-tab ${isMostUsedActive ? 'active' : ''}" data-group="mostUsed">
+      <span class="tab-star-amber">★</span>
+      <span>Favorit</span>
+      ${getBadgeHtml(counts['mostUsed'] || counts['Favorit'] || 8)}
     </button>
   `;
 
-  const groupTabsHtml = AppState.groups.map(group => `
+  // Filter agar jika grup 'Favorit' sudah ada di smart tab, tidak diduplikasi
+  const otherGroups = AppState.groups.filter(g => g !== 'Favorit');
+
+  const groupTabsHtml = otherGroups.map(group => `
     <button type="button" class="group-tab ${AppState.activeGroup === group ? 'active' : ''}" data-group="${escapeHTML(group)}" data-name="${escapeHTML(group)}">
-      ${escapeHTML(group)} ${getBadgeHtml(counts[group])}
+      <span>${escapeHTML(group)}</span>
+      ${getBadgeHtml(counts[group])}
     </button>
   `).join('');
 
   const addGroupHtml = `
-    <button type="button" class="group-tab group-manage-btn" id="addGroupBtn" title="${getMessage('addGroupBtnTitle') || 'Grup Baru'}">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="3"/>
-        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+    <button type="button" class="group-tab group-manage-btn" id="addGroupBtn" title="${getMessage('addGroupBtnTitle') || 'Tambah Kategori'}">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
       </svg>
     </button>
   `;
@@ -122,9 +156,39 @@ export function renderElyxoras() {
   const container = document.getElementById('elyxoraGrid');
   if (!container) return;
 
-  const filtered = AppState.activeGroup === 'mostUsed'
-    ? getMostUsedElyxoras(12)
-    : AppState.elyxoras.filter(d => d.group === AppState.activeGroup);
+  // Pastikan jika AppState.elyxoras kosong, isi dengan 8 pintasan bawaan Stitch
+  if (!AppState.elyxoras || AppState.elyxoras.length === 0) {
+    AppState.elyxoras = [
+      { id: 1, title: 'Google', url: 'https://google.com', icon: '', iconMode: 'auto', group: 'Favorit' },
+      { id: 2, title: 'GitHub', url: 'https://github.com/Rizkan25', icon: '', iconMode: 'auto', group: 'Favorit', tag: 'Elyxora-Tap', tagColor: 'purple' },
+      { id: 3, title: 'Claude AI', url: 'https://claude.ai', icon: '', iconMode: 'auto', group: 'Favorit', tag: '3.7 Sonnet', tagColor: 'amber' },
+      { id: 4, title: 'ChatGPT', url: 'https://chatgpt.com', icon: '', iconMode: 'auto', group: 'Favorit', tag: 'GPT-4o', tagColor: 'cyan' },
+      { id: 5, title: 'YouTube', url: 'https://youtube.com', icon: '', iconMode: 'auto', group: 'Favorit', tag: 'Lofi Focus', tagColor: 'crimson' },
+      { id: 6, title: 'Perplexity', url: 'https://perplexity.ai', icon: '', iconMode: 'auto', group: 'Favorit', tag: 'Deep Research', tagColor: 'blue' },
+      { id: 7, title: 'WhatsApp', url: 'https://web.whatsapp.com', icon: '', iconMode: 'auto', group: 'Favorit', isOnline: true },
+      { id: 8, title: 'Notion', url: 'https://notion.so', icon: '', iconMode: 'auto', group: 'Favorit', tag: 'Roadmap Q4', tagColor: 'slate' }
+    ];
+  }
+
+  let filtered = [];
+  const currentGrp = AppState.activeGroup;
+
+  if (currentGrp === 'mostUsed' || currentGrp === 'Favorit') {
+    filtered = AppState.elyxoras.filter(d => d.group === 'Favorit');
+    if (filtered.length === 0) filtered = getMostUsedElyxoras(12);
+    if (filtered.length === 0 && AppState.elyxoras.length > 0) filtered = AppState.elyxoras.slice(0, 12);
+  } else {
+    filtered = AppState.elyxoras.filter(d => d.group === currentGrp);
+  }
+
+  // Jika grup terpilih kosong tapi pengguna baru pertama buka, default ke Favorit
+  if (filtered.length === 0 && (currentGrp === 'mostUsed' || currentGrp === 'Favorit' || AppState.elyxoras.length > 0)) {
+    if (AppState.elyxoras.length > 0 && currentGrp !== 'mostUsed' && currentGrp !== 'Favorit') {
+      // Biarkan pesan kosong jika memang grup kustom kosong
+    } else {
+      filtered = AppState.elyxoras.slice(0, 12);
+    }
+  }
 
   const transClass = `transition-${AppState.groupTransitionEffect || 'fadeUp'}`;
   const target = AppState.openInNewTab ? '_blank' : '_self';
@@ -152,13 +216,38 @@ export function renderElyxoras() {
   }
 
   container.innerHTML = filtered.map((elyxora, index) => {
-    const iconSrc = elyxora.icon || OFFLINE_ICON_SVG;
     let domain = '';
     try {
       const parsed = new URL(elyxora.url);
       domain = parsed.hostname.replace(/^www\./, '');
     } catch (e) {
       domain = '';
+    }
+
+    // Cek apakah ada ikon SVG Stitch bawaan
+    const stitchSvg = STITCH_ICONS[domain] || (elyxora.title === 'Google' ? STITCH_ICONS['google.com'] : null);
+    let iconContent = '';
+    if (stitchSvg && (!elyxora.icon || elyxora.icon.startsWith('data:image/svg+xml') || elyxora.iconMode === 'auto')) {
+      iconContent = stitchSvg;
+    } else {
+      const iconSrc = elyxora.icon || OFFLINE_ICON_SVG;
+      iconContent = `<img src="${iconSrc}" alt="${escapeHTML(elyxora.title)}" draggable="false" onerror="this.src='${OFFLINE_ICON_SVG}'">`;
+    }
+
+    // Cek Tag Badge atau Status Dot Stitch
+    const stitchMeta = STITCH_TAGS[domain] || {};
+    const tagText = elyxora.tag || stitchMeta.tag || '';
+    const colorClass = elyxora.tagColor ? `badge-${elyxora.tagColor}` : (stitchMeta.colorClass || 'badge-cyan');
+    const isOnline = elyxora.isOnline || stitchMeta.isOnline;
+
+    let subtitleHtml = '';
+    if (tagText) {
+      subtitleHtml = `
+        <div class="elyxora-tag-wrap">
+          <span class="elyxora-badge-tag ${colorClass}">${escapeHTML(tagText)}</span>
+        </div>`;
+    } else if (domain) {
+      subtitleHtml = `<span class="elyxora-domain">${escapeHTML(domain)}</span>`;
     }
 
     const hotkeyBadge = index < 8 ? `<kbd class="elyxora-hotkey">${index + 1}</kbd>` : '';
@@ -171,12 +260,14 @@ export function renderElyxoras() {
          ${AppState.activeGroup !== 'mostUsed' ? 'draggable="true"' : ''}
          style="animation-delay:${index * 0.04}s; --anim-delay:${index * 0.04}s; animation-fill-mode:both;">
         <div class="elyxora-icon">
-          <img src="${iconSrc}" alt="${escapeHTML(elyxora.title)}" draggable="false"
-               onerror="this.src='${OFFLINE_ICON_SVG}'">
+          ${iconContent}
         </div>
         <div class="elyxora-info">
-          <div class="elyxora-title">${escapeHTML(elyxora.title)}</div>
-          ${domain ? `<span class="elyxora-domain">${escapeHTML(domain)}</span>` : ''}
+          <div class="elyxora-title-row">
+            <span class="elyxora-title">${escapeHTML(elyxora.title)}</span>
+            ${isOnline ? '<span class="status-dot-green-pulse"></span>' : ''}
+          </div>
+          ${subtitleHtml}
         </div>
         ${hotkeyBadge}
       </a>
