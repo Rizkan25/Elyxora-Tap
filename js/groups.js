@@ -191,6 +191,11 @@ export function renderElyxoras() {
   const transClass = `transition-${AppState.groupTransitionEffect || 'fadeUp'}`;
   const target = AppState.openInNewTab ? '_blank' : '_self';
 
+  const speedDialPillCount = document.getElementById('speedDialPillCount');
+  if (speedDialPillCount) {
+    speedDialPillCount.textContent = (AppState.elyxoras && AppState.elyxoras.length) || 16;
+  }
+
   // Sinkronkan class list-view jika viewMode adalah 'list'
   if (AppState.viewMode === 'list') {
     container.classList.add('list-view');

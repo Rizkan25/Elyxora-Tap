@@ -18,36 +18,81 @@
   <!-- Latar Belakang Overlay -->
   <div class="bg-overlay"></div>
 
-  <!-- Top Brand Header Bar (Stitch Concept) -->
-  <header class="elyxora-header" id="elyxoraHeader">
+  <!-- Top Brand Header Bar (Modern Ultra-Sleek Stitch Glass Nav) -->
+  <header class="elyxora-header glass-nav" id="elyxoraHeader">
+    <!-- 1. LEFT: Brand, Double-Chevron Toggle, and Glowing Neon Avatar -->
     <div class="header-left">
-      <div class="brand-container" id="brandLogoContainer">
-        <img src="icons/elyxora_logo.png" alt="Elyxora Tab" class="brand-logo" draggable="false">
-        <span class="brand-title">Elyxora Tab</span>
-      </div>
+      <!-- Logo Mark & Styled Brand Title (100% Match Reference) -->
+      <a href="#speeddial" class="brand-link" id="brandLogoContainer" title="Elyxora Tab">
+        <div class="brand-logo-container">
+          <img src="icons/elyxora_logo.png" alt="Elyxora Tab" class="brand-logo-img" draggable="false">
+        </div>
+        <span class="brand-title-styled">
+          Elyxora <span class="brand-title-accent">Tab</span>
+        </span>
+      </a>
+
+      <!-- Chevron Collapse/Expand Button -->
+      <button id="toggleToolbarBtn" title="Buka / Tutup Bilah Navigasi" aria-label="Toggle toolbar visibility" class="toolbar-toggle-btn" type="button">
+        <div class="double-chevron-box">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="chevron-arrow up"><path d="m18 15-6-6-6 6"></path></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="chevron-arrow down"><path d="m6 9 6 6 6-6"></path></svg>
+        </div>
+      </button>
+
+      <!-- Circular Neon Ring Avatar (Klik untuk Pengaturan Profil) -->
+      <button class="neon-avatar-ring" id="userAvatarBadge" title="Profil Akun & Sinkronisasi" type="button" aria-label="Profil Akun">
+        <div class="neon-avatar-glow"></div>
+        <div class="neon-avatar-inner">
+          <span class="user-avatar-initial" id="userAvatarInitial" style="display:none;">K</span>
+        </div>
+        <span class="neon-avatar-dot"></span>
+      </button>
     </div>
 
-    <nav class="nav-views" id="navViews">
-      <button class="nav-pill active" data-view="speed-dial" type="button">Speed Dial</button>
-      <button class="nav-pill" data-view="zen-mode" type="button">Zen Mode</button>
-      <button class="nav-pill" data-view="focus-mode" type="button">Focus Mode</button>
-      <button class="nav-pill" data-view="notes" type="button">Notes</button>
+    <!-- 2. CENTER: Capsule Segmented Navigation -->
+    <nav aria-label="Main Navigation" class="nav-views pill-container" id="navViews">
+      <!-- Tab 1: Speed Dial (Active) -->
+      <button class="nav-pill active" data-view="speed-dial" type="button">
+        <span class="pill-dot-cyan"></span>
+        <span>Speed Dial</span>
+        <span class="pill-badge-count" id="speedDialPillCount">16</span>
+      </button>
+
+      <!-- Tab 2: Zen Mode -->
+      <button class="nav-pill" data-view="zen-mode" type="button">
+        <span>Zen Mode</span>
+      </button>
+
+      <!-- Tab 3: Focus Mode -->
+      <button class="nav-pill" data-view="focus-mode" type="button">
+        <span>Focus Mode</span>
+      </button>
+
+      <!-- Tab 4: Notes -->
+      <button class="nav-pill" data-view="notes" type="button">
+        <span>Notes</span>
+        <span class="pill-dot-indigo"></span>
+      </button>
     </nav>
 
+    <!-- 3. RIGHT: Weather Widget, Settings -->
     <div class="header-right">
+      <!-- Weather Badge -->
       <div class="top-weather-pill" id="topWeatherPill" title="Lihat Detail Cuaca">
-        <span class="top-w-icon" id="topWIcon">⛅</span>
-        <span class="top-w-text" id="topWText">Jakarta 28°C Hujan Ringan</span>
+        <div class="top-w-icon-box">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="weather-svg-fog"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M16 17H7"></path><path d="M17 21H9"></path></svg>
+        </div>
+        <span class="top-w-text" id="topWText">Partridge 14°C Berkabut</span>
       </div>
-      <button id="topSettingsBtn" class="top-icon-btn" type="button" title="Pengaturan Umum (S)">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="3" />
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+
+      <!-- Settings Gear Button -->
+      <button id="topSettingsBtn" class="top-icon-btn gear-button" type="button" title="Pengaturan Dashboard (⚙️)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path>
+          <circle cx="12" cy="12" r="3"></circle>
         </svg>
       </button>
-      <div class="user-avatar-badge" id="userAvatarBadge" title="Profil Pengguna (Klik untuk atur)">
-        <span class="user-avatar-initial" id="userAvatarInitial">K</span>
-      </div>
     </div>
 
     <!-- Tab Handle Buka / Tutup Nav Bar (Stitch Drawer Concept) -->

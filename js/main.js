@@ -752,6 +752,22 @@ function initTopHeader() {
     });
   }
 
+  const toggleToolbarBtn = document.getElementById('toggleToolbarBtn');
+  if (toggleToolbarBtn) {
+    toggleToolbarBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isCurrentlyCollapsed = elyxoraHeader && elyxoraHeader.classList.contains('collapsed');
+      setNavbarCollapsed(!isCurrentlyCollapsed, true);
+    });
+  }
+
+  // Update speed dial count badge
+  const speedDialPillCount = document.getElementById('speedDialPillCount');
+  if (speedDialPillCount) {
+    const totalItems = AppState.elyxoras ? AppState.elyxoras.length : 16;
+    speedDialPillCount.textContent = totalItems || 16;
+  }
+
   const navPills = document.querySelectorAll('.nav-pill');
   navPills.forEach(pill => {
     pill.addEventListener('click', () => {
