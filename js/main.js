@@ -730,6 +730,44 @@ function initTopHeader() {
     });
   }
 
+  // Handle Collapsible Navbar (Buka / Tutup Bilah Atas Khas Stitch)
+  const navbarToggleTab = document.getElementById('navbarToggleTab');
+  const elyxoraHeader = document.getElementById('elyxoraHeader');
+
+  function setNavbarCollapsed(isCollapsed, persist = true) {
+    if (!elyxoraHeader) return;
+    if (isCollapsed) {
+      elyxoraHeader.classList.add('collapsed');
+      document.body.classList.add('navbar-collapsed');
+      if (navbarToggleTab) navbarToggleTab.title = 'Buka Nav Bar';
+    } else {
+      elyxoraHeader.classList.remove('collapsed');
+      document.body.classList.remove('navbar-collapsed');
+      if (navbarToggleTab) navbarToggleTab.title = 'Tutup Nav Bar';
+    }
+    if (persist) {
+      try {
+        localStorage.setItem('elyxora_navbar_collapsed', isCollapsed ? 'true' : 'false');
+      } catch (e) {
+        console.warn('Gagal menyimpan status navbar:', e);
+      }
+    }
+  }
+
+  // Restore status navbar dari localStorage
+  const savedCollapsed = localStorage.getItem('elyxora_navbar_collapsed') === 'true';
+  if (savedCollapsed) {
+    setNavbarCollapsed(true, false);
+  }
+
+  if (navbarToggleTab) {
+    navbarToggleTab.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isCurrentlyCollapsed = elyxoraHeader && elyxoraHeader.classList.contains('collapsed');
+      setNavbarCollapsed(!isCurrentlyCollapsed, true);
+    });
+  }
+
   const navPills = document.querySelectorAll('.nav-pill');
   navPills.forEach(pill => {
     pill.addEventListener('click', () => {

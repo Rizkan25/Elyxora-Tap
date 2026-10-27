@@ -134,7 +134,7 @@ export async function loadState() {
       { id: 4, title: 'ChatGPT', url: 'https://chatgpt.com', icon: '', iconMode: 'auto', group: 'Favorit', tag: 'GPT-4o', tagColor: 'cyan' },
       { id: 5, title: 'YouTube', url: 'https://youtube.com', icon: '', iconMode: 'auto', group: 'Favorit', tag: 'Lofi Focus', tagColor: 'crimson' },
       { id: 6, title: 'Perplexity', url: 'https://perplexity.ai', icon: '', iconMode: 'auto', group: 'Favorit', tag: 'Deep Research', tagColor: 'blue' },
-      { id: 7, title: 'WhatsApp', url: 'https://web.whatsapp.com', icon: '', iconMode: 'auto', group: 'Favorit', isOnline: true },
+      { id: 7, title: 'WhatsApp', url: 'https://web.whatsapp.com', icon: '', iconMode: 'auto', group: 'Favorit' },
       { id: 8, title: 'Notion', url: 'https://notion.so', icon: '', iconMode: 'auto', group: 'Favorit', tag: 'Roadmap Q4', tagColor: 'slate' }
     ];
   }

@@ -26,8 +26,6 @@ export const STITCH_TAGS = {
   'chatgpt.com': { tag: 'GPT-4o', colorClass: 'badge-cyan' },
   'youtube.com': { tag: 'Lofi Focus', colorClass: 'badge-crimson' },
   'perplexity.ai': { tag: 'Deep Research', colorClass: 'badge-blue' },
-  'web.whatsapp.com': { isOnline: true },
-  'whatsapp.com': { isOnline: true },
   'notion.so': { tag: 'Roadmap Q4', colorClass: 'badge-slate' }
 };
 
@@ -165,7 +163,7 @@ export function renderElyxoras() {
       { id: 4, title: 'ChatGPT', url: 'https://chatgpt.com', icon: '', iconMode: 'auto', group: 'Favorit', tag: 'GPT-4o', tagColor: 'cyan' },
       { id: 5, title: 'YouTube', url: 'https://youtube.com', icon: '', iconMode: 'auto', group: 'Favorit', tag: 'Lofi Focus', tagColor: 'crimson' },
       { id: 6, title: 'Perplexity', url: 'https://perplexity.ai', icon: '', iconMode: 'auto', group: 'Favorit', tag: 'Deep Research', tagColor: 'blue' },
-      { id: 7, title: 'WhatsApp', url: 'https://web.whatsapp.com', icon: '', iconMode: 'auto', group: 'Favorit', isOnline: true },
+      { id: 7, title: 'WhatsApp', url: 'https://web.whatsapp.com', icon: '', iconMode: 'auto', group: 'Favorit' },
       { id: 8, title: 'Notion', url: 'https://notion.so', icon: '', iconMode: 'auto', group: 'Favorit', tag: 'Roadmap Q4', tagColor: 'slate' }
     ];
   }
@@ -265,7 +263,6 @@ export function renderElyxoras() {
         <div class="elyxora-info">
           <div class="elyxora-title-row">
             <span class="elyxora-title">${escapeHTML(elyxora.title)}</span>
-            ${isOnline ? '<span class="status-dot-green-pulse"></span>' : ''}
           </div>
           ${subtitleHtml}
         </div>
