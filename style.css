@@ -3769,7 +3769,7 @@ input:checked + .toggle-card .toggle-switch::after {
 }
 
 /* --- 9. MINIMAL ZEN MODE --- */
-body.zen-mode .elyxora-header,
+body.zen-mode .search-section,
 body.zen-mode .speed-dial-bar,
 body.zen-mode .elyxora-grid,
 body.zen-mode .bento-add-row,
@@ -3779,7 +3779,7 @@ body.zen-mode .elyxora-footer {
 }
 
 body.zen-mode .time-widget {
-  margin-top: 15vh !important;
+  margin-top: 18vh !important;
 }
 
 /* Responsive adjustments */

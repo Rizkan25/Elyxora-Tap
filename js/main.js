@@ -59,7 +59,7 @@ async function initApp() {
   initTopHeader();
   initQuickNotes();
   initWeatherDetailModal();
-  initModeCapsules();
+  initFocusOverlay();
   initVoiceSearch();
   initRecentQueries();
   initViewSwitcher();
@@ -314,6 +314,12 @@ function initGlobalShortcuts() {
       modals.forEach(m => m.style.display = 'none');
       const focusOverlay = document.getElementById('focusOverlay');
       if (focusOverlay) focusOverlay.style.display = 'none';
+      if (document.body.classList.contains('zen-mode')) {
+        document.body.classList.remove('zen-mode');
+        document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
+        const spPill = document.querySelector('.nav-pill[data-view="speed-dial"]');
+        if (spPill) spPill.classList.add('active');
+      }
       if (isInput) activeEl.blur();
       return;
     }
@@ -631,48 +637,26 @@ let focusInterval = null;
 let focusSecondsLeft = 25 * 60;
 let isFocusRunning = false;
 
-function initModeCapsules() {
-  const capsules = document.querySelectorAll('.mode-capsule');
+function initFocusOverlay() {
   const focusOverlay = document.getElementById('focusOverlay');
   const closeFocusBtn = document.getElementById('closeFocusBtn');
   const startPauseBtn = document.getElementById('focusStartPauseBtn');
   const resetBtn = document.getElementById('focusResetBtn');
   const timerDisplay = document.getElementById('focusTimerDisplay');
 
-  capsules.forEach(cap => {
-    cap.addEventListener('click', () => {
-      capsules.forEach(c => c.classList.remove('active'));
-      cap.classList.add('active');
-      const mode = cap.dataset.mode;
-
-      if (mode === 'zen') {
-        document.body.classList.add('zen-mode');
-        if (focusOverlay) focusOverlay.style.display = 'none';
-      } else if (mode === 'focus') {
-        document.body.classList.remove('zen-mode');
-        if (focusOverlay) focusOverlay.style.display = 'flex';
-      } else {
-        document.body.classList.remove('zen-mode');
-        if (focusOverlay) focusOverlay.style.display = 'none';
-      }
-    });
-  });
-
-  if (closeFocusBtn && focusOverlay) {
-    closeFocusBtn.addEventListener('click', () => {
-      focusOverlay.style.display = 'none';
-      capsules.forEach(c => c.classList.remove('active'));
-      const defCap = document.querySelector('.mode-capsule[data-mode="default"]');
-      if (defCap) defCap.classList.add('active');
-    });
-  }
-
   function updateTimerDisplay() {
     const mins = String(Math.floor(focusSecondsLeft / 60)).padStart(2, '0');
     const secs = String(focusSecondsLeft % 60).padStart(2, '0');
     if (timerDisplay) timerDisplay.textContent = `${mins}:${secs}`;
-    const label = document.getElementById('focusTimerLabel');
-    if (label) label.textContent = `Focus (${mins}:${secs})`;
+  }
+
+  if (closeFocusBtn && focusOverlay) {
+    closeFocusBtn.addEventListener('click', () => {
+      focusOverlay.style.display = 'none';
+      document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
+      const speedDialPill = document.querySelector('.nav-pill[data-view="speed-dial"]');
+      if (speedDialPill) speedDialPill.classList.add('active');
+    });
   }
 
   if (startPauseBtn) {
@@ -774,26 +758,22 @@ function initTopHeader() {
       navPills.forEach(p => p.classList.remove('active'));
       pill.classList.add('active');
       const view = pill.dataset.view;
-      if (view === 'focus-mode') {
-        const focusCap = document.getElementById('focusModeBtn');
-        if (focusCap) focusCap.click();
-      } else if (view === 'speed-dial') {
+
+      if (view === 'speed-dial') {
         document.body.classList.remove('zen-mode');
         const focusOverlay = document.getElementById('focusOverlay');
         if (focusOverlay) focusOverlay.style.display = 'none';
         AppState.activeGroup = 'mostUsed';
         renderGroups();
         renderElyxoras();
-      } else if (view === 'workspace-dev') {
-        document.body.classList.remove('zen-mode');
+      } else if (view === 'zen-mode') {
+        document.body.classList.add('zen-mode');
         const focusOverlay = document.getElementById('focusOverlay');
         if (focusOverlay) focusOverlay.style.display = 'none';
-        if (!AppState.groups.includes('Kerja & Dev')) {
-          AppState.groups.push('Kerja & Dev');
-        }
-        AppState.activeGroup = 'Kerja & Dev';
-        renderGroups();
-        renderElyxoras();
+      } else if (view === 'focus-mode') {
+        document.body.classList.remove('zen-mode');
+        const focusOverlay = document.getElementById('focusOverlay');
+        if (focusOverlay) focusOverlay.style.display = 'flex';
       } else if (view === 'notes') {
         openQuickNotesModal();
       }
