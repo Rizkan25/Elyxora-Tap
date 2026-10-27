@@ -2500,80 +2500,60 @@ input:checked + .toggle-card .toggle-switch::after {
   outline: none;
 }
 
-.brand-logo-squircle {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #111827 0%, #0b0f19 100%);
-  border: 1px solid rgba(0, 240, 255, 0.35);
+.brand-logo-container {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #060913;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5px;
-  box-shadow: 0 0 15px -3px rgba(0, 240, 255, 0.25);
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.35);
+  border: 1px solid rgba(0, 240, 255, 0.3);
   transition: all 0.3s ease;
   flex-shrink: 0;
 }
 
-.brand-link:hover .brand-logo-squircle {
-  border-color: rgba(0, 240, 255, 0.65);
-  box-shadow: 0 0 20px -2px rgba(0, 240, 255, 0.45);
+.brand-link:hover .brand-logo-container {
+  box-shadow: 0 0 24px rgba(0, 240, 255, 0.6);
+  border-color: rgba(0, 240, 255, 0.6);
   transform: translateY(-1px);
 }
 
-.brand-svg-monogram {
+.brand-logo-img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-.logo-circle-pulse {
-  animation: logoDotPulse 2s infinite ease-in-out;
-}
-
-@keyframes logoDotPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.85); }
-}
-
-.brand-text-col {
-  display: flex;
-  flex-direction: column;
-}
-
-.brand-name {
-  font-size: 16.5px;
-  font-weight: 700;
+.brand-title-styled {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 1.28rem;
+  font-weight: 800;
   letter-spacing: -0.02em;
   color: #ffffff;
   display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: color 0.2s ease;
+  align-items: baseline;
+  gap: 5px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  transition: all 0.2s ease;
+  line-height: 1;
 }
 
-[data-theme="light"] .brand-name {
+.brand-title-accent {
+  color: #5ba4f5;
+  font-weight: 800;
+  text-shadow: 0 0 14px rgba(91, 164, 245, 0.5);
+}
+
+[data-theme="light"] .brand-title-styled {
   color: #0f172a;
 }
 
-.brand-link:hover .brand-name {
-  color: #00f0ff;
-}
-
-.brand-ver-badge {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 10px;
-  font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #94a3b8;
-}
-
-[data-theme="light"] .brand-ver-badge {
-  background: rgba(0, 0, 0, 0.05);
-  border-color: rgba(0, 0, 0, 0.1);
-  color: #64748b;
+[data-theme="light"] .brand-title-accent {
+  color: #2563eb;
 }
 
 /* Double-Chevron Toolbar Toggle */
