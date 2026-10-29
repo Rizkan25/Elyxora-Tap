@@ -1,4 +1,4 @@
-{
+﻿{
   "extName": { "message": "Elyxora Tap" },
   "extDesc": { "message": "Penanda visual dan dasbor untuk tab baru Anda" },
   "greetingMorning": { "message": "Selamat Pagi" },
@@ -86,6 +86,7 @@
   "showDateLabel": { "message": "Tampilkan Tanggal" },
   "clockStyleRegular": { "message": "Reguler" },
   "clockStyleBold": { "message": "Tebal (Bold)" },
+  "clockStyleTelemetry": { "message": "Amber Telemetri" },
   "clockStyleLight": { "message": "Tipis (Light)" },
   "clockStyleNeon": { "message": "Neon (Glow)" },
   "clockStyleCustom": { "message": "Kustom (Visual)" },

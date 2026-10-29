@@ -658,20 +658,9 @@ div[style*="position: fixed; bottom: 30px; right: 30px;"] {
   visibility: hidden;
 }
 
-.elyxora-item:hover {
-  transform: translateY(-8px) scale(1.02) translateZ(0);
-  background: rgba(255, 255, 255, 0.15);
-  border-color: var(--accent-color);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-}
-
+/* Legacy hover overridden by modern bento hover in line 3420+ */
 .elyxora-icon {
   overflow: hidden;
-}
-
-.elyxora-item:hover .elyxora-icon {
-  transform: rotate(8deg) scale(1.15);
-  box-shadow: 0 12px 24px rgba(var(--accent-color-rgb), 0.3);
 }
 
 .elyxora-icon img {
@@ -1360,23 +1349,7 @@ input:checked+.toggle-card .toggle-switch.large::before {
     0 0 40px rgba(59, 130, 246, 0.12);
 }
 
-/* Elyxora Items Glow */
-.elyxora-item:hover {
-  transform: translateY(-8px) scale(1.02);
-  background: rgba(255, 255, 255, 0.15);
-  border-color: var(--accent-color);
-  box-shadow:
-    0 20px 40px rgba(0, 0, 0, 0.4),
-    0 0 18px rgba(59, 130, 246, 0.3),
-    0 0 36px rgba(59, 130, 246, 0.12);
-}
-
-.elyxora-item:active {
-  transform: translateY(-4px) scale(0.97);
-  box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.3),
-    0 0 14px rgba(59, 130, 246, 0.4);
-}
+/* Legacy hover/active overridden by modern bento cards */
 
 /* Group Tabs Glow */
 .group-tab:hover {
@@ -2361,6 +2334,81 @@ input:checked + .toggle-card .toggle-switch::after {
 .clock-tracer { color: #ffffff; -webkit-text-fill-color: #ffffff; background: none; -webkit-background-clip: unset; background-clip: unset; border: 2px solid var(--accent-color); padding: 12px 44px; border-radius: 28px; font-weight: 700; letter-spacing: 2px; animation: tracerBorderAnim 2s ease-in-out infinite; }
 .clock-oled { background: #000000; -webkit-background-clip: unset; background-clip: unset; color: #ffffff; -webkit-text-fill-color: #ffffff; padding: 20px 60px; border-radius: 48px; font-weight: 100; letter-spacing: 10px; box-shadow: 0 0 0 1px rgba(255,255,255,0.05), 0 24px 60px rgba(0,0,0,0.8); animation: oledFlicker 8s linear infinite; }
 
+/* Amber Telemetry Clock (Precision Typographic Digital Telemetry) */
+.clock-telemetry {
+  font-family: 'Space Grotesk', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+  font-size: clamp(5.25rem, 9vw, 8rem) !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.025em !important;
+  color: #f59e0b !important;
+  -webkit-text-fill-color: #f59e0b !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  filter: drop-shadow(0 0 45px rgba(245, 158, 11, 0.35)) !important;
+  text-shadow: 0 0 45px rgba(245, 158, 11, 0.35) !important;
+  font-variant-numeric: tabular-nums !important;
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: center !important;
+  user-select: all !important;
+  transition: transform 0.5s ease-out !important;
+  cursor: default !important;
+}
+
+.clock-telemetry .telemetry-digit,
+.clock-telemetry .telemetry-colon,
+.clock-telemetry .telemetry-seconds {
+  color: #f59e0b !important;
+  -webkit-text-fill-color: #f59e0b !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  opacity: 1 !important;
+  text-shadow: inherit !important;
+  filter: inherit !important;
+}
+
+.clock-telemetry .telemetry-colon {
+  margin: 0 2px !important;
+  font-weight: 700 !important;
+  opacity: 1 !important;
+}
+
+.clock-telemetry .telemetry-seconds {
+  margin-left: 0 !important;
+  font-size: inherit !important;
+  opacity: 1 !important;
+  font-weight: 700 !important;
+}
+
+.clock-telemetry .telemetry-ampm {
+  font-size: 0.35em !important;
+  font-weight: 700 !important;
+  color: #f59e0b !important;
+  opacity: 0.85 !important;
+  margin-left: 10px !important;
+}
+
+.time-widget:has(.clock-telemetry) .greeting-user-highlight {
+  color: #f59e0b !important;
+  text-shadow: 0 0 20px rgba(245, 158, 11, 0.45) !important;
+}
+
+.time-widget:has(.clock-telemetry) .greeting::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #f59e0b;
+  border-radius: 2px;
+  margin-right: 8px;
+  vertical-align: middle;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
+}
+
 /* =============================================
    DYNAMIC CSS CLASSES FOR SEARCH BAR
    ============================================= */
@@ -2876,6 +2924,51 @@ input:checked + .toggle-card .toggle-switch::after {
 [data-theme="light"] .gear-button:hover svg {
   transform: rotate(60deg);
   color: #0f172a;
+}
+
+[data-theme="light"] .elyxora-item {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  color: #0f172a;
+}
+
+[data-theme="light"] .elyxora-item:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 0, 0.16);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .elyxora-item:active {
+  transform: translateY(-1px) scale(0.985);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .elyxora-item .elyxora-title {
+  color: #0f172a;
+}
+
+[data-theme="light"] .elyxora-item:hover .elyxora-title {
+  color: #0284c7;
+}
+
+[data-theme="light"] .elyxora-item .elyxora-icon {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .elyxora-item .elyxora-hotkey {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #64748b;
+  opacity: 0.7;
+}
+
+[data-theme="light"] .elyxora-item:hover .elyxora-hotkey {
+  opacity: 1;
+  color: #0284c7;
+  border-color: rgba(2, 132, 199, 0.4);
+  background-color: rgba(2, 132, 199, 0.1);
 }
 
 .user-avatar-img {
@@ -3417,47 +3510,111 @@ input:checked + .toggle-card .toggle-switch::after {
   }
 }
 
-.elyxora-item {
+.elyxora-item,
+.elyxora-item.group {
   position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 14px 16px;
-  border-radius: 18px;
+  border-radius: 16px;
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.15);
   text-decoration: none;
   color: #f1f5f9;
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   overflow: hidden;
+  will-change: transform, box-shadow, background-color, border-color;
 }
 
-.elyxora-item:hover {
-  transform: translateY(-4px);
-  background: rgba(255, 255, 255, 0.09);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35), 0 0 20px rgba(0, 240, 255, 0.12);
+.elyxora-item:hover,
+.elyxora-item.group:hover,
+.group:hover {
+  transform: translateY(-4px) !important;
+  background: rgba(255, 255, 255, 0.085) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.45), 0 8px 10px -6px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 240, 255, 0.12) !important;
+}
+
+/* Background Transparan (misal saat mode kartu transparan / useCardBg: false aktif) */
+.elyxora-item.no-card-bg,
+.elyxora-item.bg-transparent,
+.elyxora-item[data-card-bg="false"],
+body.no-card-bg .elyxora-item {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.elyxora-item.no-card-bg:hover,
+.elyxora-item.bg-transparent:hover,
+.elyxora-item[data-card-bg="false"]:hover,
+body.no-card-bg .elyxora-item:hover {
+  transform: translateY(-4px) !important;
+  background: rgba(255, 255, 255, 0.085) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.45), 0 8px 10px -6px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 240, 255, 0.12) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+}
+
+.elyxora-item.no-card-bg:hover .elyxora-icon,
+.elyxora-item.bg-transparent:hover .elyxora-icon,
+.elyxora-item[data-card-bg="false"]:hover .elyxora-icon,
+body.no-card-bg .elyxora-item:hover .elyxora-icon {
+  transform: scale(1.05) !important;
+}
+
+.elyxora-item.no-card-bg:hover .elyxora-hotkey,
+.elyxora-item.bg-transparent:hover .elyxora-hotkey,
+.elyxora-item[data-card-bg="false"]:hover .elyxora-hotkey,
+body.no-card-bg .elyxora-item:hover .elyxora-hotkey {
+  opacity: 1 !important;
+  color: #00f0ff !important;
+  border-color: rgba(0, 240, 255, 0.4) !important;
+  background-color: rgba(0, 240, 255, 0.12) !important;
+}
+
+.elyxora-item.no-card-bg:hover .elyxora-title,
+.elyxora-item.bg-transparent:hover .elyxora-title,
+.elyxora-item[data-card-bg="false"]:hover .elyxora-title,
+body.no-card-bg .elyxora-item:hover .elyxora-title {
+  color: #ffffff !important;
+}
+
+.elyxora-item:active,
+.elyxora-item.group:active {
+  transform: translateY(-1px) scale(0.985) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35) !important;
+  transition-duration: 100ms !important;
 }
 
 .elyxora-icon {
   width: 48px;
   height: 48px;
-  border-radius: 14px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   margin-right: 14px;
-  transition: transform 0.2s ease;
+  transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  will-change: transform;
+  transform-origin: center;
 }
 
-.elyxora-item:hover .elyxora-icon {
-  transform: scale(1.06);
+.elyxora-item:hover .elyxora-icon,
+.elyxora-item.group:hover .elyxora-icon,
+.group:hover .elyxora-icon,
+.group:hover .group-hover\:scale-105 {
+  transform: scale(1.05) !important;
 }
 
 .elyxora-icon svg {
@@ -3571,20 +3728,21 @@ input:checked + .toggle-card .toggle-switch::after {
   right: 12px;
   padding: 1px 6px;
   border-radius: 5px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(50, 52, 63, 0.75);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #64748b;
+  color: #94a3b8;
   font-family: 'Space Grotesk', monospace;
   font-size: 0.68rem;
   font-weight: 700;
-  opacity: 0.75;
-  transition: all 0.2s;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .elyxora-item:hover .elyxora-hotkey {
   opacity: 1;
   color: #00f0ff;
   border-color: rgba(0, 240, 255, 0.4);
+  background-color: rgba(0, 240, 255, 0.12);
 }
 
 /* List View Mode */
@@ -4729,3 +4887,53 @@ body.zen-mode .time-widget {
 }
 
 
+
+/* ========================================================
+   TAILWIND UTILITY EXTENSIONS (Card Transitions & Interactivity)
+   ======================================================== */
+.transition-all {
+  transition-property: all;
+}
+.duration-200 {
+  transition-duration: 200ms;
+}
+.transition-transform {
+  transition-property: transform;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+.transition-opacity {
+  transition-property: opacity, color, background-color, border-color;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+.group:hover .group-hover\:scale-105 {
+  transform: scale(1.05);
+}
+.opacity-70 {
+  opacity: 0.7;
+}
+.group:hover .group-hover\:opacity-100 {
+  opacity: 1;
+}
+.group:hover .group-hover\:text-primary-container {
+  color: #00f0ff;
+}
+.hover\:-translate-y-1:hover {
+  transform: translateY(-4px);
+}
+.hover\:shadow-xl:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.45), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+}
+.bg-surface-container-low {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+.hover\:bg-surface-container-high:hover {
+  background-color: rgba(255, 255, 255, 0.085);
+}
+.bg-surface-container-highest {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+.text-accent-amber {
+  color: #f59e0b;
+}

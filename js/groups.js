@@ -1,4 +1,4 @@
-// =============================================
+﻿// =============================================
 // GROUPS ENGINE (groups.js)
 // Mengelola grup, pintasan, drag-drop, context menu
 // =============================================
@@ -246,28 +246,32 @@ export function renderElyxoras() {
     let subtitleHtml = '';
     if (tagText) {
       subtitleHtml = `
-        <div class="elyxora-tag-wrap">
-          <span class="elyxora-badge-tag ${colorClass}">${escapeHTML(tagText)}</span>
+        <div class="elyxora-tag-wrap flex items-center gap-1 mt-0.5">
+          <span class="elyxora-badge-tag inline-block px-1.5 py-0.2 rounded font-mono text-[10px] ${colorClass}">${escapeHTML(tagText)}</span>
         </div>`;
     } else if (domain) {
-      subtitleHtml = `<span class="elyxora-domain">${escapeHTML(domain)}</span>`;
+      subtitleHtml = `<span class="elyxora-domain text-[11px] truncate">${escapeHTML(domain)}</span>`;
     }
 
-    const hotkeyBadge = index < 8 ? `<kbd class="elyxora-hotkey">${index + 1}</kbd>` : '';
+    const hotkeyBadge = index < 8 
+      ? `<kbd class="elyxora-hotkey absolute top-3 right-3 px-1.5 py-0.5 rounded opacity-70 group-hover:opacity-100 group-hover:text-primary-container transition-opacity">${index + 1}</kbd>` 
+      : '';
+    const noCardBgClass = !AppState.useCardBg ? 'no-card-bg' : '';
 
     return `
-      <a href="${elyxora.url}" target="${target}" class="elyxora-item ${transClass}"
+      <a href="${elyxora.url}" target="${target}" class="elyxora-item group relative flex items-center p-space-md rounded-2xl bg-surface-container-low hover:bg-surface-container-high transition-all duration-200 shadow-md hover:-translate-y-1 hover:shadow-xl ${transClass} ${noCardBgClass}"
          data-id="${elyxora.id}"
          data-index="${index}"
+         data-card-bg="${AppState.useCardBg ? 'true' : 'false'}"
          data-hotkey="${index < 8 ? index + 1 : ''}"
          ${AppState.activeGroup !== 'mostUsed' ? 'draggable="true"' : ''}
          style="animation-delay:${index * 0.04}s; --anim-delay:${index * 0.04}s; animation-fill-mode:both;">
-        <div class="elyxora-icon">
+        <div class="elyxora-icon w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center shrink-0 mr-space-sm group-hover:scale-105 transition-transform">
           ${iconContent}
         </div>
-        <div class="elyxora-info">
-          <div class="elyxora-title-row">
-            <span class="elyxora-title">${escapeHTML(elyxora.title)}</span>
+        <div class="elyxora-info flex-1 min-w-0 pr-2">
+          <div class="elyxora-title-row flex items-center gap-1.5">
+            <span class="elyxora-title font-headline-md text-headline-md text-text-primary font-bold truncate">${escapeHTML(elyxora.title)}</span>
           </div>
           ${subtitleHtml}
         </div>

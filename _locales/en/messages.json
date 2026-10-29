@@ -1,4 +1,4 @@
-{
+﻿{
   "extName": { "message": "Elyxora Tap" },
   "extDesc": { "message": "Visual bookmarks and dashboard for your new tab" },
   "greetingMorning": { "message": "Good Morning" },
@@ -86,6 +86,7 @@
   "showDateLabel": { "message": "Show Date" },
   "clockStyleRegular": { "message": "Regular" },
   "clockStyleBold": { "message": "Bold" },
+  "clockStyleTelemetry": { "message": "Amber Telemetry" },
   "clockStyleLight": { "message": "Light" },
   "clockStyleNeon": { "message": "Neon (Glow)" },
   "clockStyleCustom": { "message": "Custom (Visual)" },

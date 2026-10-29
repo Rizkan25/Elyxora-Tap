@@ -1,4 +1,4 @@
-// =============================================
+﻿// =============================================
 // STATE MANAGEMENT (state.js)
 // Semua variabel global dan pengaturan disimpan di sini
 // =============================================
@@ -44,7 +44,7 @@ export const AppState = {
   weatherUnit: 'celsius',
   weatherForecast: false,
   themeMode: 'dark',
-  clockStyle: 'bold',
+  clockStyle: 'telemetry',
   searchStyle: 'default',
   clockSize: 100,
   weatherSize: 100,

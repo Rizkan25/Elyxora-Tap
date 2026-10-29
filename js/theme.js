@@ -1,4 +1,4 @@
-// =============================================
+﻿// =============================================
 // THEME & VISUAL ENGINE (theme.js)
 // Mengatur tampilan CSS dinamis, gaya jam, ikon, dan background
 // =============================================
@@ -335,9 +335,9 @@ export function applyIconStyles() {
       border-radius: ${finalRadius}px !important;
       padding: ${isPhoneScreen ? '8px 12px' : '12px 16px'} !important;
       margin-bottom: 0 !important;
-      background: ${useCardBg ? 'var(--glass-bg)' : 'transparent'} !important;
-      border: ${useCardBg ? '1px solid var(--glass-border)' : 'none'} !important;
-      box-shadow: ${useCardBg ? '0 4px 20px rgba(0, 0, 0, 0.15)' : 'none'} !important;
+      background: ${useCardBg ? 'rgba(255, 255, 255, 0.04)' : 'transparent'} !important;
+      border: ${useCardBg ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid transparent'} !important;
+      box-shadow: ${useCardBg ? '0 4px 12px -2px rgba(0, 0, 0, 0.3), 0 2px 6px -1px rgba(0, 0, 0, 0.2)' : 'none'} !important;
       backdrop-filter: ${useCardBg ? 'blur(20px) saturate(180%)' : 'none'} !important;
       -webkit-backdrop-filter: ${useCardBg ? 'blur(20px) saturate(180%)' : 'none'} !important;
       display: flex !important;
@@ -347,20 +347,47 @@ export function applyIconStyles() {
       gap: 0 !important;
       position: relative !important;
       overflow: hidden !important;
+      transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+      will-change: transform, box-shadow, background-color, border-color !important;
+    }
+    .elyxora-item:hover,
+    .elyxora-item.group:hover,
+    .group:hover {
+      transform: translateY(-4px) !important;
+      background: rgba(255, 255, 255, 0.085) !important;
+      border: 1px solid rgba(255, 255, 255, 0.22) !important;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.35), 0 0 20px rgba(0, 240, 255, 0.12) !important;
+      backdrop-filter: blur(20px) saturate(180%) !important;
+      -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    }
+    .elyxora-item:active,
+    .elyxora-item.group:active {
+      transform: translateY(-1px) scale(0.985) !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35) !important;
+      transition-duration: 100ms !important;
     }
     .elyxora-icon {
-      width: ${isPhoneScreen ? '36px' : '44px'} !important;
-      height: ${isPhoneScreen ? '36px' : '44px'} !important;
+      width: ${isPhoneScreen ? '36px' : '48px'} !important;
+      height: ${isPhoneScreen ? '36px' : '48px'} !important;
       flex-shrink: 0 !important;
       border-radius: ${Math.max(6, finalRadius - 6)}px !important;
-      background: ${useIconBg ? 'white' : 'rgba(var(--overlay-base), 0.6)'} !important;
+      background: ${useIconBg ? 'white' : 'rgba(255, 255, 255, 0.06)'} !important;
       box-shadow: ${useIconBg ? '0 4px 12px rgba(0,0,0,0.12)' : 'none'} !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
       overflow: hidden !important;
-      margin-right: ${isPhoneScreen ? '8px' : '12px'} !important;
+      margin-right: ${isPhoneScreen ? '8px' : '14px'} !important;
       padding: 6px !important;
+      transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+      will-change: transform !important;
+      transform-origin: center !important;
+    }
+    .elyxora-item:hover .elyxora-icon,
+    .elyxora-item.group:hover .elyxora-icon,
+    .group:hover .elyxora-icon,
+    .group:hover .group-hover\:scale-105 {
+      transform: scale(1.05) !important;
     }
     .elyxora-icon img {
       width: ${isPhoneScreen ? '22px' : '28px'} !important;
@@ -391,6 +418,10 @@ export function applyIconStyles() {
       white-space: nowrap !important;
       overflow: hidden !important;
       text-overflow: ellipsis !important;
+      transition: color 0.2s ease !important;
+    }
+    .elyxora-item:hover .elyxora-title {
+      color: #ffffff !important;
     }
     .elyxora-domain {
       font-size: ${isPhoneScreen ? '0.66rem' : '0.72rem'} !important;
@@ -400,6 +431,34 @@ export function applyIconStyles() {
       text-overflow: ellipsis !important;
       margin-top: 2px !important;
       text-align: left !important;
+    }
+    .elyxora-hotkey {
+      opacity: 0.7 !important;
+      transition: opacity 0.2s ease, color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease !important;
+    }
+    .elyxora-item:hover .elyxora-hotkey {
+      opacity: 1 !important;
+      color: #00f0ff !important;
+      border-color: rgba(0, 240, 255, 0.4) !important;
+      background-color: rgba(0, 240, 255, 0.12) !important;
+    }
+    [data-theme="light"] .elyxora-item {
+      background: ${useCardBg ? 'rgba(255, 255, 255, 0.7)' : 'transparent'} !important;
+      border: ${useCardBg ? '1px solid rgba(0, 0, 0, 0.08)' : '1px solid transparent'} !important;
+      box-shadow: ${useCardBg ? '0 4px 12px -2px rgba(0, 0, 0, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04)' : 'none'} !important;
+    }
+    [data-theme="light"] .elyxora-item:hover {
+      background: rgba(255, 255, 255, 0.95) !important;
+      border: 1px solid rgba(0, 0, 0, 0.16) !important;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.08) !important;
+    }
+    [data-theme="light"] .elyxora-item:hover .elyxora-hotkey {
+      color: #0284c7 !important;
+      border-color: rgba(2, 132, 199, 0.4) !important;
+      background-color: rgba(2, 132, 199, 0.1) !important;
+    }
+    [data-theme="light"] .elyxora-item:hover .elyxora-title {
+      color: #0284c7 !important;
     }
   `;
 }
