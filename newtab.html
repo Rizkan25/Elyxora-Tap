@@ -527,179 +527,196 @@
       <!-- Header -->
       <div id="settingsModalHeader" class="settings-modal-header">
         <div class="settings-header-brand">
-          <img src="icons/elyxora_logo.png" alt="Elyxora" class="settings-header-logo">
+          <div class="settings-header-squircle">
+            <div class="settings-header-squircle-glow"></div>
+            <span class="settings-header-squircle-text">E</span>
+          </div>
           <div class="settings-header-titles">
             <div class="settings-title-row">
-              <h3 data-i18n="settingsModalTitle">Pengaturan Elyxora</h3>
-              <span class="settings-version-pill">v2.5 Bento</span>
+              <h3 data-i18n="settingsModalTitle">Pengaturan Elyxora Tab</h3>
+              <span class="settings-version-pill">v2.5</span>
             </div>
-            <span class="settings-subtitle">Kustomisasi Tampilan, Wallpaper, dan Pengalaman Tab</span>
+            <span class="settings-subtitle">Kustomisasi tampilan Speed Dial, search engine, dan preferensi dashboard</span>
           </div>
         </div>
-        <button id="closeSettingsXBtn" class="close-modal-btn" aria-label="Tutup Pengaturan">✕</button>
+        <button id="closeSettingsXBtn" class="close-modal-btn" aria-label="Tutup Pengaturan" type="button" title="Tutup Pengaturan">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </button>
       </div>
 
       <div class="settings-layout">
-        <!-- Sidebar -->
+        <!-- Sidebar Aside -->
         <div class="settings-sidebar">
-          <button class="settings-tab active" data-tab="tab-style">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-              <line x1="8" y1="21" x2="16" y2="21" />
-              <line x1="12" y1="17" x2="12" y2="21" />
-            </svg>
-            <span data-i18n="settingsTabAppearance">Tampilan</span>
-          </button>
-          <button class="settings-tab" data-tab="tab-wallpaper">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-              <circle cx="8.5" cy="8.5" r="1.5" />
-              <polyline points="21 15 16 10 5 21" />
-            </svg>
-            <span data-i18n="settingsTabWallpaper">Wallpaper</span>
-          </button>
-          <button class="settings-tab" data-tab="tab-general">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-            </svg>
-            <span data-i18n="settingsTabGeneral">Umum</span>
-          </button>
-          <button class="settings-tab" data-tab="tab-groups">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2L2 7l10 5 10-5-10-5z" />
-              <path d="M2 17l10 5 10-5" />
-              <path d="M2 12l10 5 10-5" />
-            </svg>
-            <span data-i18n="settingsTabGroups">Grup</span>
-          </button>
-          <button class="settings-tab" data-tab="tab-shortcuts">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="4" width="20" height="16" rx="2" ry="2"/>
-              <path d="M6 8h.001M10 8h.001M14 8h.001M18 8h.001M8 12h.001M12 12h.001M16 12h.001M7 16h10"/>
-            </svg>
-            <span data-i18n="settingsTabShortcuts">Pintasan</span>
-          </button>
+          <div class="settings-sidebar-nav">
+            <button class="settings-tab active" data-tab="tab-style" type="button">
+              <span class="settings-tab-dot"></span>
+              <span data-i18n="settingsTabAppearance">Tampilan & Speed Dial</span>
+            </button>
+            <button class="settings-tab" data-tab="tab-wallpaper" type="button">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+              <span data-i18n="settingsTabWallpaper">Latar & Wallpaper</span>
+            </button>
+            <button class="settings-tab" data-tab="tab-general" type="button">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+              </svg>
+              <span data-i18n="settingsTabGeneral">Umum & Audio (Lofi)</span>
+            </button>
+            <button class="settings-tab" data-tab="tab-groups" type="button">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+              </svg>
+              <span data-i18n="settingsTabGroups">Pintasan & Grid</span>
+            </button>
+            <button class="settings-tab" data-tab="tab-shortcuts" type="button">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+              </svg>
+              <span data-i18n="settingsTabShortcuts">Pintasan Keyboard</span>
+            </button>
+            <button class="settings-tab" data-tab="tab-backup" type="button">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+              </svg>
+              <span>Backup & Sinkronisasi</span>
+            </button>
+          </div>
+
+          <div class="settings-sidebar-status">
+            <div class="sidebar-status-header">
+              <span class="status-indicator-dot"></span>
+              <span class="status-indicator-title">GPU Acceleration: Aktif</span>
+            </div>
+            <span class="status-indicator-sub">Metal / WebGL 2.0 (High Perf)</span>
+          </div>
         </div>
 
         <!-- Content Area -->
         <div class="settings-content">
 
-          <!-- TAB: STYLE -->
+          <!-- TAB: STYLE (Tampilan & Speed Dial) -->
           <div class="tab-pane active" id="tab-style">
             <label
-              style="color: var(--text-dim); margin-bottom: 16px; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;" data-i18n="settingsTabAppearance">Tampilan & Tema</label>
+              style="color: var(--text-dim); margin-bottom: 12px; display: block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; font-family: ui-monospace, monospace;" data-i18n="settingsTabAppearance">Tema Tampilan</label>
 
+            <!-- 3 Theme Mode Cards (Stitch Design) -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 24px;">
+              <label class="theme-option-label" style="cursor: pointer; margin: 0;">
+                <input type="radio" name="themeModeRadio" value="light" style="display: none;">
+                <div class="theme-card-stitch">
+                  <div class="theme-preview-box light-preview">
+                    <span>Terang</span>
+                  </div>
+                  <span class="theme-card-title" data-i18n="themeLight">Terang</span>
+                </div>
+              </label>
+
+              <label class="theme-option-label" style="cursor: pointer; margin: 0;">
+                <input type="radio" name="themeModeRadio" value="dark" checked style="display: none;">
+                <div class="theme-card-stitch active">
+                  <div class="theme-preview-box dark-preview">
+                    <span>Gelap Obsidian</span>
+                    <span class="theme-active-dot"></span>
+                  </div>
+                  <span class="theme-card-title" data-i18n="themeDark">Gelap (Cyber)</span>
+                </div>
+              </label>
+
+              <label class="theme-option-label" style="cursor: pointer; margin: 0;">
+                <input type="radio" name="themeModeRadio" value="system" style="display: none;">
+                <div class="theme-card-stitch">
+                  <div class="theme-preview-box auto-preview">
+                    <span>Otomatis</span>
+                  </div>
+                  <span class="theme-card-title" data-i18n="themeAuto">Sesuai Sistem</span>
+                </div>
+              </label>
+            </div>
+
+            <!-- Aksen Warna Dashboard (Stitch Swatches) -->
             <div style="margin-bottom: 24px;">
               <label
-                style="color: var(--text-dim); margin-bottom: 12px; display: block; font-size: 0.85rem; font-weight: 600;" data-i18n="themeTitle">Mode Tema</label>
-              <div class="theme-selector-container">
-                <label class="theme-option-label">
-                  <input type="radio" name="themeModeRadio" value="light">
-                  <div class="theme-card">
-                    <div class="theme-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5" />
-                        <line x1="12" y1="1" x2="12" y2="3" />
-                        <line x1="12" y1="21" x2="12" y2="23" />
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                        <line x1="1" y1="12" x2="3" y2="12" />
-                        <line x1="21" y1="12" x2="23" y2="12" />
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                      </svg></div>
-                    <span data-i18n="themeLight">Terang</span>
-                  </div>
-                </label>
-                <label class="theme-option-label">
-                  <input type="radio" name="themeModeRadio" value="dark" checked>
-                  <div class="theme-card">
-                    <div class="theme-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                      </svg></div>
-                    <span data-i18n="themeDark">Gelap</span>
-                  </div>
-                </label>
-                <label class="theme-option-label">
-                  <input type="radio" name="themeModeRadio" value="system">
-                  <div class="theme-card">
-                    <div class="theme-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-                        <line x1="8" y1="21" x2="16" y2="21" />
-                        <line x1="12" y1="17" x2="12" y2="21" />
-                      </svg></div>
-                    <span data-i18n="themeAuto">Sistem</span>
-                  </div>
+                style="color: var(--text-dim); margin-bottom: 12px; display: block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; font-family: ui-monospace, monospace;" data-i18n="accentColorTitle">Aksen Warna Dashboard</label>
+              <div class="settings-color-row">
+                <button type="button" class="color-btn active" data-color="#00f0ff" style="background: #00f0ff;" title="Cyan Neon"></button>
+                <button type="button" class="color-btn" data-color="#10b981" style="background: #10b981;" title="Emerald"></button>
+                <button type="button" class="color-btn" data-color="#ef4444" style="background: #ef4444;" title="Red Crimson"></button>
+                <button type="button" class="color-btn" data-color="#a855f7" style="background: #a855f7;" title="Purple Violet"></button>
+                <button type="button" class="color-btn" data-color="#f59e0b" style="background: #f59e0b;" title="Amber Gold"></button>
+                <button type="button" class="color-btn" data-color="#3b82f6" style="background: #3b82f6;" title="Electric Blue"></button>
+                <label class="custom-color-label" title="Pilih Warna Custom">
+                  <input type="color" id="customAccentPicker" style="position: absolute; width: 100%; height: 100%; cursor: pointer; opacity: 0;">
+                  <span>+</span>
                 </label>
               </div>
             </div>
 
-            <div style="margin-bottom: 24px;">
-              <label
-                style="color: var(--text-dim); margin-bottom: 12px; display: block; font-size: 0.85rem; font-weight: 600;" data-i18n="accentColorTitle">Warna Aksen</label>
-              <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
-                <button type="button" class="color-btn" data-color="#3b82f6"
-                  style="width: 34px; height: 34px; border-radius: 50%; background: #3b82f6; border: 3px solid white; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);"></button>
-                <button type="button" class="color-btn" data-color="#10b981"
-                  style="width: 34px; height: 34px; border-radius: 50%; background: #10b981; border: 3px solid transparent; cursor: pointer; transition: 0.2s;"></button>
-                <button type="button" class="color-btn" data-color="#f43f5e"
-                  style="width: 34px; height: 34px; border-radius: 50%; background: #f43f5e; border: 3px solid transparent; cursor: pointer; transition: 0.2s;"></button>
-                <button type="button" class="color-btn" data-color="#8b5cf6"
-                  style="width: 34px; height: 34px; border-radius: 50%; background: #8b5cf6; border: 3px solid transparent; cursor: pointer; transition: 0.2s;"></button>
-                <button type="button" class="color-btn" data-color="#f59e0b"
-                  style="width: 34px; height: 34px; border-radius: 50%; background: #f59e0b; border: 3px solid transparent; cursor: pointer; transition: 0.2s;"></button>
-                <button type="button" class="color-btn" data-color="#06b6d4"
-                  style="width: 34px; height: 34px; border-radius: 50%; background: #06b6d4; border: 3px solid transparent; cursor: pointer; transition: 0.2s;"></button>
-                <label class="custom-color-label"
-                  style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6, #d946ef); border: 2px solid transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; transition: 0.2s; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);">
-                  <input type="color" id="customAccentPicker"
-                    style="position: absolute; width: 150%; height: 150%; cursor: pointer; opacity: 0;">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="12" y1="5" x2="12" y2="19" />
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                  </svg>
-                </label>
+            <div style="border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 20px; margin-bottom: 24px;">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div>
+                  <label class="input-label" style="margin-bottom: 6px;">Gaya Grid Speed Dial</label>
+                  <select id="gridColumnsSelect" class="settings-select">
+                    <option value="8" selected>8 Kolom Kompak (Bawaan)</option>
+                    <option value="6">6 Kolom Nyaman</option>
+                    <option value="4">4 Kolom Fokus</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="input-label" style="margin-bottom: 6px;">Gaya Jam & Tanggal</label>
+                  <select id="clockStyle" class="settings-select">
+                    <option value="bold">Swiss Minimalist & Bold</option>
+                    <option value="glass">Glassmorphism Digital</option>
+                    <option value="cyberpunk">Cyberpunk Neon</option>
+                    <option value="minimal">Minimal</option>
+                    <option value="telemetry">Amber Telemetry (Presisi)</option>
+                    <option value="retro">Retro 7-Segment (Digital)</option>
+                    <option value="rainbow">Gradient Text (Pelangi)</option>
+                    <option value="flip">Flip Clock (Mekanis)</option>
+                    <option value="tracer">Border Tracer (Animasi Garis)</option>
+                    <option value="oled">Dark Mode Sleek (OLED)</option>
+                    <option value="custom">✦ Custom (Kustomisasi Penuh)</option>
+                  </select>
+                </div>
               </div>
-            </div>
 
-            <label
-              style="color: var(--text-dim); margin: 32px 0 16px 0; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Gaya
-              & Ukuran</label>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
-              <div>
-                <label class="input-label">Gaya Jam</label>
-                <select id="clockStyle"
-                  style="width: 100%; padding: 10px; border-radius: 8px; background: var(--input-bg); color: var(--text-color); border: 1px solid var(--input-border); outline: none;">
-                  <option value="minimal">Minimal</option>
-                  <option value="bold">Bold (Bawaan)</option>
-                  <option value="telemetry">Amber Telemetry (Presisi)</option>
-                  <option value="glass">Glassmorphism (Efek Kaca)</option>
-                  <option value="neumorphism">Neumorphism (Soft UI)</option>
-                  <option value="cyberpunk">Neon Cyberpunk</option>
-                  <option value="swiss">Minimalis Swiss</option>
-                  <option value="retro">Retro 7-Segment (Digital)</option>
-                  <option value="rainbow">Gradient Text (Pelangi)</option>
-                  <option value="flip">Flip Clock (Mekanis)</option>
-                  <option value="tracer">Border Tracer (Animasi Garis)</option>
-                  <option value="oled">Dark Mode Sleek (OLED)</option>
-                  <option value="custom">✦ Custom (Kustomisasi Penuh)</option>
-                </select>
+              <!-- Stitch Card Bookmark Opacity & Blur Effect Card -->
+              <div class="settings-pref-card" style="margin-bottom: 16px;">
+                <div style="margin-bottom: 12px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <span style="font-size: 0.78rem; font-weight: 500; color: #cbd5e1;">Opasitas Kartu Bookmark</span>
+                    <span id="cardOpacityVal" style="font-size: 0.75rem; font-family: ui-monospace, monospace; font-weight: 600; color: #22d3ee;">85%</span>
+                  </div>
+                  <input type="range" id="cardOpacitySlider" class="settings-slider" min="20" max="100" value="85">
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.05);">
+                  <div>
+                    <span style="font-size: 0.78rem; font-weight: 500; color: #e2e8f0; display: block;">Intensitas Efek Kaca Blur</span>
+                    <span style="font-size: 0.7rem; color: #94a3b8; display: block;">Hardware accelerated backdrop filter (18px Ultra HD)</span>
+                  </div>
+                  <label class="toggle-pill-switch">
+                    <input type="checkbox" id="glassBlurToggle" checked>
+                    <span class="toggle-slider-round"></span>
+                  </label>
+                </div>
               </div>
-              <div>
-                <label class="input-label" style="display: flex; justify-content: space-between;">
-                  Ukuran Jam <span id="clockSizeVal" style="color: var(--accent-color); font-weight: 700;">100%</span>
-                </label>
-                <input type="range" id="clockSize" min="50" max="200" value="100"
-                  style="width: 100%; accent-color: var(--accent-color);">
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div>
+                  <label class="input-label" style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                    Ukuran Jam <span id="clockSizeVal" style="color: #22d3ee; font-family: ui-monospace, monospace; font-weight: 600;">100%</span>
+                  </label>
+                  <input type="range" id="clockSize" class="settings-slider" min="50" max="200" value="100">
+                </div>
+                <div>
+                  <label class="input-label" style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                    Ukuran Cuaca <span id="weatherSizeVal" style="color: #22d3ee; font-family: ui-monospace, monospace; font-weight: 600;">100%</span>
+                  </label>
+                  <input type="range" id="weatherSize" class="settings-slider" min="50" max="150" value="100">
+                </div>
               </div>
             </div>
 
@@ -1623,13 +1640,80 @@
               </div>
             </div>
           </div>
+
+          <!-- TAB: BACKUP & SINKRONISASI (Stitch Design) -->
+          <div class="tab-pane" id="tab-backup">
+            <label
+              style="color: var(--text-dim); margin-bottom: 12px; display: block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; font-family: ui-monospace, monospace;">Backup & Sinkronisasi Cloud</label>
+
+            <!-- Status Sinkronisasi Real-time -->
+            <div class="settings-pref-card mb-4" style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span class="status-indicator-dot" style="width: 9px; height: 9px; background: #39ff14; box-shadow: 0 0 10px #39ff14;"></span>
+                <div>
+                  <div style="font-size: 0.85rem; font-weight: 600; color: #ffffff;">Penyimpanan Lokal & Cloud</div>
+                  <div style="font-size: 0.72rem; color: #94a3b8;">Chrome Storage Sync aktif & siap digunakan</div>
+                </div>
+              </div>
+              <span style="font-size: 0.72rem; font-family: ui-monospace, monospace; font-weight: 700; color: #39ff14; background: rgba(57, 255, 20, 0.1); padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(57, 255, 20, 0.25);">Tersinkronisasi 0.3ms</span>
+            </div>
+
+            <!-- Export / Import Action Cards -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px;">
+              <div class="settings-pref-card" style="display: flex; flex-direction: column; justify-content: space-between; gap: 12px;">
+                <div>
+                  <div style="font-size: 0.85rem; font-weight: 600; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #22d3ee;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>Ekspor Konfigurasi</span>
+                  </div>
+                  <p style="font-size: 0.72rem; color: #94a3b8; margin: 4px 0 0;">Unduh seluruh data pintasan, wallpaper, dan setelan ke file JSON</p>
+                </div>
+                <button id="exportDataBtn" type="button" class="settings-btn-cancel" style="width: 100%; justify-content: center; display: inline-flex; align-items: center; gap: 6px; font-weight: 600;">
+                  <span>Export JSON</span>
+                </button>
+              </div>
+
+              <div class="settings-pref-card" style="display: flex; flex-direction: column; justify-content: space-between; gap: 12px;">
+                <div>
+                  <div style="font-size: 0.85rem; font-weight: 600; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #38bdf8;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    <span>Impor Konfigurasi</span>
+                  </div>
+                  <p style="font-size: 0.72rem; color: #94a3b8; margin: 4px 0 0;">Pulihkan pengaturan dan pintasan dari file JSON cadangan</p>
+                </div>
+                <button id="importDataBtn" type="button" class="settings-btn-cancel" style="width: 100%; justify-content: center; display: inline-flex; align-items: center; gap: 6px; font-weight: 600;">
+                  <span>Import JSON</span>
+                </button>
+                <input type="file" id="importDataFile" accept=".json" style="display: none;">
+              </div>
+            </div>
+
+            <!-- Reset Pengaturan Box -->
+            <div class="settings-pref-card" style="border-color: rgba(239, 68, 68, 0.2); background: rgba(239, 68, 68, 0.04);">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-size: 0.85rem; font-weight: 600; color: #fca5a5;">Kembalikan ke Setelan Pabrik</div>
+                  <div style="font-size: 0.72rem; color: #94a3b8;">Hapus seluruh preferensi kustom dan gunakan tema bawaan Elyxora</div>
+                </div>
+                <button id="resetAllDataBtn" type="button" style="padding: 6px 14px; border-radius: 10px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: 0.2s;">
+                  Reset Data
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Footer -->
+      <!-- Stitch Modal Footer -->
       <div class="settings-modal-footer">
-        <button id="closeSettingsBtn" class="btn-secondary">Batal</button>
-        <button id="saveSettingsBtn" class="btn-primary">Simpan Pengaturan</button>
+        <button id="resetSettingsBtn" class="settings-reset-link" type="button">Reset ke Default</button>
+        <div class="settings-footer-actions">
+          <button id="closeSettingsBtn" class="settings-btn-cancel" type="button">Batal</button>
+          <button id="saveSettingsBtn" class="settings-btn-save" type="button">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            Simpan Pengaturan
+          </button>
+        </div>
       </div>
     </div>
   </div>

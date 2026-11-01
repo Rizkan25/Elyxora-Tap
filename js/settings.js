@@ -171,7 +171,12 @@ export function syncInputsWithVars() {
   if (get('iconRadiusVal')) get('iconRadiusVal').textContent = AppState.iconRadius + 'px';
 
   const themeRadio = document.querySelector(`input[name="themeModeRadio"][value="${AppState.themeMode}"]`);
-  if (themeRadio) themeRadio.checked = true;
+  if (themeRadio) {
+    themeRadio.checked = true;
+    document.querySelectorAll('.theme-card-stitch').forEach(card => card.classList.remove('active'));
+    const parentCard = themeRadio.closest('.theme-option-label')?.querySelector('.theme-card-stitch');
+    if (parentCard) parentCard.classList.add('active');
+  }
 
   const wBlock = get('weatherSettingsBlock');
   if (wBlock) wBlock.style.display = AppState.enableWeather ? 'block' : 'none';
@@ -180,15 +185,15 @@ export function syncInputsWithVars() {
   const colorBtns = document.querySelectorAll('.color-btn');
   let matched = false;
   colorBtns.forEach(btn => {
-    btn.style.borderColor = 'transparent';
+    btn.classList.remove('active');
     if (btn.getAttribute('data-color') === AppState.accentColor) {
-      btn.style.borderColor = 'white';
+      btn.classList.add('active');
       matched = true;
     }
   });
   const customColorLabel = document.querySelector('.custom-color-label');
   const customColorPicker = document.getElementById('customAccentPicker');
-  if (customColorLabel) customColorLabel.style.borderColor = matched ? 'var(--modal-border)' : 'white';
+  if (customColorLabel) customColorLabel.style.borderColor = matched ? 'rgba(255, 255, 255, 0.3)' : '#22d3ee';
   if (customColorPicker && !matched) customColorPicker.value = AppState.accentColor;
 
   const cPanel = get('customClockPanel');
@@ -461,10 +466,10 @@ document.querySelectorAll('.color-btn').forEach(btn => {
   btn.onclick = () => {
     AppState.accentColor = btn.getAttribute('data-color');
     applyAccentColor();
-    document.querySelectorAll('.color-btn').forEach(b => b.style.borderColor = 'transparent');
+    document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
     const customLabel = document.querySelector('.custom-color-label');
-    if (customLabel) customLabel.style.borderColor = 'var(--modal-border)';
-    btn.style.borderColor = 'white';
+    if (customLabel) customLabel.style.borderColor = 'rgba(255, 255, 255, 0.3)';
   };
 });
 
@@ -473,9 +478,9 @@ if (customColorInput) {
   customColorInput.addEventListener('input', (e) => {
     AppState.accentColor = e.target.value;
     applyAccentColor();
-    document.querySelectorAll('.color-btn').forEach(b => b.style.borderColor = 'transparent');
+    document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
     const customLabel = document.querySelector('.custom-color-label');
-    if (customLabel) customLabel.style.borderColor = 'white';
+    if (customLabel) customLabel.style.borderColor = '#22d3ee';
   });
 }
 
@@ -486,6 +491,9 @@ document.querySelectorAll('input[name="themeModeRadio"]').forEach(radio => {
   radio.addEventListener('change', () => {
     AppState.themeMode = radio.value;
     applyThemeMode(AppState.themeMode);
+    document.querySelectorAll('.theme-card-stitch').forEach(card => card.classList.remove('active'));
+    const parentCard = radio.closest('.theme-option-label')?.querySelector('.theme-card-stitch');
+    if (parentCard) parentCard.classList.add('active');
   });
 });
 
@@ -1198,3 +1206,38 @@ if (importDataBtn && importDataFile) {
     reader.readAsText(file);
   });
 }
+
+// -----------------------------------------------
+// RESET PENGATURAN KE DEFAULT (Stitch Design)
+// -----------------------------------------------
+const resetSettingsBtn = document.getElementById('resetSettingsBtn');
+const resetAllDataBtn = document.getElementById('resetAllDataBtn');
+
+async function handleResetToDefault() {
+  if (confirm('Kembalikan semua preferensi ke setelan bawaan Elyxora Tab?')) {
+    AppState.themeMode = 'dark';
+    AppState.accentColor = '#00f0ff';
+    AppState.clockStyle = 'bold';
+    AppState.clockSize = 100;
+    AppState.weatherSize = 100;
+    AppState.iconSize = 100;
+    AppState.iconRadius = 20;
+    AppState.useIconBg = true;
+    AppState.useCardBg = true;
+    AppState.titlePosition = 'inside';
+    AppState.showWatermark = true;
+    AppState.bgBlurLevel = 5;
+    AppState.bgDarkLevel = 60;
+    AppState.bgModeType = 'image';
+    AppState.customBackground = '';
+    AppState.currentWallpaperUrl = '';
+    
+    await saveState();
+    revertSettings();
+    syncInputsWithVars();
+    if (setModal) setModal.style.display = 'none';
+  }
+}
+
+if (resetSettingsBtn) resetSettingsBtn.addEventListener('click', handleResetToDefault);
+if (resetAllDataBtn) resetAllDataBtn.addEventListener('click', handleResetToDefault);
