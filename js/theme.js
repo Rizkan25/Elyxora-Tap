@@ -1,4 +1,4 @@
-﻿// =============================================
+// =============================================
 // THEME & VISUAL ENGINE (theme.js)
 // Mengatur tampilan CSS dinamis, gaya jam, ikon, dan background
 // =============================================
@@ -646,9 +646,18 @@ export function applyProfileAvatar() {
   const initial = (AppState.userName || 'K').trim().charAt(0).toUpperCase() || 'K';
   
   if (avatarUrl) {
-    avatarBadge.innerHTML = `<img src="${avatarUrl}" alt="Avatar" class="user-avatar-img">`;
+    avatarBadge.innerHTML = `
+      <img src="${avatarUrl}" alt="Avatar" class="user-custom-avatar user-avatar-img">
+      <span class="neon-avatar-dot"></span>
+    `;
   } else {
-    avatarBadge.innerHTML = `<span class="user-avatar-initial" id="userAvatarInitial">${initial}</span>`;
+    avatarBadge.innerHTML = `
+      <div class="neon-avatar-glow"></div>
+      <div class="neon-avatar-inner">
+        <span class="user-avatar-initial" id="userAvatarInitial" style="display:none;">${initial}</span>
+      </div>
+      <span class="neon-avatar-dot"></span>
+    `;
   }
 }
 

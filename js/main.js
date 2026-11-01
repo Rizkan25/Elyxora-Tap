@@ -752,15 +752,6 @@ function initTopHeader() {
     });
   }
 
-  const toggleToolbarBtn = document.getElementById('toggleToolbarBtn');
-  if (toggleToolbarBtn) {
-    toggleToolbarBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isCurrentlyCollapsed = elyxoraHeader && elyxoraHeader.classList.contains('collapsed');
-      setNavbarCollapsed(!isCurrentlyCollapsed, true);
-    });
-  }
-
   // Update speed dial count badge
   const speedDialPillCount = document.getElementById('speedDialPillCount');
   if (speedDialPillCount) {

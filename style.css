@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --bg-color: #0f172a;
   --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1a1035 50%, #0f1f2a 100%);
   --text-color: #f1f5f9;
@@ -2603,55 +2603,7 @@ input:checked + .toggle-card .toggle-switch::after {
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
 }
 
-/* Double-Chevron Toolbar Toggle */
-.toolbar-toggle-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px 8px;
-  border-radius: 8px;
-  background: rgba(17, 24, 39, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #94a3b8;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  margin-left: 2px;
-  outline: none;
-}
-
-.toolbar-toggle-btn:hover {
-  background: rgba(31, 41, 55, 0.95);
-  border-color: rgba(255, 255, 255, 0.25);
-  color: #00f0ff;
-}
-
-.double-chevron-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: -1px;
-}
-
-.double-chevron-box svg {
-  width: 14px;
-  height: 14px;
-  color: #94a3b8;
-  transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.toolbar-toggle-btn:hover .double-chevron-box svg {
-  color: #00f0ff;
-}
-
-.toolbar-toggle-btn:hover .chevron-arrow.up {
-  transform: translateY(-1px);
-}
-
-.toolbar-toggle-btn:hover .chevron-arrow.down {
-  transform: translateY(1px);
-}
-
-/* Circular Neon Ring Avatar */
+/* Circular Neon Ring Avatar (Profil Akun di Header Kanan) */
 .neon-avatar-ring {
   width: 36px;
   height: 36px;
@@ -2663,7 +2615,8 @@ input:checked + .toggle-card .toggle-switch::after {
   justify-content: center;
   position: relative;
   cursor: pointer;
-  margin-left: 4px;
+  margin-left: 0;
+  flex-shrink: 0;
   box-shadow: 0 0 14px -1px rgba(139, 92, 246, 0.4), inset 0 0 8px rgba(0, 240, 255, 0.25);
   transition: all 0.3s ease;
   outline: none;

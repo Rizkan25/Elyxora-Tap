@@ -1,0 +1,2 @@
+gunakan @mcp:chrome-devtools-mcp: untuk mengontrol atau meilhat lebih lebih detail lagi untuk projek ini agar ketika mengedit sesutu bisa di lihat langsung
+saya ingin code yang di berikan clean code atau memeiliki ferforma yang baik dan tidak ada bug yang tidak di inginkan
