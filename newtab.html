@@ -360,21 +360,67 @@
   <!-- STAGE 5: BOTTOM PRECISION DOCK & UTILITY CAPSULE (Stitch Concept) -->
   <section class="precision-dock-container" id="precisionDock">
     <div class="precision-dock">
-      <!-- Live Lo-fi Music Stream Mini Widget -->
+      <!-- Live Lo-fi Music Stream Mini Widget (Stitch Concept v2.5) -->
       <div class="dock-lofi" id="dockLofi">
-        <div class="eq-bars" id="eqBars">
-          <span class="eq-bar"></span>
-          <span class="eq-bar"></span>
-          <span class="eq-bar"></span>
+        <!-- Cover Art with Dark Gradient & Pulsing Live Dot -->
+        <div class="dock-lofi-art-box" id="lofiArtBox" title="Klik untuk ganti musik berikutnya">
+          <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=150&amp;auto=format&amp;fit=crop&amp;q=80" alt="Lofi Stream Art" class="dock-lofi-art-img" id="lofiArtImg" draggable="false">
+          <div class="dock-lofi-art-gradient"></div>
+          <span class="dock-lofi-live-dot" title="Live Broadcast"></span>
         </div>
+
+        <!-- Info: Track Title, Live Badge, Subtitle -->
         <div class="dock-lofi-info">
-          <span class="dock-lofi-title">Lofi Hip Hop Radio</span>
-          <span class="dock-lofi-desc">Chilled Cow • Live Stream</span>
+          <div class="dock-lofi-title-row">
+            <span class="dock-lofi-title" id="lofiTrackTitle">Lofi Hip Hop Radio</span>
+            <span class="dock-lofi-badge-live" id="lofiBadgeLive">LIVE</span>
+          </div>
+          <span class="dock-lofi-desc" id="lofiTrackDesc">Chilled Cow • Beats to Relax</span>
         </div>
-        <button type="button" class="dock-lofi-toggle" id="dockLofiToggle" aria-label="Play/Pause Music">
-          <svg id="lofiPlayIcon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          <svg id="lofiPauseIcon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-        </button>
+
+        <!-- 4-bar Audio Equalizer Visualizer -->
+        <div class="eq-bars" id="eqBars" title="Audio Equalizer Visualizer">
+          <span class="eq-bar bar-1"></span>
+          <span class="eq-bar bar-2"></span>
+          <span class="eq-bar bar-3"></span>
+          <span class="eq-bar bar-4"></span>
+        </div>
+
+        <!-- Player Controls: Mute, Play/Pause, Next Track -->
+        <div class="dock-lofi-controls">
+          <!-- Toggle Mute -->
+          <button type="button" class="dock-lofi-btn dock-lofi-btn-ghost" id="lofiMuteBtn" aria-label="Toggle Mute" title="Bisukan / Bunyikan Suara (M)">
+            <svg id="lofiVolUpIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+            <svg id="lofiVolMuteIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <line x1="23" y1="9" x2="17" y2="15"></line>
+              <line x1="17" y1="9" x2="23" y2="15"></line>
+            </svg>
+          </button>
+
+          <!-- Play or Pause Player -->
+          <button type="button" class="dock-lofi-btn dock-lofi-btn-play" id="dockLofiToggle" aria-label="Play or Pause Player" title="Putar / Jeda Musik (P)">
+            <svg id="lofiPlayIcon" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="6 4 20 12 6 20 6 4"></polygon>
+            </svg>
+            <svg id="lofiPauseIcon" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+              <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+              <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+            </svg>
+          </button>
+
+          <!-- Next Track (Manual Switcher) -->
+          <button type="button" class="dock-lofi-btn dock-lofi-btn-ghost" id="lofiNextBtn" aria-label="Next Track" title="Ganti Musik Berikutnya (N)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="5 4 15 12 5 20 5 4"></polygon>
+              <line x1="19" y1="5" x2="19" y2="19"></line>
+            </svg>
+          </button>
+        </div>
       </div>
 
       <!-- Wallpaper Quick Switcher Pill -->

@@ -375,6 +375,20 @@ function initGlobalShortcuts() {
       toggleLofiAudio();
       return;
     }
+
+    // Hotkey: 'M' atau 'm' -> Toggle Mute Musik Lo-fi
+    if (e.key.toLowerCase() === 'm') {
+      e.preventDefault();
+      toggleLofiMute();
+      return;
+    }
+
+    // Hotkey: ']' -> Ganti Musik Lo-fi Berikutnya
+    if (e.key === ']') {
+      e.preventDefault();
+      switchLofiTrack(1);
+      return;
+    }
   });
 }
 
@@ -387,51 +401,229 @@ function cycleSearchEngine() {
   options[nextIndex].click();
 }
 
-// 2. LO-FI MUSIC & AMBIENT CHORD ENGINE (OFFLINE-READY)
+// 2. LO-FI MUSIC STREAM & MULTI-STATION AUDIO ENGINE (OFFLINE-READY)
+const LOFI_PLAYLIST = [
+  {
+    id: 'chilled-cow',
+    title: 'Lofi Hip Hop Radio',
+    desc: 'Chilled Cow • Beats to Relax',
+    badge: 'LIVE',
+    art: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=150&auto=format&fit=crop&q=80',
+    url: 'https://streams.ilovemusic.de/iloveradio17.mp3'
+  },
+  {
+    id: 'chillhop-cafe',
+    title: 'Chillhop Cafe Beats',
+    desc: 'Chillhop Music • Jazzy Vibes',
+    badge: 'LIVE',
+    art: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=150&auto=format&fit=crop&q=80',
+    url: 'https://streams.fluxfm.de/chillhop/mp3-128/audio/'
+  },
+  {
+    id: 'ambient-chill',
+    title: 'Music & Deep Chill',
+    desc: 'I Love Chill • Ambient Waves',
+    badge: 'LIVE',
+    art: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=150&auto=format&fit=crop&q=80',
+    url: 'https://streams.ilovemusic.de/iloveradio10.mp3'
+  },
+  {
+    id: 'rain-sleep',
+    title: 'Peaceful Night Beats',
+    desc: 'Midnight Rain • Deep Relax',
+    badge: 'LIVE',
+    art: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=150&auto=format&fit=crop&q=80',
+    url: 'https://stream.zeno.fm/f3wvbbqmdg8uv'
+  },
+  {
+    id: 'tokyo-night',
+    title: 'Tokyo Midnight Lofi',
+    desc: 'Urban Flow • Code & Study',
+    badge: 'LIVE',
+    art: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=150&auto=format&fit=crop&q=80',
+    url: 'https://stream.zeno.fm/0r0xa792kwzuv'
+  }
+];
+
 let lofiAudio = null;
 let isLofiPlaying = false;
+let isLofiMuted = localStorage.getItem('elyxora_lofi_muted') === 'true';
+let lofiVolume = parseFloat(localStorage.getItem('elyxora_lofi_volume') || '0.5');
+let currentLofiIndex = parseInt(localStorage.getItem('elyxora_lofi_index') || '0', 10);
+if (isNaN(currentLofiIndex) || currentLofiIndex < 0 || currentLofiIndex >= LOFI_PLAYLIST.length) {
+  currentLofiIndex = 0;
+}
 let audioCtx = null;
 let ambientOscillators = [];
+let isUsingAmbientFallback = false;
 
-function toggleLofiAudio() {
+// Perbarui tampilan metadata lagu di UI
+function updateLofiPlayerUI(track) {
+  if (!track) return;
+  const artImg = document.getElementById('lofiArtImg');
+  const titleEl = document.getElementById('lofiTrackTitle');
+  const descEl = document.getElementById('lofiTrackDesc');
+  const badgeEl = document.getElementById('lofiBadgeLive');
+
+  if (artImg) {
+    artImg.style.opacity = '0.35';
+    setTimeout(() => {
+      artImg.src = track.art;
+      artImg.alt = track.title;
+      artImg.style.opacity = '1';
+    }, 120);
+  }
+  if (titleEl) {
+    titleEl.textContent = track.title;
+    titleEl.title = `${track.title} (Stasiun ${currentLofiIndex + 1}/${LOFI_PLAYLIST.length})`;
+  }
+  if (descEl) {
+    descEl.textContent = track.desc;
+    descEl.title = track.desc;
+  }
+  if (badgeEl) {
+    badgeEl.textContent = track.badge || 'LIVE';
+  }
+}
+
+// Sinkronisasi status Play/Pause & animasi Equalizer Bar
+function setLofiPlayStateUI(isPlaying) {
   const eqBars = document.getElementById('eqBars');
   const playIcon = document.getElementById('lofiPlayIcon');
   const pauseIcon = document.getElementById('lofiPauseIcon');
 
-  if (!isLofiPlaying) {
-    if (!lofiAudio) {
-      lofiAudio = new Audio('https://streams.ilovemusic.de/iloveradio17.mp3');
-      lofiAudio.crossOrigin = 'anonymous';
-      lofiAudio.volume = 0.5;
-      lofiAudio.addEventListener('error', () => {
-        playAmbientSynth();
-      });
+  if (eqBars) {
+    if (isPlaying) {
+      eqBars.classList.add('playing');
+    } else {
+      eqBars.classList.remove('playing');
     }
+  }
+  if (playIcon) playIcon.style.display = isPlaying ? 'none' : 'block';
+  if (pauseIcon) pauseIcon.style.display = isPlaying ? 'block' : 'none';
+}
 
-    lofiAudio.play().then(() => {
-      isLofiPlaying = true;
-      if (eqBars) eqBars.classList.add('playing');
-      if (playIcon) playIcon.style.display = 'none';
-      if (pauseIcon) pauseIcon.style.display = 'block';
-    }).catch(() => {
-      playAmbientSynth();
-      isLofiPlaying = true;
-      if (eqBars) eqBars.classList.add('playing');
-      if (playIcon) playIcon.style.display = 'none';
-      if (pauseIcon) pauseIcon.style.display = 'block';
-    });
-  } else {
-    if (lofiAudio) {
-      lofiAudio.pause();
-    }
-    stopAmbientSynth();
-    isLofiPlaying = false;
-    if (eqBars) eqBars.classList.remove('playing');
-    if (playIcon) playIcon.style.display = 'block';
-    if (pauseIcon) pauseIcon.style.display = 'none';
+// Sinkronisasi ikon dan tooltip Mute/Unmute
+function updateLofiMuteUI() {
+  const volUpIcon = document.getElementById('lofiVolUpIcon');
+  const volMuteIcon = document.getElementById('lofiVolMuteIcon');
+  const muteBtn = document.getElementById('lofiMuteBtn');
+
+  if (volUpIcon) volUpIcon.style.display = isLofiMuted ? 'none' : 'block';
+  if (volMuteIcon) volMuteIcon.style.display = isLofiMuted ? 'block' : 'none';
+  if (muteBtn) {
+    muteBtn.title = isLofiMuted ? 'Bunyikan Suara (Unmute - M)' : 'Bisukan Suara (Mute - M)';
   }
 }
 
+// Toggle Play / Pause audio
+function toggleLofiAudio() {
+  if (!isLofiPlaying) {
+    playCurrentLofiTrack();
+  } else {
+    pauseLofiAudio();
+  }
+}
+
+// Memutar trek saat ini dengan penanganan error & fallback otomatis
+function playCurrentLofiTrack() {
+  const track = LOFI_PLAYLIST[currentLofiIndex];
+  updateLofiPlayerUI(track);
+  stopAmbientSynth();
+  isUsingAmbientFallback = false;
+
+  // Hentikan dan bersihkan instance audio lama untuk mencegah tumpang tindih suara
+  if (lofiAudio) {
+    try {
+      lofiAudio.pause();
+      lofiAudio.onended = null;
+      lofiAudio.onerror = null;
+      lofiAudio.src = '';
+      lofiAudio.load();
+    } catch(e) {}
+  }
+
+  lofiAudio = new Audio(track.url);
+  lofiAudio.crossOrigin = 'anonymous';
+  lofiAudio.volume = isLofiMuted ? 0 : lofiVolume;
+
+  // Fallback offline bila stream gagal dimuat
+  lofiAudio.addEventListener('error', () => {
+    console.warn(`[Lo-fi Player] Stream gagal dimuat untuk "${track.title}", beralih ke ambient lofi chord generator.`);
+    playAmbientSynth();
+    isLofiPlaying = true;
+    isUsingAmbientFallback = true;
+    setLofiPlayStateUI(true);
+  });
+
+  lofiAudio.addEventListener('playing', () => {
+    isLofiPlaying = true;
+    setLofiPlayStateUI(true);
+  });
+
+  lofiAudio.play().then(() => {
+    isLofiPlaying = true;
+    setLofiPlayStateUI(true);
+  }).catch((err) => {
+    console.warn('[Lo-fi Player] Autoplay stream dicegah atau offline, mengaktifkan synth fallback:', err);
+    playAmbientSynth();
+    isLofiPlaying = true;
+    isUsingAmbientFallback = true;
+    setLofiPlayStateUI(true);
+  });
+}
+
+// Menjeda pemutaran musik
+function pauseLofiAudio() {
+  if (lofiAudio) {
+    try {
+      lofiAudio.pause();
+    } catch(e) {}
+  }
+  stopAmbientSynth();
+  isLofiPlaying = false;
+  isUsingAmbientFallback = false;
+  setLofiPlayStateUI(false);
+}
+
+// Algoritma pergantian trek musik secara manual
+function switchLofiTrack(direction = 1) {
+  const newIndex = (currentLofiIndex + direction + LOFI_PLAYLIST.length) % LOFI_PLAYLIST.length;
+  currentLofiIndex = newIndex;
+  try {
+    localStorage.setItem('elyxora_lofi_index', currentLofiIndex.toString());
+  } catch(e) {}
+
+  const track = LOFI_PLAYLIST[currentLofiIndex];
+  updateLofiPlayerUI(track);
+
+  // Jika musik sedang berputar, langsung putar stasiun yang baru dipilih
+  if (isLofiPlaying) {
+    playCurrentLofiTrack();
+  }
+}
+
+// Toggle Mute / Unmute
+function toggleLofiMute() {
+  isLofiMuted = !isLofiMuted;
+  try {
+    localStorage.setItem('elyxora_lofi_muted', isLofiMuted ? 'true' : 'false');
+  } catch(e) {}
+
+  if (lofiAudio) {
+    lofiAudio.volume = isLofiMuted ? 0 : lofiVolume;
+  }
+  if (isUsingAmbientFallback) {
+    ambientOscillators.forEach(({ gain }) => {
+      try {
+        gain.gain.setValueAtTime(isLofiMuted ? 0 : 0.015, audioCtx.currentTime);
+      } catch(e) {}
+    });
+  }
+  updateLofiMuteUI();
+}
+
+// Ambient Lo-Fi Synthesizer Fallback (Offline-Ready)
 function playAmbientSynth() {
   try {
     if (!audioCtx) {
@@ -440,13 +632,14 @@ function playAmbientSynth() {
     if (audioCtx.state === 'suspended') audioCtx.resume();
     stopAmbientSynth();
 
-    const chord = [220, 261.63, 329.63, 392.00]; // A minor 7 warm lo-fi pad
+    const chord = [220, 261.63, 329.63, 392.00, 493.88]; // A minor 9 warm pad
+    const targetGain = isLofiMuted ? 0 : 0.015;
     chord.forEach((freq) => {
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
       osc.type = 'sine';
       osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-      gain.gain.setValueAtTime(0.015, audioCtx.currentTime);
+      gain.gain.setValueAtTime(targetGain, audioCtx.currentTime);
       osc.connect(gain);
       gain.connect(audioCtx.destination);
       osc.start();
@@ -460,7 +653,9 @@ function playAmbientSynth() {
 function stopAmbientSynth() {
   ambientOscillators.forEach(({ osc, gain }) => {
     try {
-      gain.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime + 0.3);
+      if (audioCtx) {
+        gain.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime + 0.3);
+      }
       setTimeout(() => osc.stop(), 300);
     } catch(e) {}
   });
@@ -502,10 +697,43 @@ function initCanvasSwitcher() {
 }
 
 function initPrecisionDock() {
+  // Inisialisasi UI awal pemutar Lo-fi dari playlist
+  const initialTrack = LOFI_PLAYLIST[currentLofiIndex];
+  updateLofiPlayerUI(initialTrack);
+  updateLofiMuteUI();
+
+  // Tombol Play / Pause
   const toggleBtn = document.getElementById('dockLofiToggle');
   if (toggleBtn) {
     toggleBtn.addEventListener('click', toggleLofiAudio);
   }
+
+  // Tombol Ganti Musik Berikutnya (Next Track)
+  const nextBtn = document.getElementById('lofiNextBtn');
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      switchLofiTrack(1);
+    });
+  }
+
+  // Tombol Mute / Unmute
+  const muteBtn = document.getElementById('lofiMuteBtn');
+  if (muteBtn) {
+    muteBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleLofiMute();
+    });
+  }
+
+  // Klik gambar cover art juga mengganti stasiun berikutnya
+  const artBox = document.getElementById('lofiArtBox');
+  if (artBox) {
+    artBox.addEventListener('click', () => {
+      switchLofiTrack(1);
+    });
+  }
+
   initCanvasSwitcher();
 }
 
